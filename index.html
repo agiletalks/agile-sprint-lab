@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="敏捷專家學會 (AgileMe) - Agile Sprint Lab 活動議題收集系統。提交您在 AI 時代下面對的工作與協作難題，共同探索解決方案。">
+  <title>Agile Sprint Lab - 議題收集系統 | 敏捷專家學會 AgileMe</title>
+  
+  <!-- Google Fonts: Noto Sans TC for body/UI, Klee One for marker-like handwriting on sticky notes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@600&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Whiteboard Grid Background -->
+  <div class="board-grid-pattern"></div>
+
+  <!-- Header & Settings Icon -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo">
+        <a href="https://agileme.org" target="_blank" rel="noopener" class="logo-link">
+          <img src="https://agileme.org/logo.png" alt="敏捷專家學會 AgileMe Logo" class="brand-logo-img">
+        </a>
+        <span class="logo-divider">/</span>
+        <span class="logo-subtext">Sprint Lab 議題收集</span>
+      </div>
+      <div class="header-actions">
+        <a href="rundown.html" class="nav-link-btn" title="查看一日活動流程">
+          查看活動流程
+        </a>
+        <button class="settings-btn" id="settingsBtn" title="設定 API 接收端點" aria-label="Settings">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="badge">AgileMe Prework</div>
+      <h1>當 AI 逐漸成為工作環境的一部分，<br><span class="highlight-text">我們正在面對哪些值得共同探索的問題？</span></h1>
+      <p class="hero-desc">
+        歡迎參與社團法人敏捷專家學會舉辦的 <strong>Agile Sprint Lab</strong>！在活動開始前，請留出一些時間，仔細思考並提交您在日常工作與團隊協作中面臨的真實挑戰。
+        我們將在活動當天將您的議題轉換為實體 User Story 卡片，直接形成 Story Map 共同探索，實踐「讓客戶安心、讓老闆放心、讓工作團隊開心」的敏捷價值！
+      </p>
+    </section>
+
+    <!-- Main Workspace Grid -->
+    <div class="workspace-grid">
+      
+      <!-- Form Container -->
+      <section class="form-container-card">
+        <!-- Form Header with Progress -->
+        <div class="form-header">
+          <h2>議題填寫表單</h2>
+          <div class="progress-container">
+            <div class="progress-text">填寫進度: <span id="progressPercent">0%</span></div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+          </div>
+        </div>
+
+        <form id="preworkForm" novalidate>
+          
+          <!-- PART 1: Participant Info -->
+          <div class="form-section" id="sectionParticipant">
+            <h3 class="section-title">
+              <span class="step-number">1</span> 個人基本資料
+            </h3>
+            
+            <div class="form-group">
+              <label for="pName">姓名 / 暱稱 <span class="required-indicator">*</span></label>
+              <input type="text" id="pName" name="name" placeholder="例如：Percy Hsu" required autocomplete="name">
+              <span class="error-msg" id="pNameError">請輸入您的姓名或暱稱</span>
+            </div>
+
+            <div class="form-group">
+              <label for="pRole">您的角色 / 職稱 <span class="required-indicator">*</span></label>
+              <input type="text" id="pRole" name="role" placeholder="例如：Scrum Master / 團隊領導者 / 工程師" required>
+              <span class="error-msg" id="pRoleError">請輸入或選擇您的角色</span>
+              
+              <!-- Quick Role Tags -->
+              <div class="role-suggestions">
+                <span class="suggestion-tag">Agile Coach</span>
+                <span class="suggestion-tag">Product Owner</span>
+                <span class="suggestion-tag">Scrum Master</span>
+                <span class="suggestion-tag">Team Leader</span>
+                <span class="suggestion-tag">Developer</span>
+                <span class="suggestion-tag">Designer</span>
+                <span class="suggestion-tag">HR / Operations</span>
+                <span class="suggestion-tag">Marketing</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="pEmail">電子信箱 <span class="optional-label">(選填，便於活動後回饋交流)</span></label>
+              <input type="email" id="pEmail" name="email" placeholder="例如：percy@example.com" autocomplete="email">
+              <span class="error-msg" id="pEmailError">請輸入有效的 Email 格式</span>
+            </div>
+          </div>
+
+          <hr class="section-divider">
+
+          <!-- PART 2: Challenges -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <span class="step-number">2</span> 真實挑戰問題 (Share Challenges) <span class="section-subtitle">至少填寫 2 個，可點選下方按鈕新增更多題目</span>
+            </h3>
+            
+            <!-- CHALLENGE 1 -->
+            <div class="challenge-card" id="challenge1-container">
+              <div class="challenge-header">
+                <h4>痛點問題 #1 (Challenge #1) <span class="required-badge">必填</span></h4>
+              </div>
+              
+              <div class="form-group">
+                <label for="c1Problem">真實痛點問題描述 (Problem) <span class="required-indicator">*</span></label>
+                <div class="guidance-tip">
+                  <span class="guidance-tag">【開發與工程範例】</span>
+                  <span class="bad-example"><strong>❌ 避開開規格的寫法：</strong>希望引入 AI 自動代碼審查系統。</span>
+                  <span class="good-example"><strong>💡 推薦描述真實痛點：</strong>自從大家開始用 AI 寫程式，產出的代碼量暴增，資深工程師審查不過來，導致整個開發流程嚴重卡關。</span>
+                </div>
+                <textarea id="c1Problem" name="c1_problem" rows="3" placeholder="請描述您遭遇的真實痛點/問題本身，而非預期的解決方案。" required></textarea>
+                <span class="error-msg" id="c1ProblemError">請填寫此痛點問題描述</span>
+              </div>
+
+              <div class="form-group">
+                <label for="c1Value">解決後的價值與效益 (Expected Value) <span class="required-indicator">*</span></label>
+                <div class="guidance-tip">
+                  <span class="guidance-tag">【開發與工程範例】</span>
+                  <span class="bad-example"><strong>❌ 避開開規格的寫法：</strong>公司應該買 GitHub Copilot 授權給所有人。</span>
+                  <span class="good-example"><strong>💡 推薦描述期望價值：</strong>希望資深工程師能從繁重的例行代碼審查中解放，將時間投入在系統架構設計等高價值工作，同時縮短整體的開發交付週期。</span>
+                </div>
+                <textarea id="c1Value" name="c1_value" rows="3" placeholder="如果這個問題被解決，能為您、團隊或客戶創造什麼價值？請聚焦在效益與狀態，而非實作細節。" required></textarea>
+                <span class="error-msg" id="c1ValueError">請填寫解決後的價值與效益</span>
+              </div>
+
+              <div class="form-group">
+                <label>議題分類 <span class="required-indicator">*</span></label>
+                <div class="category-grid" id="c1CategoryGroup">
+                  <label class="category-pill">
+                    <input type="radio" name="c1_category" value="Individual Work" required>
+                    <span>個人工作效率</span>
+                  </label>
+                  <label class="category-pill">
+                    <input type="radio" name="c1_category" value="Team Collaboration">
+                    <span>團隊協作</span>
+                  </label>
+                  <label class="category-pill">
+                    <input type="radio" name="c1_category" value="Process & Workflow">
+                    <span>流程與工作流</span>
+                  </label>
+                  <label class="category-pill">
+                    <input type="radio" name="c1_category" value="Tools & Technology">
+                    <span>工具與技術</span>
+                  </label>
+                  <label class="category-pill">
+                    <input type="radio" name="c1_category" value="Leadership & Organization">
+                    <span>領導力與組織</span>
+                  </label>
+                  <label class="category-pill">
+                    <input type="radio" name="c1_category" value="Others">
+                    <span>其他</span>
+                  </label>
+                </div>
+                <span class="error-msg" id="c1CategoryError">請選擇一個分類</span>
+              </div>
+
+              <div class="form-group">
+                <label for="c1Attempts">過去嘗試過的做法或擁有的資源 (Previous Attempts / Resources) <span class="optional-label">(選填)</span></label>
+                <textarea id="c1Attempts" name="c1_attempts" rows="2" placeholder="您或團隊曾嘗試過哪些做法來解決此痛點？不論成功或失敗皆可；或填寫您擁有的經驗、技能等資源。&#10;例如：曾舉辦過一次 Prompt 分享會，但後續未持續形成規範。"></textarea>
+              </div>
+            </div>
+
+            <!-- CHALLENGE 2 -->
+            <div class="challenge-card mt-4" id="challenge2-container">
+              <div class="challenge-header">
+                <h4>痛點問題 #2 (Challenge #2) <span class="required-badge">必填</span></h4>
+              </div>
+              
+              <div class="form-group">
+                <label for="c2Problem">真實痛點問題描述 (Problem) <span class="required-indicator">*</span></label>
+                <div class="guidance-tip">
+                  <span class="guidance-tag">【非工程 / 業務流程範例】</span>
+                  <span class="bad-example"><strong>❌ 避開開規格的寫法：</strong>希望公司採購一套 AI 招募分析系統或請顧問來協助流程優化。</span>
+                  <span class="good-example"><strong>💡 推薦描述真實痛點：</strong>主管要求我們在一週內找出「在現有工作流程中如何用 AI 輔助」，但團隊對 AI 的能力與限制缺乏認識，不知道該如何開始評估。</span>
+                </div>
+                <textarea id="c2Problem" name="c2_problem" rows="3" placeholder="請描述您遭遇的真實痛點/問題本身，而非預期的解決方案。" required></textarea>
+                <span class="error-msg" id="c2ProblemError">請填寫此痛點問題描述</span>
+              </div>
+
+              <div class="form-group">
+                <label for="c2Value">解決後的價值與效益 (Expected Value) <span class="required-indicator">*</span></label>
+                <div class="guidance-tip">
+                  <span class="guidance-tag">【非工程 / 業務流程範例】</span>
+                  <span class="bad-example"><strong>❌ 避開開規格的寫法：</strong>希望部門能舉辦一次 AI 流程應用訓練課程。</span>
+                  <span class="good-example"><strong>💡 推薦描述期望價值：</strong>團隊能建立一套簡單的流程分析指標，自主找出最適合引入 AI 的節點，並有信心向主管報告可行的優化方案。</span>
+                </div>
+                <textarea id="c2Value" name="c2_value" rows="3" placeholder="如果這個問題被解決，能為您、團隊或客戶創造什麼價值？請聚焦在效益與狀態，而非實作細節。" required></textarea>
+                <span class="error-msg" id="c2ValueError">請填寫解決後的價值與效益</span>
+              </div>
+
+              <div class="form-group">
+                <label>議題分類 <span class="required-indicator">*</span></label>
+                <div class="category-grid" id="c2CategoryGroup">
+                  <label class="category-pill">
+                    <input type="radio" name="c2_category" value="Individual Work" required>
+                    <span>個人工作效率</span>
+                  </label>
+                  <label class="category-pill">
+                    <input type="radio" name="c2_category" value="Team Collaboration">
+                    <span>團隊協作</span>
+                  </label>
+                  <label class="category-pill">
+                    <input type="radio" name="c2_category" value="Process & Workflow">
+                    <span>流程與工作流</span>
+                  </label>
+                  <label class="category-pill">
+                    <input type="radio" name="c2_category" value="Tools & Technology">
+                    <span>工具與技術</span>
+                  </label>
+                  <label class="category-pill">
+                    <input type="radio" name="c2_category" value="Leadership & Organization">
+                    <span>領導力與組織</span>
+                  </label>
+                  <label class="category-pill">
+                    <input type="radio" name="c2_category" value="Others">
+                    <span>其他</span>
+                  </label>
+                </div>
+                <span class="error-msg" id="c2CategoryError">請選擇一個分類</span>
+              </div>
+
+              <div class="form-group">
+                <label for="c2Attempts">過去嘗試過的做法或擁建立資源 (Previous Attempts / Resources) <span class="optional-label">(選填)</span></label>
+                <textarea id="c2Attempts" name="c2_attempts" rows="2" placeholder="您或團隊曾嘗試過哪些做法來解決此痛點？不論成功或失敗皆可；或填寫您擁有的經驗、技能等資源。&#10;例如：嘗試在 GitHub 設定更多自動化 Linter 檢查，但無法完全解決邏輯審查問題。"></textarea>
+              </div>
+            </div>
+
+            <!-- Dynamic Additional Challenges Container -->
+            <div id="dynamic-challenges-container"></div>
+
+            <!-- Add Challenge Button -->
+            <button type="button" class="add-challenge-btn" id="addChallengeBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              新增痛點問題 (選填)
+            </button>
+          </div>
+
+          <!-- Submit Panel -->
+          <div class="submit-panel">
+            <button type="submit" class="submit-btn" id="submitBtn">
+              <span class="btn-text">提交 prework 資料</span>
+              <span class="spinner hidden"></span>
+            </button>
+            <p class="submit-tips">提交成功後，您的資料會安全寫入活動專屬 Google Sheets。</p>
+          </div>
+
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Settings Modal (Configuration overlay for Google Apps Script Web App URL) -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>活動管理員設定</h3>
+        <button class="close-modal-btn" id="closeSettingsBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">
+          請設定 Google Apps Script 部署為 Web App 之後的 API URL。設定完成後，表單送出的資料會即時寫入您的 Google Sheets 中。
+        </p>
+        
+        <div class="form-group">
+          <label for="gasUrl">Google Apps Script Web App URL</label>
+          <input type="url" id="gasUrl" placeholder="https://script.google.com/macros/s/.../exec">
+          <p class="help-text">
+            若留空，系統將啟用「本機模擬模式」，提交後可供您下載 JSON 資料備份。
+          </p>
+        </div>
+
+        <div class="status-indicator">
+          <span>目前狀態：</span>
+          <span class="status-badge" id="statusBadge">模擬模式</span>
+        </div>
+
+        <div class="modal-instructions">
+          <h4>快速設定指南</h4>
+          <ol>
+            <li>複製本機目錄下的 <code>code.gs</code> 代碼。</li>
+            <li>開啟 <a href="https://script.google.com/" target="_blank" rel="noopener">Google Apps Script</a> 並建立新專案。</li>
+            <li>貼上代碼並儲存。</li>
+            <li>點選「部署」&gt;「新增部署」，類型選擇「網頁應用程式 (Web App)」。</li>
+            <li>將「誰有權存取」設定為<strong>「所有人 (Anyone)」</strong>。</li>
+            <li>複製產生的網頁應用程式 URL，並貼到上方欄位。</li>
+          </ol>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="resetSettingsBtn">重設</button>
+        <button class="btn-primary" id="saveSettingsBtn">儲存設定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview Modal (Before Submission) -->
+  <div class="modal-overlay" id="previewModal">
+    <div class="modal-card preview-card">
+      <div class="modal-header">
+        <h3>送出前確認與 User Story 預覽</h3>
+        <button class="close-modal-btn" id="closePreviewBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">
+          在您送出前，這是您的議題在活動當天被轉化為實體卡片的概念預覽：
+        </p>
+        
+        <!-- Sticky Notes Container -->
+        <div class="preview-notes-container" id="previewNotesContainer">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <p class="preview-note-tip">
+          活動當天，主辦方將會使用 AI 針對您填寫的具體痛點，進行更客製化與精確的 User Story 轉換。
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="backToEditBtn">返回修改</button>
+        <button class="btn-primary" id="confirmSubmitBtn">確認提交</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-card success-card">
+      <div class="success-icon-wrapper">
+        <svg class="success-svg" viewBox="0 0 52 52">
+          <circle class="success-circle" cx="26" cy="26" r="25" fill="none"/>
+          <path class="success-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+        </svg>
+      </div>
+      <h2>提交成功！</h2>
+      <p>您的 Prework 議題資料已成功送出。感謝您為 Agile Sprint Lab 的精彩討論注入能量！</p>
+      
+      <div class="submission-summary">
+        <h4>您的提交內容摘要：</h4>
+        <div class="summary-details" id="summaryDetails">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <div class="success-footer">
+        <button class="btn-secondary hidden" id="downloadBackupBtn">
+          下載 JSON 備份
+        </button>
+        <button class="btn-primary" id="closeSuccessBtn">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>© 2014-2026 社團法人敏捷專家學會 Agile Matter Expert Association. Designed for Collaboration.</p>
+  </footer>
+
+  <!-- Script -->
+  <script src="app.js"></script>
+</body>
+</html>
