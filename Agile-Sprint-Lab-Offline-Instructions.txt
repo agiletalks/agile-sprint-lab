@@ -1,0 +1,28 @@
+Agile Sprint Lab — Standalone HTML
+
+Open this file from your folder:
+C:\codex\agile-sprint-lab\Agile-Sprint-Lab-Offline.html
+
+Double-click the HTML file, or right-click it and choose Open with Microsoft Edge or Google Chrome. No internet connection, server, installation or ChatGPT sign-in is required. All styles, activity content and scripts are included in this one file. You may copy it to another folder or computer.
+
+1. Choose Settings to set the workshop title, your name and team count.
+2. Select activities in the left navigation. The English facilitator script and Chinese reminders are on the host screen.
+3. Use Start timer, Pause and the time adjustments. The original 120-minute workshop clock keeps advancing while an activity timer is paused.
+4. Choose Open projection. Allow the popup if the browser asks. Move that window to the projector. Keep the host screen on your laptop.
+5. Skills marketplace includes two slides of contribution examples. Challenge cards includes a three-minute writing timer; gallery walk includes visit and reflection timers.
+6. Open Poster gallery to import photos from this computer. You can import several files and assign each one a team, title and completion status. Multiple posters per team are supported.
+7. Export gallery downloads a separate HTML file with all poster images embedded for offline viewing and printing.
+8. Save backup downloads your workshop state and poster photos as JSON. Keep this backup alongside the HTML file. Settings or Poster gallery includes Restore backup.
+9. Print complete script opens the browser's print dialog for the complete rehearsal script.
+
+Important differences from the hosted version
+
+This is a local version. Other people's phones cannot upload to this HTML file. Bring poster photo files to the host computer and import them there. Paper voting and the physical gallery walk continue normally.
+
+Opening the HTML file does not save photos into the HTML itself or write them into your folder. Browser storage holds the working copy where available; Save backup creates a file you can keep and restore. Some browsers restrict storage for local files or private browsing. Export a backup before closing, moving the HTML file, clearing browser data, or changing computers. Photo imports never hold up the team's next challenge.
+
+This HTML contains the facilitator's full script. Projection hides it on screen, but the file itself is intended for the host rather than distribution as a participant-only page.
+
+Verification
+
+The file was checked for embedded script syntax, no external dependencies, the 120-minute agenda, timer logic, strength slides, multiple posters, filtering, safe text handling, projection messages and local-storage fallback. The in-app browser blocks file:// navigation, so a direct-file browser run could not be verified here. Please open the file in your own Edge or Chrome browser for your rehearsal.

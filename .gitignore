@@ -1,0 +1,29 @@
+# Dependencies and generated output
+**/node_modules/
+**/.next/
+**/.vinext/
+**/.wrangler/
+**/.sites-runtime/
+**/dist/
+**/out/
+**/coverage/
+*.tsbuildinfo
+*.log
+
+# Credentials and machine configuration
+.env
+.env.*
+**/.env
+**/.env.*
+.dev.vars
+**/.dev.vars
+*.pem
+*.key
+.DS_Store
+Thumbs.db
+
+# Rehearsal data belongs on the host computer
+Agile-Sprint-Lab-Backup*.json
+Agile-Sprint-Lab-Gallery*.html
+**/outputs/
+**/work/

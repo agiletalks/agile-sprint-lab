@@ -1,0 +1,46 @@
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+const html=readFileSync('Agile-Sprint-Lab-Offline.html','utf8');
+assert(!/<script[^>]+src\s*=/i.test(html),'All JavaScript must be embedded');
+assert(!/<link[^>]+href\s*=/i.test(html),'All styles must be embedded');
+assert(!/@import|fetch\s*\(|XMLHttpRequest|serviceWorker/.test(html),'No server, network request or service worker is required');
+assert(!/https?:\/\//.test(html),'No external web URLs');
+const json=html.match(/<script id="workshop-content" type="application\/json">([\s\S]*?)<\/script>/)[1];
+const data=JSON.parse(json);
+assert.equal(data.stages.length,13);assert.equal(data.scripts.length,13);assert.equal(data.strengths.length,14);assert.equal(data.stages.reduce((n,s)=>n+s.minutes,0),120);
+const js=html.match(/<script>([\s\S]*?)<\/script>/)[1];new vm.Script(js);
+function harness(projection=false){
+ const elements=new Map();const listeners={};const saved=new Map();const messages=[];
+ function element(){return {innerHTML:'',textContent:'',style:{},classList:{toggle(){}},focus(){},append(){},click(){},remove(){}};}
+ for(const id of ['#app','#notice','#modal','#timer-progress','#overall-clock'])elements.set(id,element());
+ elements.set('#workshop-content',{textContent:json});
+ const document={querySelector:s=>elements.get(s)||null,querySelectorAll:()=>[],getElementById:id=>elements.get('#'+id),createElement:()=>element(),body:element(),addEventListener:(name,fn)=>listeners[name]=fn,documentElement:{}};
+ const opener={postMessage:value=>messages.push(value)};
+ const window={addEventListener:(name,fn)=>listeners['window-'+name]=fn,opener:projection?opener:null,print(){},open:()=>({closed:false,postMessage:v=>messages.push(v)})};
+ const ctx=vm.createContext({document,window,location:{pathname:'/C:/local/Agile-Sprint-Lab-Offline.html',href:'file:///C:/local/Agile-Sprint-Lab-Offline.html',search:projection?'?view=projection':''},URL,URLSearchParams,Blob,FormData,crypto:globalThis.crypto,Image:function(){},setTimeout:()=>1,clearTimeout(){},setInterval(){},localStorage:{getItem:k=>saved.get(k)||null,setItem:(k,v)=>saved.set(k,v)},BroadcastChannel:class{postMessage(v){messages.push(v);}},console});
+ vm.runInContext(js,ctx);return {ctx,elements,listeners,messages,opener,run:s=>vm.runInContext(s,ctx)};
+}
+const host=harness();await new Promise(r=>setImmediate(r));
+assert(host.elements.get('#app').innerHTML.includes('Welcome to the lab'));
+host.run('chooseStage(8)');assert.equal(host.run('state.remaining'),1620);assert.equal(host.run('state.running'),false);
+host.run('timerToggle()');assert.equal(host.run('state.running'),true);assert(host.run('remaining()')<=1620);
+host.run('timerToggle()');assert.equal(host.run('state.running'),false);
+host.run('adjust(60)');assert(host.run('state.remaining')>1620-2);
+host.run('change({projectionGallery:true})');host.run('chooseStage(8)');assert.equal(host.run('state.projectionGallery'),false);
+host.run('chooseStage(1); change({slide:2})');assert(host.elements.get('#app').innerHTML.includes(data.strengths[13]));
+assert.equal(host.run('esc("<script>test</script>")'),'&lt;script&gt;test&lt;/script&gt;');
+host.run("photos=[{id:'one',team:1,title:'First challenge',status:'complete',src:'data:image/jpeg;base64,AA=='},{id:'two',team:1,title:'Second challenge',status:'complete',src:'data:image/jpeg;base64,AA=='},{id:'three',team:2,title:'Other team',status:'wip',src:'data:image/jpeg;base64,AA=='}]");
+assert(host.run('galleryHTML()').includes('Second challenge'));host.run("filter='2'");assert(!host.run('galleryHTML()').includes('First challenge'));assert(host.run('galleryHTML()').includes('Work in progress'));
+host.run('openProjection(false)');assert(host.messages.some(m=>m.type==='agile-local-snapshot'));
+const project=harness(true);await new Promise(r=>setImmediate(r));
+const snapshot=JSON.parse(host.run('JSON.stringify(snapshot())'));
+project.listeners['window-message']({source:project.opener,data:snapshot});
+assert(project.elements.get('#app').innerHTML.includes('Meet your teammates'));
+assert(!project.elements.get('#app').innerHTML.includes('Facilitator script'));
+const previous=project.run('state.stage');project.listeners['window-message']({source:{},data:{...snapshot,state:{...snapshot.state,stage:12}}});assert.equal(project.run('state.stage'),previous);
+host.run('quickTimer(180)');assert.equal(host.run('state.remaining'),180);assert.equal(host.run('state.running'),true);
+assert.equal(host.run('validateState({...state,stage:99})'),false);
+host.run('persist()');await host.run('saving');assert(host.elements.get('#app').innerHTML.length>1000);
+console.log('PASS: self-contained file, 120-minute content, embedded script syntax, stage switching, timer start/pause/adjustment, strength slides, HTML escaping, multiple posters, team filtering, projection messaging, host-script isolation and state persistence fallback.');
+console.log('File-protocol browser UI verification is unavailable in the in-app browser; these are isolated code checks, not a browser run.');
