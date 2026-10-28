@@ -1,0 +1,1212 @@
+[
+  {
+    "id": "P00",
+    "stepId": null,
+    "template": "T0",
+    "title": {
+      "en": "會前待機",
+      "zhTW": ""
+    },
+    "durationSec": 0,
+    "actions": [],
+    "why": null,
+    "output": null,
+    "tools": [],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "入場者能辨識場次、主持人與活動名稱。",
+      "白底、大 Logo、黑色標題、橘色短線；不放裝飾性背景圖。"
+    ]
+  },
+  {
+    "id": "P01",
+    "stepId": 1,
+    "template": "T1",
+    "title": {
+      "en": "Agile Sprint Lab",
+      "zhTW": "敏捷實作工作坊"
+    },
+    "durationSec": 120,
+    "actions": [
+      {
+        "en": "Bring one real challenge from your work in the age of AI",
+        "zhTW": "帶入一個您在 AI 時代工作中真實遇到的挑戰"
+      }
+    ],
+    "why": {
+      "en": "Experience selected Agile practices, then reflect on how to use them",
+      "zhTW": "先體驗敏捷實務，再思考如何應用"
+    },
+    "output": {
+      "en": "A practical response you can use or try",
+      "zhTW": "一份可以使用或嘗試的實務回應"
+    },
+    "tools": [
+      {
+        "en": "Your experience",
+        "zhTW": "您的工作經驗"
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "主題與預期成果可直接讀出，不將目的表述為一定完成 AI 系統或產品。",
+      "左側標題、主題與產出；右側 Logo，下方保留倒數。"
+    ],
+    "stepTitle": {
+      "en": "Welcome and purpose",
+      "zhTW": "歡迎與目的"
+    }
+  },
+  {
+    "id": "P02",
+    "stepId": 1,
+    "template": "T1",
+    "title": {
+      "en": "Meet Percy",
+      "zhTW": "認識 Percy"
+    },
+    "durationSec": 120,
+    "actions": [],
+    "why": {
+      "en": "Connect the workshop to the facilitator's practice",
+      "zhTW": "理解這場工作坊背後的實務背景"
+    },
+    "output": {
+      "en": "Know who is guiding today's experience",
+      "zhTW": "認識今天的引導者"
+    },
+    "tools": [
+      {
+        "en": "Listening",
+        "zhTW": "聆聽"
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "姓名、已核實角色、工作坊連結與信箱清楚可讀；未確認資格不投影。",
+      "文字占約 65%，Logo 占約 35%；尚無原圖時依 3.2 使用文字標題。不新增未提供的人像，不為填滿版面增加簡介文字。"
+    ],
+    "stepTitle": {
+      "en": "Welcome and purpose",
+      "zhTW": "歡迎與目的"
+    }
+  },
+  {
+    "id": "P03",
+    "stepId": 1,
+    "template": "T1",
+    "title": {
+      "en": "How we will work",
+      "zhTW": "今天如何一起工作"
+    },
+    "durationSec": 180,
+    "actions": [
+      {
+        "en": "Work in teams of 4–5",
+        "zhTW": "每組 4–5 人合作"
+      },
+      {
+        "en": "Use languages everyone in your team can follow",
+        "zhTW": "使用每位組員都能參與的語言"
+      },
+      {
+        "en": "Share across teams in simple English; help each other translate",
+        "zhTW": "跨組以簡單英文交流，彼此協助翻譯"
+      }
+    ],
+    "why": {
+      "en": "Make participation possible for everyone",
+      "zhTW": "讓每個人都能理解並參與"
+    },
+    "output": {
+      "en": "Shared expectations for participation",
+      "zhTW": "對參與方式有共同理解"
+    },
+    "tools": [
+      {
+        "en": "Language agreement",
+        "zhTW": "語言約定"
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "團隊內語言彈性與跨組英文分享原則都可見。",
+      "行動為主；下方可列五個中性動作節點：Form teams → Clarify → Choose → Create → Learn，中文為「組隊→釐清→選題→實作→學習」。這些僅為動作摘要，不作 Opening–Closing 階段標籤、不出現在後續進度導航。"
+    ],
+    "stepTitle": {
+      "en": "Welcome and purpose",
+      "zhTW": "歡迎與目的"
+    }
+  },
+  {
+    "id": "P04",
+    "stepId": 2,
+    "template": "T2",
+    "title": {
+      "en": "Fill your Introduction Card",
+      "zhTW": "填寫自我介紹卡"
+    },
+    "durationSec": 180,
+    "actions": [
+      {
+        "en": "Write your preferred name and 1–2 strengths",
+        "zhTW": "寫下希望大家怎麼稱呼您，以及 1–2 項長處"
+      },
+      {
+        "en": "List languages you can work in and your preferred discussion language",
+        "zhTW": "寫下可使用的語言與偏好的討論語言"
+      },
+      {
+        "en": "Write clearly. You have 2 minutes to write",
+        "zhTW": "清楚書寫；填卡時間 2 分鐘"
+      }
+    ],
+    "why": {
+      "en": "Make your strengths and language needs visible",
+      "zhTW": "讓彼此看見能力與語言需要"
+    },
+    "output": {
+      "en": "One completed Introduction Card per person",
+      "zhTW": "每人一張填妥的自我介紹卡"
+    },
+    "tools": [
+      {
+        "en": "個人 Introduction Card",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [
+      {
+        "en": "Listening · Asking questions · Organizing ideas",
+        "zhTW": "傾聽・提問・整理想法"
+      }
+    ],
+    "facilitatorNotes": [
+      "卡片四項欄位齊全。",
+      "卡片四欄示意「Name / Strengths / Working languages / Preferred language」；此為資訊示意，不仿製未提供的實體卡版面。"
+    ],
+    "stepTitle": {
+      "en": "Meet and form teams",
+      "zhTW": "交流與組隊"
+    },
+    "substepIndex": 1,
+    "substepCount": 3
+  },
+  {
+    "id": "P05",
+    "stepId": 2,
+    "template": "T2",
+    "title": {
+      "en": "Skills marketplace",
+      "zhTW": "技能交流市集"
+    },
+    "durationSec": 300,
+    "actions": [
+      {
+        "en": "Move around and meet at least 3 people",
+        "zhTW": "移動交流，至少認識三位夥伴"
+      },
+      {
+        "en": "Share your strengths and language preferences",
+        "zhTW": "分享您的長處與語言偏好"
+      },
+      {
+        "en": "Look for complementary strengths",
+        "zhTW": "尋找能相互補足的長處"
+      }
+    ],
+    "why": {
+      "en": "Explore who you could work well with",
+      "zhTW": "探索可以如何與不同夥伴合作"
+    },
+    "output": {
+      "en": "At least 3 new connections and possible teammates",
+      "zhTW": "至少三次交流，找到可能合作的夥伴"
+    },
+    "tools": [
+      {
+        "en": "Introduction Card",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "交流對象數與交流內容皆可讀出。",
+      "大字「Meet at least 3 people / 至少認識三人」，其餘保持簡潔。"
+    ],
+    "stepTitle": {
+      "en": "Meet and form teams",
+      "zhTW": "交流與組隊"
+    },
+    "substepIndex": 2,
+    "substepCount": 3
+  },
+  {
+    "id": "P06",
+    "stepId": 2,
+    "template": "T2",
+    "title": {
+      "en": "Choose your team",
+      "zhTW": "自主組隊"
+    },
+    "durationSec": 240,
+    "actions": [
+      {
+        "en": "Form a team of 4–5 and find a workspace",
+        "zhTW": "組成 4–5 人團隊，找到工作位置"
+      },
+      {
+        "en": "Check that everyone can join the discussion",
+        "zhTW": "確認每個人都能參與討論"
+      },
+      {
+        "en": "Agree how to share key points in English",
+        "zhTW": "約定如何用英文分享重點"
+      }
+    ],
+    "why": {
+      "en": "Self-selection gives the team choice and shared responsibility",
+      "zhTW": "自主組隊帶來選擇權，也帶來共同責任"
+    },
+    "output": {
+      "en": "A team with a workable language arrangement",
+      "zhTW": "一個具備可行語言安排的團隊"
+    },
+    "tools": [
+      {
+        "en": "Introduction Card",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "顯示組隊條件；提醒「Need a team? Ask Percy. / 需要組隊協助，請找 Percy。」"
+    ],
+    "stepTitle": {
+      "en": "Meet and form teams",
+      "zhTW": "交流與組隊"
+    },
+    "substepIndex": 3,
+    "substepCount": 3
+  },
+  {
+    "id": "P07",
+    "stepId": 3,
+    "template": "T2",
+    "title": {
+      "en": "Roles and agreements",
+      "zhTW": "角色與合作約定"
+    },
+    "durationSec": 300,
+    "actions": [
+      {
+        "en": "Choose a facilitator; agree who captures and shares the work",
+        "zhTW": "選出引導者，約定紀錄與分享責任"
+      },
+      {
+        "en": "Agree on 2–3 ways to work well together, including language",
+        "zhTW": "訂定 2–3 項合作約定，包含語言安排"
+      },
+      {
+        "en": "Write them where everyone can see them",
+        "zhTW": "寫在全組都看得到的位置"
+      }
+    ],
+    "why": {
+      "en": "Make responsibilities and collaboration expectations explicit",
+      "zhTW": "說清楚責任與合作期待"
+    },
+    "output": {
+      "en": "Agreed roles and 2–3 visible working agreements",
+      "zhTW": "明確角色與 2–3 項可見的合作約定"
+    },
+    "tools": [
+      {
+        "en": "Group notes",
+        "zhTW": "小組紀錄；有實體角色 token 時才顯示其提示"
+      }
+    ],
+    "supportingText": [
+      {
+        "en": "Facilitator: time, every voice, completion checks",
+        "zhTW": "引導者：顧時間、聽見每個人、協助完成檢查"
+      }
+    ],
+    "facilitatorNotes": [
+      "不把引導者描述為單獨決策者或唯一發言者。"
+    ],
+    "stepTitle": {
+      "en": "Roles and agreements",
+      "zhTW": "角色與約定"
+    }
+  },
+  {
+    "id": "P08",
+    "stepId": 4,
+    "template": "T3",
+    "title": {
+      "en": "Challenge and acceptance criteria",
+      "zhTW": "挑戰與驗收條件"
+    },
+    "durationSec": 120,
+    "actions": [
+      {
+        "en": "Describe one real situation, challenge, and impact",
+        "zhTW": "描述一個真實情境、挑戰與影響"
+      },
+      {
+        "en": "State 1–2 conditions that would make a response useful",
+        "zhTW": "寫出讓回應對您有用的 1–2 項條件"
+      },
+      {
+        "en": "Keep the two cards together",
+        "zhTW": "將兩張卡片配對放置"
+      }
+    ],
+    "why": {
+      "en": "Acceptance criteria describe what useful means for this challenge",
+      "zhTW": "驗收條件說明這一題怎樣才算有用"
+    },
+    "output": {
+      "en": "Understand what to put on each card",
+      "zhTW": "理解兩張卡片各自要寫的內容"
+    },
+    "tools": [
+      {
+        "en": "Challenge Card＋Acceptance Criteria Card",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [
+      {
+        "en": "A short checklist to review an AI-generated workshop agenda",
+        "zhTW": "一份檢查 AI 生成工作坊議程的短清單。Criteria: include questions that reveal missing information. / 條件：包含可找出遺漏資訊的檢查問題"
+      }
+    ],
+    "facilitatorNotes": [
+      "此頁是說明頁；倒數與工具仍保留。範例不得被誤認為每組必選題目。",
+      "兩張資訊示意並排；挑戰卡顯示 When I am… / The challenge I face is… / This affects my work by…；AC 卡顯示 A useful response would… / 有用的回應應能……。"
+    ],
+    "stepTitle": {
+      "en": "Challenge and readiness",
+      "zhTW": "挑戰與就緒"
+    },
+    "substepIndex": 1,
+    "substepCount": 3
+  },
+  {
+    "id": "P09",
+    "stepId": 4,
+    "template": "T2",
+    "title": {
+      "en": "Write quietly",
+      "zhTW": "個人安靜書寫"
+    },
+    "durationSec": 180,
+    "actions": [
+      {
+        "en": "Complete your situation, challenge, and impact",
+        "zhTW": "完成情境、挑戰與影響"
+      },
+      {
+        "en": "Write 1–2 acceptance criteria on your AC Card",
+        "zhTW": "在 AC 卡寫下 1–2 項驗收條件"
+      },
+      {
+        "en": "Write your name or matching ID on both cards",
+        "zhTW": "兩張卡寫上相同姓名或配對編號"
+      }
+    ],
+    "why": {
+      "en": "Quiet writing gives every person space before group discussion",
+      "zhTW": "先安靜書寫，讓每個人都有表達空間"
+    },
+    "output": {
+      "en": "One paired challenge and AC set per person",
+      "zhTW": "每人一組配對的挑戰卡與驗收條件卡"
+    },
+    "tools": [
+      {
+        "en": "Challenge Card＋Acceptance Criteria Card",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "同一組卡片有可辨識的配對方式。",
+      "大字 Quiet writing / 安靜書寫，不做打字動畫。"
+    ],
+    "stepTitle": {
+      "en": "Challenge and readiness",
+      "zhTW": "挑戰與就緒"
+    },
+    "substepIndex": 2,
+    "substepCount": 3
+  },
+  {
+    "id": "P10",
+    "stepId": 4,
+    "template": "T3",
+    "title": {
+      "en": "Check readiness",
+      "zhTW": "用 DoR 檢查"
+    },
+    "durationSec": 240,
+    "actions": [
+      {
+        "en": "Re-read your cards using the team's DoR Card",
+        "zhTW": "依小組 DoR Card 重讀自己的卡片"
+      },
+      {
+        "en": "Clarify any missing context or unclear words",
+        "zhTW": "補充缺少的背景與不清楚的文字"
+      },
+      {
+        "en": "Narrow the challenge if needed",
+        "zhTW": "必要時縮小挑戰範圍"
+      }
+    ],
+    "why": {
+      "en": "Shared readiness checks help us start with enough understanding",
+      "zhTW": "共同的就緒檢查協助團隊帶著足夠理解開始"
+    },
+    "output": {
+      "en": "Cards clear enough to share and select",
+      "zhTW": "清楚到足以分享與選擇的卡片"
+    },
+    "tools": [
+      {
+        "en": "個人 Challenge Card＋AC Card；小組 DoR Card",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "用詞為「今天可推進」，不保證今天徹底解決。",
+      "三項檢查：Situation, challenge, impact are clear / 情境、挑戰、影響清楚；AC are understandable / 驗收條件可理解；Useful progress is possible today / 今天能有實質進展。"
+    ],
+    "stepTitle": {
+      "en": "Challenge and readiness",
+      "zhTW": "挑戰與就緒"
+    },
+    "substepIndex": 3,
+    "substepCount": 3
+  },
+  {
+    "id": "P11",
+    "stepId": 5,
+    "template": "T2",
+    "title": {
+      "en": "Share and clarify",
+      "zhTW": "分享與釐清"
+    },
+    "durationSec": 840,
+    "actions": [
+      {
+        "en": "Take turns: up to 2 minutes each to share your challenge and AC",
+        "zhTW": "輪流分享挑戰與 AC，每人最多 2 分鐘"
+      },
+      {
+        "en": "Listen, then ask questions to understand",
+        "zhTW": "先聽，再提問理解"
+      },
+      {
+        "en": "Improve the wording before choosing a challenge",
+        "zhTW": "先讓內容更清楚，再進入選題"
+      }
+    ],
+    "why": {
+      "en": "Refinement adds useful detail for shared understanding and decisions",
+      "zhTW": "釐清與細化提供理解和決策所需的細節"
+    },
+    "output": {
+      "en": "Everyone has shared; every challenge is understood well enough to choose",
+      "zhTW": "每人都分享過，每題都清楚到足以選擇"
+    },
+    "tools": [
+      {
+        "en": "Challenge Card＋AC Card＋DoR Card",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "不要求每題在此階段已產生解法。",
+      "提醒「Clarify first / 先釐清」；倒數為整組活動 14 分鐘。可選的 2 分鐘發言計時只在引導者控制台，不取代主倒數，也不自動切換發言者。"
+    ],
+    "stepTitle": {
+      "en": "Share and clarify",
+      "zhTW": "分享與釐清"
+    }
+  },
+  {
+    "id": "P12",
+    "stepId": 6,
+    "template": "T3",
+    "title": {
+      "en": "What counts as done?",
+      "zhTW": "什麼才算完成？"
+    },
+    "durationSec": 180,
+    "actions": [
+      {
+        "en": "Review the team's DoD Card",
+        "zhTW": "一起確認小組 DoD Card"
+      },
+      {
+        "en": "Include the challenge, AC, and solution on one readable poster",
+        "zhTW": "每張海報清楚呈現挑戰、AC 與解法"
+      },
+      {
+        "en": "Show how the solution meets the AC",
+        "zhTW": "說明解法如何符合驗收條件"
+      }
+    ],
+    "why": {
+      "en": "A shared Definition of Done makes completion visible",
+      "zhTW": "共同完成標準讓成果狀態可被理解"
+    },
+    "output": {
+      "en": "A shared standard for every completed poster",
+      "zhTW": "對每張完成海報有共同標準"
+    },
+    "tools": [
+      {
+        "en": "DoD Card",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [
+      {
+        "en": "One challenge at a time. Start the next after this one is done",
+        "zhTW": "一次處理一題，完成後再開始下一題"
+      }
+    ],
+    "facilitatorNotes": [
+      "清楚區分個別題目的 AC 與每份成果共同遵守的 DoD。",
+      "成果示意三欄 Challenge / AC / Solution；旁註 Usable or testable / 可以使用或嘗試。這是成果資訊結構，不強制重畫實體海報。"
+    ],
+    "stepTitle": {
+      "en": "Definition of Done",
+      "zhTW": "共同完成標準"
+    }
+  },
+  {
+    "id": "P13",
+    "stepId": 7,
+    "template": "T3",
+    "title": {
+      "en": "Vote quietly",
+      "zhTW": "安靜投票"
+    },
+    "durationSec": 120,
+    "actions": [
+      {
+        "en": "Red: one dot on each challenge you have experienced, including your own",
+        "zhTW": "紅點：每個自己經歷過的挑戰各貼一點，可包含自己的題目"
+      },
+      {
+        "en": "Green: one dot per person for your first choice today",
+        "zhTW": "綠點：每人只有一點，投給今天最想處理的題目"
+      },
+      {
+        "en": "Vote quietly before discussing",
+        "zhTW": "先安靜投票，再討論"
+      }
+    ],
+    "why": {
+      "en": "See shared experience and interest separately",
+      "zhTW": "分別看見共同經驗與處理意願"
+    },
+    "output": {
+      "en": "Red and green votes on the challenges",
+      "zhTW": "每題的紅、綠票數"
+    },
+    "tools": [
+      {
+        "en": "Challenge Card＋AC Card、紅點與綠點貼紙",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "不可誤寫成每人總共只有一個紅點；不可把紅點寫成問題嚴重程度。",
+      "紅 R＝Experienced / 經歷過；綠 G＝First choice / 優先選擇。兩種投票規則等大並列。"
+    ],
+    "stepTitle": {
+      "en": "Map and prioritize",
+      "zhTW": "投票與排序"
+    },
+    "substepIndex": 1,
+    "substepCount": 3
+  },
+  {
+    "id": "P14",
+    "stepId": 7,
+    "template": "T3",
+    "title": {
+      "en": "Map your challenges",
+      "zhTW": "放入挑戰矩陣"
+    },
+    "durationSec": 180,
+    "actions": [
+      {
+        "en": "Count red and green dots on each challenge",
+        "zhTW": "計算每題紅點與綠點數"
+      },
+      {
+        "en": "Place each challenge at its matching counts",
+        "zhTW": "依票數將挑戰放在對應位置"
+      },
+      {
+        "en": "Place ties side by side; keep each AC Card paired",
+        "zhTW": "同票並排，AC 卡保持配對"
+      }
+    ],
+    "why": {
+      "en": "Make the voting pattern visible before deciding",
+      "zhTW": "決策前先看見票數分布"
+    },
+    "output": {
+      "en": "A matrix of shared experience and first choices",
+      "zhTW": "一張共同經驗與優先意願的挑戰矩陣"
+    },
+    "tools": [
+      {
+        "en": "Challenge Card＋AC Card、矩陣海報",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "不自行加入四象限價值判斷、不用紅綠票相加為總分。",
+      "X 軸 Red dots: shared experience / 紅點：共同經驗，向右增加；Y 軸 Green dots: first choices / 綠點：優先意願，向上增加。兩軸 0 至組員人數 N；N 由設定取得，實際每組不同時顯示 0、1、2…N 的通用示意並註記 N＝組員數，不假設所有組同人數。"
+    ],
+    "stepTitle": {
+      "en": "Map and prioritize",
+      "zhTW": "投票與排序"
+    },
+    "substepIndex": 2,
+    "substepCount": 3
+  },
+  {
+    "id": "P15",
+    "stepId": 7,
+    "template": "T2",
+    "title": {
+      "en": "Choose where to start",
+      "zhTW": "決定從哪一題開始"
+    },
+    "durationSec": 180,
+    "actions": [
+      {
+        "en": "Discuss the pattern, scope, and acceptance criteria",
+        "zhTW": "一起看分布、範圍與驗收條件"
+      },
+      {
+        "en": "Agree on the first challenge and a possible order for the rest",
+        "zhTW": "決定第一題與其他題目的暫定順序"
+      },
+      {
+        "en": "If tied, choose where useful progress is possible in today's time",
+        "zhTW": "難以取捨時，選擇今天能有實質進展的題目"
+      }
+    ],
+    "why": {
+      "en": "Votes inform the team's decision",
+      "zhTW": "票數提供決策依據，團隊共同做選擇"
+    },
+    "output": {
+      "en": "One first challenge and a visible remaining queue",
+      "zhTW": "一個優先挑戰與可見的待處理題目"
+    },
+    "tools": [
+      {
+        "en": "挑戰矩陣、Challenge Card＋AC Card",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "不自動宣告最高票必須獲選；後續順序可依學習調整。"
+    ],
+    "stepTitle": {
+      "en": "Map and prioritize",
+      "zhTW": "投票與排序"
+    },
+    "substepIndex": 3,
+    "substepCount": 3
+  },
+  {
+    "id": "P16",
+    "stepId": 8,
+    "template": "T2",
+    "title": {
+      "en": "Plan the first challenge",
+      "zhTW": "第一題的目標與做法"
+    },
+    "durationSec": 300,
+    "actions": [
+      {
+        "en": "Why: what useful result do we want?",
+        "zhTW": "為何：希望得到什麼有用結果？"
+      },
+      {
+        "en": "What: what will go on the poster?",
+        "zhTW": "做什麼：海報要呈現什麼？"
+      },
+      {
+        "en": "How: how will we use the time and each person's contribution?",
+        "zhTW": "如何：怎麼用時間，讓每個人貢獻？"
+      }
+    ],
+    "why": {
+      "en": "Shared purpose, scope, and approach help the team begin together",
+      "zhTW": "共同目的、範圍與做法協助團隊一起開始"
+    },
+    "output": {
+      "en": "A first goal, an approach, and someone to capture the result",
+      "zhTW": "第一題的目標、做法與紀錄安排"
+    },
+    "tools": [
+      {
+        "en": "已選 Challenge Card＋AC Card、DoD Card",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "不是重新填 Introduction Card；貢獻聚焦本題。",
+      "Why / What / How 三項依序呈現；所有文案進頁時即可見，不逐點動畫。"
+    ],
+    "stepTitle": {
+      "en": "Goal and approach",
+      "zhTW": "目標與做法"
+    }
+  },
+  {
+    "id": "P17",
+    "stepId": 9,
+    "template": "T3",
+    "title": {
+      "en": "Work one challenge at a time",
+      "zhTW": "一次完成一個挑戰"
+    },
+    "durationSec": 1620,
+    "actions": [
+      {
+        "en": "Develop a useful solution and capture it on one poster",
+        "zhTW": "發展有用的解法，整理成一張海報"
+      },
+      {
+        "en": "Check the AC and DoD together",
+        "zhTW": "一起檢查 AC 與 DoD"
+      },
+      {
+        "en": "When done, check time, choose the next challenge, and repeat",
+        "zhTW": "完成後確認時間，再選下一題並重複"
+      }
+    ],
+    "why": {
+      "en": "Focus on completing useful work before starting more",
+      "zhTW": "先完成有用成果，再開始更多工作"
+    },
+    "output": {
+      "en": "Completed posters; clearly marked work in progress if unfinished",
+      "zhTW": "完成的成果海報；未完成者清楚標示進行中"
+    },
+    "tools": [
+      {
+        "en": "Challenge Card＋AC Card＋DoD Card、成果海報",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "無海報數量競賽、無要求所有題目都完成。",
+      "主區為「Work → Capture → Check → Next if time allows / 實作→記錄→檢查→時間允許再選下一題」循環；AC 與 DoD 提醒固定可見，右側超大倒數。"
+    ],
+    "stepTitle": {
+      "en": "Work one at a time",
+      "zhTW": "逐題實作"
+    }
+  },
+  {
+    "id": "P18",
+    "stepId": 10,
+    "template": "T2",
+    "title": {
+      "en": "Prepare your posters",
+      "zhTW": "整理成果與展示準備"
+    },
+    "durationSec": 300,
+    "actions": [
+      {
+        "en": "Check readability, team name, challenge, AC, solution, and status",
+        "zhTW": "檢查可讀性、組名、挑戰、AC、解法與狀態"
+      },
+      {
+        "en": "Display the posters and photograph completed work",
+        "zhTW": "展示海報，拍照保存完成成果"
+      },
+      {
+        "en": "Choose one host for the first gallery round",
+        "zhTW": "選一位第一輪留守解說者"
+      }
+    ],
+    "why": {
+      "en": "Visible results make review possible",
+      "zhTW": "成果可見，才能一起檢視"
+    },
+    "output": {
+      "en": "Displayed posters, saved photos, and a first-round host",
+      "zhTW": "展示好的海報、保存的照片與第一輪解說者"
+    },
+    "tools": [
+      {
+        "en": "成果海報、手機",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "上傳不是參與成果交流的必要條件；完成與進行中作品標示不同。",
+      "只有設定有效 uploadUrl 時才顯示「Upload photos if available. / 可連線時上傳照片。」及 QR Code；網址缺省時完全移除此區塊，版面自動回收空間。"
+    ],
+    "stepTitle": {
+      "en": "Prepare for review",
+      "zhTW": "準備成果交流"
+    }
+  },
+  {
+    "id": "P19",
+    "stepId": 11,
+    "template": "T2",
+    "title": {
+      "en": "Gallery walk: round 1",
+      "zhTW": "成果交流：第一輪"
+    },
+    "durationSec": 300,
+    "actions": [
+      {
+        "en": "One host stays; others visit other teams",
+        "zhTW": "一人留守解說，其餘組員參觀"
+      },
+      {
+        "en": "Read the challenge, AC, and solution; ask to understand",
+        "zhTW": "閱讀挑戰、AC 與解法，提問理解"
+      },
+      {
+        "en": "Leave a useful observation, question, or suggestion",
+        "zhTW": "留下有用的觀察、問題或建議"
+      }
+    ],
+    "why": {
+      "en": "Inspect results together to learn what is useful",
+      "zhTW": "一起檢視成果，理解其價值"
+    },
+    "output": {
+      "en": "Feedback notes on the posters",
+      "zhTW": "海報上的回饋便條"
+    },
+    "tools": [
+      {
+        "en": "成果海報、便條紙；簡單英文與翻譯互助",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "留守與參觀分工明確；不把參觀變成上台逐組報告。"
+    ],
+    "stepTitle": {
+      "en": "Gallery walk and feedback",
+      "zhTW": "成果交流與回應"
+    },
+    "substepIndex": 1,
+    "substepCount": 3
+  },
+  {
+    "id": "P20",
+    "stepId": 11,
+    "template": "T2",
+    "title": {
+      "en": "Switch hosts",
+      "zhTW": "換手參觀"
+    },
+    "durationSec": 420,
+    "actions": [
+      {
+        "en": "Switch hosts so the first host can visit",
+        "zhTW": "更換留守者，讓第一輪解說者也能參觀"
+      },
+      {
+        "en": "Continue visiting and leaving clear feedback",
+        "zhTW": "繼續參觀並留下清楚回饋"
+      },
+      {
+        "en": "Help each other communicate in simple English",
+        "zhTW": "以簡單英文互助交流"
+      }
+    ],
+    "why": {
+      "en": "Everyone gets a chance to learn across teams",
+      "zhTW": "每個人都有跨組學習的機會"
+    },
+    "output": {
+      "en": "A chance for everyone to visit and more feedback",
+      "zhTW": "全員皆有參觀機會，持續蒐集回饋"
+    },
+    "tools": [
+      {
+        "en": "成果海報、便條紙",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "第二輪預設七分鐘，倒數與內文一致。",
+      "主標「Switch hosts now / 現在換手」醒目；進頁不播放音效，換手由引導者提醒。"
+    ],
+    "stepTitle": {
+      "en": "Gallery walk and feedback",
+      "zhTW": "成果交流與回應"
+    },
+    "substepIndex": 2,
+    "substepCount": 3
+  },
+  {
+    "id": "P21",
+    "stepId": 11,
+    "template": "T2",
+    "title": {
+      "en": "Respond to feedback",
+      "zhTW": "回組回應回饋"
+    },
+    "durationSec": 180,
+    "actions": [
+      {
+        "en": "Return to your team and read the feedback",
+        "zhTW": "回到小組，閱讀回饋"
+      },
+      {
+        "en": "Discuss what others noticed",
+        "zhTW": "討論其他人看見了什麼"
+      },
+      {
+        "en": "Choose what to clarify, improve, or test next",
+        "zhTW": "決定接下來要釐清、改善或驗證什麼"
+      }
+    ],
+    "why": {
+      "en": "Review helps decide what to do next",
+      "zhTW": "檢視成果協助決定下一步"
+    },
+    "output": {
+      "en": "A next step informed by feedback",
+      "zhTW": "一個回應回饋的下一步"
+    },
+    "tools": [
+      {
+        "en": "成果海報、回饋便條",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "聚焦成果及其後續，不混入下一步的團隊合作回顧。"
+    ],
+    "stepTitle": {
+      "en": "Gallery walk and feedback",
+      "zhTW": "成果交流與回應"
+    },
+    "substepIndex": 3,
+    "substepCount": 3
+  },
+  {
+    "id": "P22",
+    "stepId": 12,
+    "template": "T2",
+    "title": {
+      "en": "Reflect quietly",
+      "zhTW": "個人安靜反思"
+    },
+    "durationSec": 60,
+    "actions": [
+      {
+        "en": "What helped us work well together?",
+        "zhTW": "什麼幫助我們合作得更好？"
+      },
+      {
+        "en": "What would we change next time?",
+        "zhTW": "下次我們會改變什麼？"
+      }
+    ],
+    "why": {
+      "en": "Individual reflection creates space before group discussion",
+      "zhTW": "先個人反思，再進入團隊對話"
+    },
+    "output": {
+      "en": "Your observations about the team's way of working",
+      "zhTW": "個人對團隊合作方式的觀察"
+    },
+    "tools": [
+      {
+        "en": "Quiet reflection",
+        "zhTW": "安靜反思"
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "反思焦點是合作過程。",
+      "兩個問題大字呈現，留白充分，不強制新增書寫物料。"
+    ],
+    "stepTitle": {
+      "en": "Reflect and improve",
+      "zhTW": "反思與改善"
+    },
+    "substepIndex": 1,
+    "substepCount": 3
+  },
+  {
+    "id": "P23",
+    "stepId": 12,
+    "template": "T2",
+    "title": {
+      "en": "Team retrospective",
+      "zhTW": "團隊回顧"
+    },
+    "durationSec": 180,
+    "actions": [
+      {
+        "en": "Share what helped and what you would change",
+        "zhTW": "分享有幫助的做法與想改變的地方"
+      },
+      {
+        "en": "Hear from everyone",
+        "zhTW": "聽見每一位組員"
+      },
+      {
+        "en": "Choose one change to try next time",
+        "zhTW": "選定下次要嘗試的一項改變"
+      }
+    ],
+    "why": {
+      "en": "Turn reflection into a small improvement experiment",
+      "zhTW": "把反思轉成一個小型改善嘗試"
+    },
+    "output": {
+      "en": "One agreed change for future collaboration",
+      "zhTW": "一項共同同意的合作改善"
+    },
+    "tools": [
+      {
+        "en": "Group notes",
+        "zhTW": "小組紀錄"
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "產出是一項可嘗試的改變，不要求完整改善專案計畫。"
+    ],
+    "stepTitle": {
+      "en": "Reflect and improve",
+      "zhTW": "反思與改善"
+    },
+    "substepIndex": 2,
+    "substepCount": 3
+  },
+  {
+    "id": "P24",
+    "stepId": 12,
+    "template": "T3",
+    "title": {
+      "en": "Feedback wall",
+      "zhTW": "回饋牆"
+    },
+    "durationSec": 180,
+    "actions": [
+      {
+        "en": "Note 1: a message for Percy—what helped or could improve?",
+        "zhTW": "第一張：給 Percy 的回饋，什麼有幫助、什麼可改善？"
+      },
+      {
+        "en": "Note 2: one practice you will take back, and where you will try it",
+        "zhTW": "第二張：要帶走的一項實務，以及打算在哪裡嘗試"
+      },
+      {
+        "en": "Post each note in the matching section",
+        "zhTW": "分別貼到對應區域"
+      }
+    ],
+    "why": {
+      "en": "Capture feedback and connect learning to real work",
+      "zhTW": "留下回饋，並將學習連結到工作"
+    },
+    "output": {
+      "en": "Two short notes per person",
+      "zhTW": "每人兩張短便條"
+    },
+    "tools": [
+      {
+        "en": "便條紙、回饋牆",
+        "zhTW": ""
+      }
+    ],
+    "supportingText": [
+      {
+        "en": "Use a language you are comfortable with; add short English if possible",
+        "zhTW": "可使用熟悉的語言，方便時補上簡短英文"
+      }
+    ],
+    "facilitatorNotes": [
+      "兩張便條的用途清楚區分。",
+      "兩個欄位 Feedback for Percy / 給 Percy 的回饋、My next experiment / 我的下一次嘗試。文字與實體牆標題須一致；如實體牆另有命名，於資料中覆蓋。"
+    ],
+    "stepTitle": {
+      "en": "Reflect and improve",
+      "zhTW": "反思與改善"
+    },
+    "substepIndex": 3,
+    "substepCount": 3
+  },
+  {
+    "id": "P25",
+    "stepId": 13,
+    "template": "T1",
+    "title": {
+      "en": "What will you try next?",
+      "zhTW": "下一次，您想嘗試什麼？"
+    },
+    "durationSec": 180,
+    "actions": [
+      {
+        "en": "Choose one practice and a real place to try it",
+        "zhTW": "選一項實務，連結到一個真實的應用情境"
+      }
+    ],
+    "why": {
+      "en": "Adapt each practice to the people and situation",
+      "zhTW": "依參與者與情境調整每一項實務"
+    },
+    "output": {
+      "en": "One intention for your next workshop or team session",
+      "zhTW": "一個下次工作坊或團隊活動中的行動意圖"
+    },
+    "tools": [
+      {
+        "en": "Your next session",
+        "zhTW": "您的下一場活動"
+      }
+    ],
+    "supportingText": [],
+    "facilitatorNotes": [
+      "email 正確可讀，不放未提供的社群、網站或報名連結。",
+      "白底配黑字與橘色強調；信箱至少 36 px，保持完整一行。三分鐘結束後留在此頁，倒數可由引導者隱藏，保留聯絡資訊。"
+    ],
+    "stepTitle": {
+      "en": "Take a practice with you",
+      "zhTW": "帶走一項實務"
+    }
+  }
+]

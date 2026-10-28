@@ -1,0 +1,2852 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Agile Sprint Lab: offline bilingual workshop projection and facilitation timer.">
+<meta name="color-scheme" content="light">
+<title>Agile Sprint Lab · Projection</title>
+<style>:root{--orange:#ff5a00;--ink:#151515;--paper:#fff;--surface:#f5f5f3;--muted:#525252;--line:#d9d9d6;font-family:Arial,Helvetica,'PingFang TC','Microsoft JhengHei',sans-serif;color:var(--ink);background:#101010;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #ff5a00;outline-offset:4px}button:disabled{opacity:.35;cursor:default}button{border:1px solid #bbb;background:#fff;border-radius:7px;padding:10px 16px;color:#151515}button.primary{background:var(--orange);border-color:var(--orange);font-weight:700}button.danger{background:#b42318;color:#fff;border-color:#b42318}button.dark{background:#151515;color:#fff;border-color:#151515}kbd{font:12px Arial;background:#e7e7e4;border:1px solid #ccc;padding:3px 6px;border-radius:4px;color:#333}
+#viewport{height:100dvh;width:100vw;display:grid;place-items:center;overflow:hidden}.canvas{width:1920px;height:1080px;position:absolute;background:var(--paper);padding:48px 80px;transform:scale(var(--scale,1));transform-origin:center;overflow:hidden;display:grid;grid-template-rows:54px 118px minmax(0,1fr) 152px 40px;gap:16px}.canvas::before{content:'';position:absolute;top:0;left:0;height:12px;width:100%;background:var(--orange)}
+.topbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:14px}.wordmark{font-size:23px;letter-spacing:2px;font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:14px}.brand-square{height:32px;width:32px;background:var(--orange);display:inline-block}.top-logo{width:65px;height:44px;object-fit:contain;background:#fff}.top-meta{font-size:22px;color:var(--muted);display:flex;gap:32px;align-items:center}.step-code{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}.title-block{display:flex;align-items:center;gap:32px}.title-block h1{font-size:60px;letter-spacing:-1.8px;line-height:1.08;margin:0;font-weight:750}.title-block .zh{font-size:32px;line-height:1.3;font-weight:400;color:var(--muted);margin-top:10px;letter-spacing:0}.step-number{font-size:76px;color:var(--orange);font-weight:700;letter-spacing:-4px;align-self:center;min-width:116px;border-right:1px solid var(--line);margin-right:2px;line-height:1.05}.main-grid{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:56px;min-height:0}.content-area{min-height:0;display:flex;flex-direction:column;gap:18px}.eyebrow{font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin:0 0 2px}.actions{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:22px}.actions li{display:grid;grid-template-columns:42px minmax(0,1fr);gap:14px}.action-no{font-size:22px;font-weight:700;color:var(--orange);padding-top:5px}.actions .en{font-size:36px;line-height:1.17;letter-spacing:-.35px}.actions .zh{font-size:26px;line-height:1.35;color:var(--muted);margin-top:6px}.actions strong{font-weight:750}.support-band{margin-top:auto;min-height:68px;display:flex;align-items:center;border-left:5px solid var(--orange);padding:8px 20px;background:var(--surface)}.support-band .en{font-size:28px;line-height:1.17}.support-band .zh{font-size:24px;line-height:1.25;margin-top:5px;color:var(--muted)}.support-band:empty{background:transparent;border:0}.timer-card{background:var(--surface);padding:30px 30px 24px;display:flex;flex-direction:column;min-height:0;gap:14px}.timer-label{font-size:22px;font-weight:700;line-height:1.3}.timer-label .zh{font-size:20px;color:var(--muted);margin-top:4px}.timer-number{font-size:128px;font-weight:700;letter-spacing:-7px;line-height:1.1;font-variant-numeric:tabular-nums}.timer-state{font-size:22px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}.state-dot{display:inline-block;width:9px;height:9px;background:var(--muted);margin:7px 2px 0 0}.running .state-dot{background:var(--orange)}.timer-progress{height:5px;background:#d9d9d6;margin:4px 0 6px}.timer-progress-fill{height:100%;background:var(--ink);width:100%}.near-time .timer-progress-fill{background:var(--orange)}.tool-area{border-top:1px solid var(--line);padding-top:20px;margin-top:auto}.tool-area .eyebrow{font-size:18px;margin-bottom:10px}.tool-area .en{font-size:28px;line-height:1.23;overflow-wrap:anywhere}.tool-area .zh{font-size:24px;line-height:1.3;color:var(--muted);margin-top:5px}.step-left{font-size:21px;padding-top:12px;font-variant-numeric:tabular-nums}.preview-label{font-size:21px;font-weight:700;color:#b42318;min-height:0}.footer-info{display:grid;grid-template-rows:1fr 1fr;border-top:1px solid var(--line);padding-top:12px;gap:6px}.info-row{display:grid;grid-template-columns:125px 1fr;gap:12px;align-items:start}.info-label{font-size:19px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;padding-top:4px}.info-label .zh{font-size:18px;margin-top:2px;color:var(--muted);font-weight:400;text-transform:none}.info-text .en{font-size:28px;line-height:1.16}.info-text .zh{font-size:24px;line-height:1.25;color:var(--muted);margin-top:3px}.bottom-bar{display:flex;align-items:center;justify-content:space-between;font-size:18px;color:var(--muted);gap:20px}.step-track{display:flex;gap:6px}.step-track span{height:5px;width:54px;background:var(--line)}.step-track span.current{background:var(--orange)}.substeps{display:flex;gap:18px;max-width:1350px;align-items:center}.substeps span{font-size:17px;color:#777}.substeps span.current{color:var(--ink);font-weight:700;border-bottom:2px solid var(--orange);padding-bottom:3px}.substeps .zh{font-size:16px;margin-left:6px}.page-code{font-variant-numeric:tabular-nums;white-space:nowrap}
+.diagram{display:flex;gap:12px;min-height:0}.mini-card{border:1px solid var(--line);background:var(--surface);padding:14px 18px;flex:1}.mini-card .en{font-size:28px;line-height:1.2}.mini-card .zh{font-size:24px;color:var(--muted);line-height:1.25;margin-top:4px}.mini-card.ac{border-top:5px solid var(--orange)}.mini-card .card-label{font-size:18px;font-weight:700;letter-spacing:1px;margin-bottom:10px}.card-fields{font-size:25px;line-height:1.3;display:flex;gap:6px;flex-wrap:wrap}.card-fields span{border-bottom:1px solid var(--line);padding:3px 8px 3px 0;white-space:nowrap}.vote-tag{font-size:28px;font-weight:700;display:flex;align-items:center;gap:12px}.vote-icon{display:inline-grid;place-items:center;width:38px;height:38px;font-size:22px;color:#fff;background:#b42318;border-radius:50%}.vote-icon.green{background:#237a3b;border-radius:5px}.cycle{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px}.cycle .mini-card{position:relative;background:#151515;color:#fff;border:0;padding:20px 16px}.cycle .mini-card:not(:last-child)::after{content:'→';position:absolute;right:-17px;top:35px;color:#ff5a00;z-index:1;font-size:30px}.cycle .zh{color:#ccc}.cycle-index{color:var(--orange);font-size:18px;margin-bottom:12px}.matrix-layout{display:grid;grid-template-columns:510px 1fr;gap:32px;min-height:0}.matrix-layout .actions{gap:22px}.matrix-layout .actions .en{font-size:36px}.matrix-layout .actions .zh{font-size:26px}.matrix-svg{width:100%;height:365px;overflow:visible}.matrix-svg text{font-family:Arial,'PingFang TC',sans-serif;fill:#151515;font-size:25px}.matrix-svg .axis-en{font-size:28px;font-weight:700}.matrix-svg .axis-zh{font-size:24px;fill:#525252}.matrix-svg .tick{font-size:24px}.matrix-svg .guide{stroke:#d9d9d6;stroke-width:1}.matrix-svg .axis{stroke:#151515;stroke-width:3}.matrix-note{font-size:24px;line-height:1.3;color:var(--muted);margin:3px 0}.two-notes .mini-card{background:#f5f5f3;border-top:5px solid var(--orange)}.poster-check{display:flex;gap:12px}.poster-check>div{flex:1}.upload-box{display:flex;gap:18px;align-items:center;background:var(--surface);padding:12px}.upload-box svg{width:130px;height:130px;flex-shrink:0}.upload-box .en{font-size:28px}.upload-box .zh{font-size:24px;color:var(--muted)}.upload-box a{color:var(--ink);font-size:18px;overflow-wrap:anywhere}.profile-name{font-size:78px;font-weight:700;letter-spacing:-2px;margin:4px 0 8px}.profile-role{font-size:36px;margin-bottom:16px}.profile-role .zh{font-size:28px;color:var(--muted);margin-top:6px}.profile-intro .en{font-size:36px;line-height:1.25;max-width:1000px}.profile-intro .zh{font-size:28px;color:var(--muted);margin-top:12px}.email{font-size:36px;color:var(--ink);white-space:nowrap;text-decoration:none}.profile-contact{margin-top:auto;display:flex;align-items:center;gap:22px}.profile-contact::before{content:'';display:block;width:54px;height:5px;background:var(--orange)}.brand-art{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:var(--surface);min-height:0}.brand-art img{max-width:80%;max-height:75%;object-fit:contain;background:white;padding:10%}.brand-type{font-size:60px;line-height:.98;font-weight:800;letter-spacing:-3px}.brand-type span{display:block;color:var(--orange)}.cover{grid-template-rows:54px minmax(0,1fr) 80px;gap:32px}.cover-main{display:grid;grid-template-columns:1fr 460px;gap:80px;align-items:center}.cover-index{font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:var(--muted);margin-bottom:30px}.cover h1{font-size:138px;line-height:.92;letter-spacing:-8px;margin:0 0 34px}.cover h1 span{display:block;color:var(--orange)}.cover-subtitle .en{font-size:38px;line-height:1.2;max-width:1050px}.cover-subtitle .zh{font-size:28px;line-height:1.35;color:var(--muted);margin-top:12px}.cover-host{font-size:28px;margin-top:32px}.cover-host span{font-size:24px;color:var(--muted);margin-left:14px}.cover-mark{height:510px;border:1px solid var(--line);border-top:14px solid var(--orange);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:24px;background:var(--surface)}.cover-mark img{width:80%;max-height:360px;object-fit:contain;padding:10%;background:#fff}.cover-mark .large-number{font-size:148px;letter-spacing:-10px;font-weight:700;line-height:1}.cover-mark .minutes-label{font-size:23px;letter-spacing:3px;text-transform:uppercase}.cover-bottom{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:20px;font-size:24px;color:var(--muted)}.cover .email{font-size:28px}.cover-start{margin-top:28px;display:flex;align-items:center;gap:20px}.cover-start button{font-size:24px;padding:18px 26px;border-radius:0}.cover-start small{font-size:20px;color:var(--muted)}.closing .content-area{justify-content:space-between}.closing .closing-thanks{border-left:5px solid var(--orange);padding:10px 20px}.closing-thanks .en{font-size:36px;line-height:1.22}.closing-thanks .zh{font-size:28px;color:var(--muted);margin-top:8px}.timer-hidden .timer-number,.timer-hidden .timer-progress,.timer-hidden .timer-state,.timer-hidden .timer-label,.timer-hidden .step-left{visibility:hidden}.timer-hidden .timer-card{background:transparent}.lang-en .zh{display:none!important}.lang-zh .en{display:none!important}.lang-zh .zh{color:var(--ink)}.lang-zh .actions .zh{font-size:38px;line-height:1.3;margin:0}.lang-zh .title-block .zh{font-size:60px;letter-spacing:-1px;margin:0}.lang-zh .support-band .zh,.lang-zh .info-text .zh{font-size:32px}.lang-zh .tool-area .zh{font-size:28px}.lang-zh .title-block h1{font-size:60px}.lang-zh .cover-subtitle .zh{font-size:42px}.lang-en .actions .en{font-size:40px;line-height:1.3}.lang-en .actions{gap:34px}.lang-en .support-band .en{font-size:32px}.lang-zh .brand-type span,.lang-zh .cover h1 span{display:block}
+.console-entry{position:fixed;right:16px;bottom:16px;z-index:5;opacity:0;transition:opacity .18s;background:#151515;color:#fff;border-color:#666}.console-entry.visible,.console-entry:focus-visible,.console-entry:hover{opacity:1}.console-entry kbd{margin-left:8px}dialog{border:0;border-radius:12px;box-shadow:0 24px 100px #0007;color:#151515}dialog::backdrop{background:#0006}#console{width:min(1100px,96vw);max-height:92dvh;padding:28px;background:#f7f7f5;overflow:auto}#console h2{margin:0;font-size:25px}.console-head{display:flex;justify-content:space-between;align-items:center;gap:20px}.console-warning{padding:10px 12px;background:#fff0e5;font-size:14px;margin:12px 0}.console-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.console-section{border:1px solid #ddd;padding:18px;background:#fff;border-radius:7px}.console-section h3{font-size:16px;margin:0 0 12px}.console-section label{display:block;font-size:13px;margin:10px 0 5px}.console-section input,.console-section select{padding:9px;width:100%;border:1px solid #bbb;border-radius:4px;background:#fff;color:#151515;min-width:0}.console-section input[type=checkbox]{width:auto;margin-right:8px}.console-section input[type=file]{font-size:12px}.button-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.button-row button{flex:1;white-space:nowrap}.time-edit{display:flex;gap:8px;align-items:center}.time-edit input{width:110px}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.metric{padding:10px;background:#f5f5f3;font-size:12px}.metric b{display:block;font-size:23px;margin-top:6px;font-variant-numeric:tabular-nums}.metric small{display:block;margin-top:5px;color:#525252}.page-index{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}.page-index button{font-size:12px;text-align:left;padding:8px;white-space:normal;min-height:55px}.page-index button.current{border:2px solid #ff5a00;background:#fff0e5}.page-index small{display:block;color:#555;margin-top:5px}.deferred-list{display:flex;flex-direction:column;gap:8px}.deferred-item{border-top:1px solid #ddd;padding-top:10px;font-size:13px}.deferred-item .button-row{margin:5px 0}.deferred-item button{font-size:12px;padding:6px}.deferred-item select{padding:5px;font-size:12px}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.settings-grid .wide{grid-column:1/-1}.console-section details{font-size:13px;margin-top:12px}.console-section summary{cursor:pointer;font-weight:700;padding:8px 0}.console-section details p{line-height:1.6}.console-section .hint{color:#525252;font-size:12px;line-height:1.5}.storage-warning{background:#fff0e5;color:#8a2d00;font-size:13px;padding:10px;margin:10px 0}.console-error{color:#b42318;font-size:13px;min-height:18px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}#confirm-clear{max-width:500px;padding:28px;font-size:16px}#confirm-clear p{line-height:1.6}@media(max-width:700px){.console-grid{grid-template-columns:1fr}.page-index{grid-template-columns:repeat(2,1fr)}#console{padding:18px}}@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}@media print{.console-entry,dialog{display:none!important}}
+
+/* Preserve diagram geometry and avoid browser paragraph-repair spacing. */
+.diagram,.cycle{flex-shrink:0}.support-band:empty{min-height:0;padding:0;height:0}.tool-area .eyebrow .en,.tool-area .eyebrow .zh{font-size:18px;line-height:1.2}.timer-state .zh{font-size:20px}.timer-card{gap:12px;padding:26px}.canvas{grid-template-rows:54px 118px minmax(0,1fr) 152px 48px}.substeps .pair{display:flex;align-items:baseline;gap:5px}.substeps .zh{margin:0}.eyebrow .zh{font-size:18px;letter-spacing:0;margin-top:3px}.content-area{gap:16px}.actions{gap:18px}
+.canvas.cover{grid-template-rows:54px minmax(0,1fr) 80px;gap:32px}
+.content-area>.eyebrow .pair,.timer-label .pair,.timer-state .pair,.tool-area .eyebrow .pair{display:flex;align-items:baseline;gap:10px}
+.content-area>.eyebrow .zh,.timer-label .zh,.timer-state .zh,.tool-area .eyebrow .zh{margin-top:0}
+.content-area>.support-band:empty{display:none}
+.timer-card{gap:8px}.timer-progress{flex-shrink:0}.preview-label:empty{display:none}.step-left{display:flex;align-items:center;justify-content:space-between;padding-top:10px}.step-left .en{font-size:18px}.step-left .zh{font-size:18px;margin-top:2px}.step-left strong{font-size:26px}.card-fields{font-size:28px}
+.dense{gap:10px}.dense .actions{gap:14px}.dense>.eyebrow{margin-bottom:0}.page-P17 .cycle{min-height:280px}.page-P17 .cycle .mini-card{padding:20px 16px}.page-P17 .cycle .en{font-size:36px;line-height:1.17}.page-P17 .cycle .zh{font-size:26px;line-height:1.3}.page-P17 .support-band{height:112px;min-height:112px;flex-shrink:0}.page-P17 .content-area{gap:20px}.preview-label:not(:empty){font-size:18px}.preview-label .pair{display:flex;gap:8px;flex-wrap:wrap}
+.step-code>.en,.step-code>.zh,.page-code>.en,.page-code>.zh{display:inline}.step-code>.zh,.page-code>.zh{margin-left:8px}.lang-both .step-code>.zh,.lang-both .page-code>.zh{display:none}.cover-index .pair{display:flex;gap:14px}.cover-host{display:flex;align-items:baseline;gap:14px}.cover-host>span{margin:0}.cover-host .pair{display:flex;gap:10px}.cover-start button{display:flex;align-items:center;gap:18px}.cover-start button .zh{font-size:20px;margin-top:4px}.cover-start button .en{font-weight:700}.cover-start small .zh{font-size:18px;margin-top:4px}.intro-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}.intro-fields .pair{display:flex;gap:8px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:6px}.intro-fields .en{font-size:28px}.intro-fields .zh{font-size:24px}.lang-zh .tool-area>.pair .en{display:block!important;font-size:24px}
+</style>
+</head>
+<body>
+<main id="viewport" aria-label="Workshop projection"><article id="slide" class="canvas"></article></main>
+<button id="console-entry" class="console-entry" aria-label="開啟引導者控制台 (P)" aria-controls="console" aria-expanded="false">Controls <kbd>P</kbd></button>
+<dialog id="console" aria-labelledby="console-title"></dialog>
+<dialog id="confirm-clear" aria-labelledby="clear-title"><h2 id="clear-title">清除本場進度？</h2><p>頁面、倒數與全場開始時間將重設。場次設定與 Logo 保留。</p><div class="button-row"><button id="cancel-clear">取消</button><button id="do-clear" class="danger">確認清除進度</button></div></dialog>
+<div id="announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+<script id="config-data" type="application/json">{}</script>
+<script id="slide-data" type="application/json">[{"id":"P00","stepId":null,"template":"T0","title":{"en":"會前待機","zhTW":""},"durationSec":0,"actions":[],"why":null,"output":null,"tools":[],"supportingText":[],"facilitatorNotes":["入場者能辨識場次、主持人與活動名稱。","白底、大 Logo、黑色標題、橘色短線；不放裝飾性背景圖。"]},{"id":"P01","stepId":1,"template":"T1","title":{"en":"Agile Sprint Lab","zhTW":"敏捷實作工作坊"},"durationSec":120,"actions":[{"en":"Bring one real challenge from your work in the age of AI","zhTW":"帶入一個您在 AI 時代工作中真實遇到的挑戰"}],"why":{"en":"Experience selected Agile practices, then reflect on how to use them","zhTW":"先體驗敏捷實務，再思考如何應用"},"output":{"en":"A practical response you can use or try","zhTW":"一份可以使用或嘗試的實務回應"},"tools":[{"en":"Your experience","zhTW":"您的工作經驗"}],"supportingText":[],"facilitatorNotes":["主題與預期成果可直接讀出，不將目的表述為一定完成 AI 系統或產品。","左側標題、主題與產出；右側 Logo，下方保留倒數。"],"stepTitle":{"en":"Welcome and purpose","zhTW":"歡迎與目的"}},{"id":"P02","stepId":1,"template":"T1","title":{"en":"Meet Percy","zhTW":"認識 Percy"},"durationSec":120,"actions":[],"why":{"en":"Connect the workshop to the facilitator's practice","zhTW":"理解這場工作坊背後的實務背景"},"output":{"en":"Know who is guiding today's experience","zhTW":"認識今天的引導者"},"tools":[{"en":"Listening","zhTW":"聆聽"}],"supportingText":[],"facilitatorNotes":["姓名、已核實角色、工作坊連結與信箱清楚可讀；未確認資格不投影。","文字占約 65%，Logo 占約 35%；尚無原圖時依 3.2 使用文字標題。不新增未提供的人像，不為填滿版面增加簡介文字。"],"stepTitle":{"en":"Welcome and purpose","zhTW":"歡迎與目的"}},{"id":"P03","stepId":1,"template":"T1","title":{"en":"How we will work","zhTW":"今天如何一起工作"},"durationSec":180,"actions":[{"en":"Work in teams of 4–5","zhTW":"每組 4–5 人合作"},{"en":"Use languages everyone in your team can follow","zhTW":"使用每位組員都能參與的語言"},{"en":"Share across teams in simple English; help each other translate","zhTW":"跨組以簡單英文交流，彼此協助翻譯"}],"why":{"en":"Make participation possible for everyone","zhTW":"讓每個人都能理解並參與"},"output":{"en":"Shared expectations for participation","zhTW":"對參與方式有共同理解"},"tools":[{"en":"Language agreement","zhTW":"語言約定"}],"supportingText":[],"facilitatorNotes":["團隊內語言彈性與跨組英文分享原則都可見。","行動為主；下方可列五個中性動作節點：Form teams → Clarify → Choose → Create → Learn，中文為「組隊→釐清→選題→實作→學習」。這些僅為動作摘要，不作 Opening–Closing 階段標籤、不出現在後續進度導航。"],"stepTitle":{"en":"Welcome and purpose","zhTW":"歡迎與目的"}},{"id":"P04","stepId":2,"template":"T2","title":{"en":"Fill your Introduction Card","zhTW":"填寫自我介紹卡"},"durationSec":180,"actions":[{"en":"Write your preferred name and 1–2 strengths","zhTW":"寫下希望大家怎麼稱呼您，以及 1–2 項長處"},{"en":"List languages you can work in and your preferred discussion language","zhTW":"寫下可使用的語言與偏好的討論語言"},{"en":"Write clearly. You have 2 minutes to write","zhTW":"清楚書寫；填卡時間 2 分鐘"}],"why":{"en":"Make your strengths and language needs visible","zhTW":"讓彼此看見能力與語言需要"},"output":{"en":"One completed Introduction Card per person","zhTW":"每人一張填妥的自我介紹卡"},"tools":[{"en":"個人 Introduction Card","zhTW":""}],"supportingText":[{"en":"Listening · Asking questions · Organizing ideas","zhTW":"傾聽・提問・整理想法"}],"facilitatorNotes":["卡片四項欄位齊全。","卡片四欄示意「Name / Strengths / Working languages / Preferred language」；此為資訊示意，不仿製未提供的實體卡版面。"],"stepTitle":{"en":"Meet and form teams","zhTW":"交流與組隊"},"substepIndex":1,"substepCount":3},{"id":"P05","stepId":2,"template":"T2","title":{"en":"Skills marketplace","zhTW":"技能交流市集"},"durationSec":300,"actions":[{"en":"Move around and meet at least 3 people","zhTW":"移動交流，至少認識三位夥伴"},{"en":"Share your strengths and language preferences","zhTW":"分享您的長處與語言偏好"},{"en":"Look for complementary strengths","zhTW":"尋找能相互補足的長處"}],"why":{"en":"Explore who you could work well with","zhTW":"探索可以如何與不同夥伴合作"},"output":{"en":"At least 3 new connections and possible teammates","zhTW":"至少三次交流，找到可能合作的夥伴"},"tools":[{"en":"Introduction Card","zhTW":""}],"supportingText":[],"facilitatorNotes":["交流對象數與交流內容皆可讀出。","大字「Meet at least 3 people / 至少認識三人」，其餘保持簡潔。"],"stepTitle":{"en":"Meet and form teams","zhTW":"交流與組隊"},"substepIndex":2,"substepCount":3},{"id":"P06","stepId":2,"template":"T2","title":{"en":"Choose your team","zhTW":"自主組隊"},"durationSec":240,"actions":[{"en":"Form a team of 4–5 and find a workspace","zhTW":"組成 4–5 人團隊，找到工作位置"},{"en":"Check that everyone can join the discussion","zhTW":"確認每個人都能參與討論"},{"en":"Agree how to share key points in English","zhTW":"約定如何用英文分享重點"}],"why":{"en":"Self-selection gives the team choice and shared responsibility","zhTW":"自主組隊帶來選擇權，也帶來共同責任"},"output":{"en":"A team with a workable language arrangement","zhTW":"一個具備可行語言安排的團隊"},"tools":[{"en":"Introduction Card","zhTW":""}],"supportingText":[],"facilitatorNotes":["顯示組隊條件；提醒「Need a team? Ask Percy. / 需要組隊協助，請找 Percy。」"],"stepTitle":{"en":"Meet and form teams","zhTW":"交流與組隊"},"substepIndex":3,"substepCount":3},{"id":"P07","stepId":3,"template":"T2","title":{"en":"Roles and agreements","zhTW":"角色與合作約定"},"durationSec":300,"actions":[{"en":"Choose a facilitator; agree who captures and shares the work","zhTW":"選出引導者，約定紀錄與分享責任"},{"en":"Agree on 2–3 ways to work well together, including language","zhTW":"訂定 2–3 項合作約定，包含語言安排"},{"en":"Write them where everyone can see them","zhTW":"寫在全組都看得到的位置"}],"why":{"en":"Make responsibilities and collaboration expectations explicit","zhTW":"說清楚責任與合作期待"},"output":{"en":"Agreed roles and 2–3 visible working agreements","zhTW":"明確角色與 2–3 項可見的合作約定"},"tools":[{"en":"Group notes","zhTW":"小組紀錄；有實體角色 token 時才顯示其提示"}],"supportingText":[{"en":"Facilitator: time, every voice, completion checks","zhTW":"引導者：顧時間、聽見每個人、協助完成檢查"}],"facilitatorNotes":["不把引導者描述為單獨決策者或唯一發言者。"],"stepTitle":{"en":"Roles and agreements","zhTW":"角色與約定"}},{"id":"P08","stepId":4,"template":"T3","title":{"en":"Challenge and acceptance criteria","zhTW":"挑戰與驗收條件"},"durationSec":120,"actions":[{"en":"Describe one real situation, challenge, and impact","zhTW":"描述一個真實情境、挑戰與影響"},{"en":"State 1–2 conditions that would make a response useful","zhTW":"寫出讓回應對您有用的 1–2 項條件"},{"en":"Keep the two cards together","zhTW":"將兩張卡片配對放置"}],"why":{"en":"Acceptance criteria describe what useful means for this challenge","zhTW":"驗收條件說明這一題怎樣才算有用"},"output":{"en":"Understand what to put on each card","zhTW":"理解兩張卡片各自要寫的內容"},"tools":[{"en":"Challenge Card＋Acceptance Criteria Card","zhTW":""}],"supportingText":[{"en":"A short checklist to review an AI-generated workshop agenda","zhTW":"一份檢查 AI 生成工作坊議程的短清單。Criteria: include questions that reveal missing information. / 條件：包含可找出遺漏資訊的檢查問題"}],"facilitatorNotes":["此頁是說明頁；倒數與工具仍保留。範例不得被誤認為每組必選題目。","兩張資訊示意並排；挑戰卡顯示 When I am… / The challenge I face is… / This affects my work by…；AC 卡顯示 A useful response would… / 有用的回應應能……。"],"stepTitle":{"en":"Challenge and readiness","zhTW":"挑戰與就緒"},"substepIndex":1,"substepCount":3},{"id":"P09","stepId":4,"template":"T2","title":{"en":"Write quietly","zhTW":"個人安靜書寫"},"durationSec":180,"actions":[{"en":"Complete your situation, challenge, and impact","zhTW":"完成情境、挑戰與影響"},{"en":"Write 1–2 acceptance criteria on your AC Card","zhTW":"在 AC 卡寫下 1–2 項驗收條件"},{"en":"Write your name or matching ID on both cards","zhTW":"兩張卡寫上相同姓名或配對編號"}],"why":{"en":"Quiet writing gives every person space before group discussion","zhTW":"先安靜書寫，讓每個人都有表達空間"},"output":{"en":"One paired challenge and AC set per person","zhTW":"每人一組配對的挑戰卡與驗收條件卡"},"tools":[{"en":"Challenge Card＋Acceptance Criteria Card","zhTW":""}],"supportingText":[],"facilitatorNotes":["同一組卡片有可辨識的配對方式。","大字 Quiet writing / 安靜書寫，不做打字動畫。"],"stepTitle":{"en":"Challenge and readiness","zhTW":"挑戰與就緒"},"substepIndex":2,"substepCount":3},{"id":"P10","stepId":4,"template":"T3","title":{"en":"Check readiness","zhTW":"用 DoR 檢查"},"durationSec":240,"actions":[{"en":"Re-read your cards using the team's DoR Card","zhTW":"依小組 DoR Card 重讀自己的卡片"},{"en":"Clarify any missing context or unclear words","zhTW":"補充缺少的背景與不清楚的文字"},{"en":"Narrow the challenge if needed","zhTW":"必要時縮小挑戰範圍"}],"why":{"en":"Shared readiness checks help us start with enough understanding","zhTW":"共同的就緒檢查協助團隊帶著足夠理解開始"},"output":{"en":"Cards clear enough to share and select","zhTW":"清楚到足以分享與選擇的卡片"},"tools":[{"en":"個人 Challenge Card＋AC Card；小組 DoR Card","zhTW":""}],"supportingText":[],"facilitatorNotes":["用詞為「今天可推進」，不保證今天徹底解決。","三項檢查：Situation, challenge, impact are clear / 情境、挑戰、影響清楚；AC are understandable / 驗收條件可理解；Useful progress is possible today / 今天能有實質進展。"],"stepTitle":{"en":"Challenge and readiness","zhTW":"挑戰與就緒"},"substepIndex":3,"substepCount":3},{"id":"P11","stepId":5,"template":"T2","title":{"en":"Share and clarify","zhTW":"分享與釐清"},"durationSec":840,"actions":[{"en":"Take turns: up to 2 minutes each to share your challenge and AC","zhTW":"輪流分享挑戰與 AC，每人最多 2 分鐘"},{"en":"Listen, then ask questions to understand","zhTW":"先聽，再提問理解"},{"en":"Improve the wording before choosing a challenge","zhTW":"先讓內容更清楚，再進入選題"}],"why":{"en":"Refinement adds useful detail for shared understanding and decisions","zhTW":"釐清與細化提供理解和決策所需的細節"},"output":{"en":"Everyone has shared; every challenge is understood well enough to choose","zhTW":"每人都分享過，每題都清楚到足以選擇"},"tools":[{"en":"Challenge Card＋AC Card＋DoR Card","zhTW":""}],"supportingText":[],"facilitatorNotes":["不要求每題在此階段已產生解法。","提醒「Clarify first / 先釐清」；倒數為整組活動 14 分鐘。可選的 2 分鐘發言計時只在引導者控制台，不取代主倒數，也不自動切換發言者。"],"stepTitle":{"en":"Share and clarify","zhTW":"分享與釐清"}},{"id":"P12","stepId":6,"template":"T3","title":{"en":"What counts as done?","zhTW":"什麼才算完成？"},"durationSec":180,"actions":[{"en":"Review the team's DoD Card","zhTW":"一起確認小組 DoD Card"},{"en":"Include the challenge, AC, and solution on one readable poster","zhTW":"每張海報清楚呈現挑戰、AC 與解法"},{"en":"Show how the solution meets the AC","zhTW":"說明解法如何符合驗收條件"}],"why":{"en":"A shared Definition of Done makes completion visible","zhTW":"共同完成標準讓成果狀態可被理解"},"output":{"en":"A shared standard for every completed poster","zhTW":"對每張完成海報有共同標準"},"tools":[{"en":"DoD Card","zhTW":""}],"supportingText":[{"en":"One challenge at a time. Start the next after this one is done","zhTW":"一次處理一題，完成後再開始下一題"}],"facilitatorNotes":["清楚區分個別題目的 AC 與每份成果共同遵守的 DoD。","成果示意三欄 Challenge / AC / Solution；旁註 Usable or testable / 可以使用或嘗試。這是成果資訊結構，不強制重畫實體海報。"],"stepTitle":{"en":"Definition of Done","zhTW":"共同完成標準"}},{"id":"P13","stepId":7,"template":"T3","title":{"en":"Vote quietly","zhTW":"安靜投票"},"durationSec":120,"actions":[{"en":"Red: one dot on each challenge you have experienced, including your own","zhTW":"紅點：每個自己經歷過的挑戰各貼一點，可包含自己的題目"},{"en":"Green: one dot per person for your first choice today","zhTW":"綠點：每人只有一點，投給今天最想處理的題目"},{"en":"Vote quietly before discussing","zhTW":"先安靜投票，再討論"}],"why":{"en":"See shared experience and interest separately","zhTW":"分別看見共同經驗與處理意願"},"output":{"en":"Red and green votes on the challenges","zhTW":"每題的紅、綠票數"},"tools":[{"en":"Challenge Card＋AC Card、紅點與綠點貼紙","zhTW":""}],"supportingText":[],"facilitatorNotes":["不可誤寫成每人總共只有一個紅點；不可把紅點寫成問題嚴重程度。","紅 R＝Experienced / 經歷過；綠 G＝First choice / 優先選擇。兩種投票規則等大並列。"],"stepTitle":{"en":"Map and prioritize","zhTW":"投票與排序"},"substepIndex":1,"substepCount":3},{"id":"P14","stepId":7,"template":"T3","title":{"en":"Map your challenges","zhTW":"放入挑戰矩陣"},"durationSec":180,"actions":[{"en":"Count red and green dots on each challenge","zhTW":"計算每題紅點與綠點數"},{"en":"Place each challenge at its matching counts","zhTW":"依票數將挑戰放在對應位置"},{"en":"Place ties side by side; keep each AC Card paired","zhTW":"同票並排，AC 卡保持配對"}],"why":{"en":"Make the voting pattern visible before deciding","zhTW":"決策前先看見票數分布"},"output":{"en":"A matrix of shared experience and first choices","zhTW":"一張共同經驗與優先意願的挑戰矩陣"},"tools":[{"en":"Challenge Card＋AC Card、矩陣海報","zhTW":""}],"supportingText":[],"facilitatorNotes":["不自行加入四象限價值判斷、不用紅綠票相加為總分。","X 軸 Red dots: shared experience / 紅點：共同經驗，向右增加；Y 軸 Green dots: first choices / 綠點：優先意願，向上增加。兩軸 0 至組員人數 N；N 由設定取得，實際每組不同時顯示 0、1、2…N 的通用示意並註記 N＝組員數，不假設所有組同人數。"],"stepTitle":{"en":"Map and prioritize","zhTW":"投票與排序"},"substepIndex":2,"substepCount":3},{"id":"P15","stepId":7,"template":"T2","title":{"en":"Choose where to start","zhTW":"決定從哪一題開始"},"durationSec":180,"actions":[{"en":"Discuss the pattern, scope, and acceptance criteria","zhTW":"一起看分布、範圍與驗收條件"},{"en":"Agree on the first challenge and a possible order for the rest","zhTW":"決定第一題與其他題目的暫定順序"},{"en":"If tied, choose where useful progress is possible in today's time","zhTW":"難以取捨時，選擇今天能有實質進展的題目"}],"why":{"en":"Votes inform the team's decision","zhTW":"票數提供決策依據，團隊共同做選擇"},"output":{"en":"One first challenge and a visible remaining queue","zhTW":"一個優先挑戰與可見的待處理題目"},"tools":[{"en":"挑戰矩陣、Challenge Card＋AC Card","zhTW":""}],"supportingText":[],"facilitatorNotes":["不自動宣告最高票必須獲選；後續順序可依學習調整。"],"stepTitle":{"en":"Map and prioritize","zhTW":"投票與排序"},"substepIndex":3,"substepCount":3},{"id":"P16","stepId":8,"template":"T2","title":{"en":"Plan the first challenge","zhTW":"第一題的目標與做法"},"durationSec":300,"actions":[{"en":"Why: what useful result do we want?","zhTW":"為何：希望得到什麼有用結果？"},{"en":"What: what will go on the poster?","zhTW":"做什麼：海報要呈現什麼？"},{"en":"How: how will we use the time and each person's contribution?","zhTW":"如何：怎麼用時間，讓每個人貢獻？"}],"why":{"en":"Shared purpose, scope, and approach help the team begin together","zhTW":"共同目的、範圍與做法協助團隊一起開始"},"output":{"en":"A first goal, an approach, and someone to capture the result","zhTW":"第一題的目標、做法與紀錄安排"},"tools":[{"en":"已選 Challenge Card＋AC Card、DoD Card","zhTW":""}],"supportingText":[],"facilitatorNotes":["不是重新填 Introduction Card；貢獻聚焦本題。","Why / What / How 三項依序呈現；所有文案進頁時即可見，不逐點動畫。"],"stepTitle":{"en":"Goal and approach","zhTW":"目標與做法"}},{"id":"P17","stepId":9,"template":"T3","title":{"en":"Work one challenge at a time","zhTW":"一次完成一個挑戰"},"durationSec":1620,"actions":[{"en":"Develop a useful solution and capture it on one poster","zhTW":"發展有用的解法，整理成一張海報"},{"en":"Check the AC and DoD together","zhTW":"一起檢查 AC 與 DoD"},{"en":"When done, check time, choose the next challenge, and repeat","zhTW":"完成後確認時間，再選下一題並重複"}],"why":{"en":"Focus on completing useful work before starting more","zhTW":"先完成有用成果，再開始更多工作"},"output":{"en":"Completed posters; clearly marked work in progress if unfinished","zhTW":"完成的成果海報；未完成者清楚標示進行中"},"tools":[{"en":"Challenge Card＋AC Card＋DoD Card、成果海報","zhTW":""}],"supportingText":[],"facilitatorNotes":["無海報數量競賽、無要求所有題目都完成。","主區為「Work → Capture → Check → Next if time allows / 實作→記錄→檢查→時間允許再選下一題」循環；AC 與 DoD 提醒固定可見，右側超大倒數。"],"stepTitle":{"en":"Work one at a time","zhTW":"逐題實作"}},{"id":"P18","stepId":10,"template":"T2","title":{"en":"Prepare your posters","zhTW":"整理成果與展示準備"},"durationSec":300,"actions":[{"en":"Check readability, team name, challenge, AC, solution, and status","zhTW":"檢查可讀性、組名、挑戰、AC、解法與狀態"},{"en":"Display the posters and photograph completed work","zhTW":"展示海報，拍照保存完成成果"},{"en":"Choose one host for the first gallery round","zhTW":"選一位第一輪留守解說者"}],"why":{"en":"Visible results make review possible","zhTW":"成果可見，才能一起檢視"},"output":{"en":"Displayed posters, saved photos, and a first-round host","zhTW":"展示好的海報、保存的照片與第一輪解說者"},"tools":[{"en":"成果海報、手機","zhTW":""}],"supportingText":[],"facilitatorNotes":["上傳不是參與成果交流的必要條件；完成與進行中作品標示不同。","只有設定有效 uploadUrl 時才顯示「Upload photos if available. / 可連線時上傳照片。」及 QR Code；網址缺省時完全移除此區塊，版面自動回收空間。"],"stepTitle":{"en":"Prepare for review","zhTW":"準備成果交流"}},{"id":"P19","stepId":11,"template":"T2","title":{"en":"Gallery walk: round 1","zhTW":"成果交流：第一輪"},"durationSec":300,"actions":[{"en":"One host stays; others visit other teams","zhTW":"一人留守解說，其餘組員參觀"},{"en":"Read the challenge, AC, and solution; ask to understand","zhTW":"閱讀挑戰、AC 與解法，提問理解"},{"en":"Leave a useful observation, question, or suggestion","zhTW":"留下有用的觀察、問題或建議"}],"why":{"en":"Inspect results together to learn what is useful","zhTW":"一起檢視成果，理解其價值"},"output":{"en":"Feedback notes on the posters","zhTW":"海報上的回饋便條"},"tools":[{"en":"成果海報、便條紙；簡單英文與翻譯互助","zhTW":""}],"supportingText":[],"facilitatorNotes":["留守與參觀分工明確；不把參觀變成上台逐組報告。"],"stepTitle":{"en":"Gallery walk and feedback","zhTW":"成果交流與回應"},"substepIndex":1,"substepCount":3},{"id":"P20","stepId":11,"template":"T2","title":{"en":"Switch hosts","zhTW":"換手參觀"},"durationSec":420,"actions":[{"en":"Switch hosts so the first host can visit","zhTW":"更換留守者，讓第一輪解說者也能參觀"},{"en":"Continue visiting and leaving clear feedback","zhTW":"繼續參觀並留下清楚回饋"},{"en":"Help each other communicate in simple English","zhTW":"以簡單英文互助交流"}],"why":{"en":"Everyone gets a chance to learn across teams","zhTW":"每個人都有跨組學習的機會"},"output":{"en":"A chance for everyone to visit and more feedback","zhTW":"全員皆有參觀機會，持續蒐集回饋"},"tools":[{"en":"成果海報、便條紙","zhTW":""}],"supportingText":[],"facilitatorNotes":["第二輪預設七分鐘，倒數與內文一致。","主標「Switch hosts now / 現在換手」醒目；進頁不播放音效，換手由引導者提醒。"],"stepTitle":{"en":"Gallery walk and feedback","zhTW":"成果交流與回應"},"substepIndex":2,"substepCount":3},{"id":"P21","stepId":11,"template":"T2","title":{"en":"Respond to feedback","zhTW":"回組回應回饋"},"durationSec":180,"actions":[{"en":"Return to your team and read the feedback","zhTW":"回到小組，閱讀回饋"},{"en":"Discuss what others noticed","zhTW":"討論其他人看見了什麼"},{"en":"Choose what to clarify, improve, or test next","zhTW":"決定接下來要釐清、改善或驗證什麼"}],"why":{"en":"Review helps decide what to do next","zhTW":"檢視成果協助決定下一步"},"output":{"en":"A next step informed by feedback","zhTW":"一個回應回饋的下一步"},"tools":[{"en":"成果海報、回饋便條","zhTW":""}],"supportingText":[],"facilitatorNotes":["聚焦成果及其後續，不混入下一步的團隊合作回顧。"],"stepTitle":{"en":"Gallery walk and feedback","zhTW":"成果交流與回應"},"substepIndex":3,"substepCount":3},{"id":"P22","stepId":12,"template":"T2","title":{"en":"Reflect quietly","zhTW":"個人安靜反思"},"durationSec":60,"actions":[{"en":"What helped us work well together?","zhTW":"什麼幫助我們合作得更好？"},{"en":"What would we change next time?","zhTW":"下次我們會改變什麼？"}],"why":{"en":"Individual reflection creates space before group discussion","zhTW":"先個人反思，再進入團隊對話"},"output":{"en":"Your observations about the team's way of working","zhTW":"個人對團隊合作方式的觀察"},"tools":[{"en":"Quiet reflection","zhTW":"安靜反思"}],"supportingText":[],"facilitatorNotes":["反思焦點是合作過程。","兩個問題大字呈現，留白充分，不強制新增書寫物料。"],"stepTitle":{"en":"Reflect and improve","zhTW":"反思與改善"},"substepIndex":1,"substepCount":3},{"id":"P23","stepId":12,"template":"T2","title":{"en":"Team retrospective","zhTW":"團隊回顧"},"durationSec":180,"actions":[{"en":"Share what helped and what you would change","zhTW":"分享有幫助的做法與想改變的地方"},{"en":"Hear from everyone","zhTW":"聽見每一位組員"},{"en":"Choose one change to try next time","zhTW":"選定下次要嘗試的一項改變"}],"why":{"en":"Turn reflection into a small improvement experiment","zhTW":"把反思轉成一個小型改善嘗試"},"output":{"en":"One agreed change for future collaboration","zhTW":"一項共同同意的合作改善"},"tools":[{"en":"Group notes","zhTW":"小組紀錄"}],"supportingText":[],"facilitatorNotes":["產出是一項可嘗試的改變，不要求完整改善專案計畫。"],"stepTitle":{"en":"Reflect and improve","zhTW":"反思與改善"},"substepIndex":2,"substepCount":3},{"id":"P24","stepId":12,"template":"T3","title":{"en":"Feedback wall","zhTW":"回饋牆"},"durationSec":180,"actions":[{"en":"Note 1: a message for Percy—what helped or could improve?","zhTW":"第一張：給 Percy 的回饋，什麼有幫助、什麼可改善？"},{"en":"Note 2: one practice you will take back, and where you will try it","zhTW":"第二張：要帶走的一項實務，以及打算在哪裡嘗試"},{"en":"Post each note in the matching section","zhTW":"分別貼到對應區域"}],"why":{"en":"Capture feedback and connect learning to real work","zhTW":"留下回饋，並將學習連結到工作"},"output":{"en":"Two short notes per person","zhTW":"每人兩張短便條"},"tools":[{"en":"便條紙、回饋牆","zhTW":""}],"supportingText":[{"en":"Use a language you are comfortable with; add short English if possible","zhTW":"可使用熟悉的語言，方便時補上簡短英文"}],"facilitatorNotes":["兩張便條的用途清楚區分。","兩個欄位 Feedback for Percy / 給 Percy 的回饋、My next experiment / 我的下一次嘗試。文字與實體牆標題須一致；如實體牆另有命名，於資料中覆蓋。"],"stepTitle":{"en":"Reflect and improve","zhTW":"反思與改善"},"substepIndex":3,"substepCount":3},{"id":"P25","stepId":13,"template":"T1","title":{"en":"What will you try next?","zhTW":"下一次，您想嘗試什麼？"},"durationSec":180,"actions":[{"en":"Choose one practice and a real place to try it","zhTW":"選一項實務，連結到一個真實的應用情境"}],"why":{"en":"Adapt each practice to the people and situation","zhTW":"依參與者與情境調整每一項實務"},"output":{"en":"One intention for your next workshop or team session","zhTW":"一個下次工作坊或團隊活動中的行動意圖"},"tools":[{"en":"Your next session","zhTW":"您的下一場活動"}],"supportingText":[],"facilitatorNotes":["email 正確可讀，不放未提供的社群、網站或報名連結。","白底配黑字與橘色強調；信箱至少 36 px，保持完整一行。三分鐘結束後留在此頁，倒數可由引導者隱藏，保留聯絡資訊。"],"stepTitle":{"en":"Take a practice with you","zhTW":"帶走一項實務"}}]</script>
+<script>//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+</script>
+<script type="module">const SCHEMA_VERSION = 1;
+const STORAGE_KEY = 'agile-sprint-lab-projection-v1';
+const DEFAULT_CONFIG = {
+  title: 'Agile Sprint Lab', facilitatorName: 'Percy Hsu', email: 'agiletalks@gmail.com',
+  eventName: 'IAF Asia 2026', location: 'Hangzhou', eventDate: '2026-11-01',
+  timezone: 'Asia/Shanghai', scheduledStart: '08:30', scheduledEnd: '10:30',
+  teamSizeMin: 4, teamSizeMax: 5, languageMode: 'both', uploadUrl: '', logoDataUri: '',
+  showTimer: true, sound: false,
+  feedbackWallLabels: [
+    { en: 'Feedback for Percy', zhTW: '給 Percy 的回饋' },
+    { en: 'My next experiment', zhTW: '我的下一次嘗試' }
+  ]
+};
+function freshState(slides) {
+  return {
+    schemaVersion: SCHEMA_VERSION, activePage: 0, lastActivityPage: 1, workshopStartedAt: null,
+    config: structuredClone(DEFAULT_CONFIG),
+    pages: slides.map(s => ({
+      timerState: 'idle', planState: 'scheduled', allocatedSec: s.durationSec,
+      remainingSec: s.durationSec, activeElapsedSec: 0, deadlineAtMs: null,
+      lastAccountedAtMs: null, handledAlertIds: [], dismissedAlertIds: [],
+      expirySoundHandled: false, activeAlertId: null
+    }))
+  };
+}
+function validateState(s, slides) {
+  const num = n => Number.isFinite(n) && n >= 0;
+  const index = n => Number.isInteger(n) && n >= 0 && n < slides.length;
+  if (!s || s.schemaVersion !== SCHEMA_VERSION || !index(s.activePage) || !index(s.lastActivityPage)
+      || s.lastActivityPage === 0 || !Array.isArray(s.pages) || s.pages.length !== slides.length
+      || !(s.workshopStartedAt === null || num(s.workshopStartedAt))) return false;
+  const c = s.config;
+  if (!c || !['both','en','zh'].includes(c.languageMode) || !['showTimer','sound'].every(k => typeof c[k] === 'boolean')
+      || !['title','facilitatorName','email','eventName','location','eventDate','timezone','scheduledStart','scheduledEnd','uploadUrl','logoDataUri'].every(k => typeof c[k] === 'string')
+      || !Number.isInteger(c.teamSizeMin) || !Number.isInteger(c.teamSizeMax) || c.teamSizeMin < 1 || c.teamSizeMax < c.teamSizeMin || c.teamSizeMax > 20
+      || !/^\d{4}-\d{2}-\d{2}$/.test(c.eventDate) || ![c.scheduledStart,c.scheduledEnd].every(v => /^([01]\d|2[0-3]):[0-5]\d$/.test(v))
+      || !Array.isArray(c.feedbackWallLabels) || c.feedbackWallLabels.length !== 2 || !c.feedbackWallLabels.every(l => typeof l.en === 'string' && typeof l.zhTW === 'string')
+      || !(c.logoDataUri === '' || /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(c.logoDataUri))) return false;
+  try { new Intl.DateTimeFormat('en', { timeZone: c.timezone }); } catch { return false; }
+  let running = 0;
+  return s.pages.every((p,i) => {
+    if (!p || !['idle','running','paused','expired'].includes(p.timerState) || !['scheduled','deferred','completed'].includes(p.planState)
+        || !['allocatedSec','remainingSec','activeElapsedSec'].every(k => num(p[k])) || p.remainingSec > 86400 || p.allocatedSec > 86400
+        || p.remainingSec > p.allocatedSec || ![p.deadlineAtMs,p.lastAccountedAtMs].every(v => v === null || num(v))
+        || !['handledAlertIds','dismissedAlertIds'].every(k => Array.isArray(p[k]) && p[k].every(v => typeof v === 'string'))
+        || typeof p.expirySoundHandled !== 'boolean' || !(p.activeAlertId === null || typeof p.activeAlertId === 'string')) return false;
+    if (p.timerState === 'running') {
+      running++;
+      if (i !== s.activePage || i === 0 || running > 1 || p.planState !== 'scheduled' || p.deadlineAtMs === null || p.lastAccountedAtMs === null || s.workshopStartedAt === null) return false;
+    } else if (p.deadlineAtMs !== null) return false;
+    if (i > 0 && ((p.timerState === 'expired') !== (p.remainingSec === 0) || (p.planState === 'completed') !== (p.remainingSec === 0))) return false;
+    return true;
+  });
+}
+function clockText(sec) {
+  const n = Math.max(0, Math.ceil(sec));
+  return `${String(Math.floor(n / 60)).padStart(2,'0')}:${String(n % 60).padStart(2,'0')}`;
+}
+function validUploadUrl(value) {
+  if (!value) return false;
+  try { const u = new URL(value); return ['http:','https:'].includes(u.protocol) && !u.username && !u.password && value.length <= 1500; } catch { return false; }
+}
+function alertDefinitions(slide) {
+  const common = slide.durationSec <= 60
+    ? [{ id: 'wrap', sec: 10, priority: 30, en: 'Please wrap up', zhTW: '請準備收尾' }]
+    : [
+      { id: 'almost', sec: slide.durationSec * .2, priority: 10, en: 'Almost time', zhTW: '即將到時' },
+      { id: 'wrap', sec: slide.durationSec * .1, priority: 30, en: 'Please wrap up', zhTW: '請準備收尾' }
+    ];
+  if (slide.id === 'P17') common.push(
+    { id: 'work-10', sec: 600, priority: 20, en: 'Check your AC. Decide how to use the remaining time.', zhTW: '對照驗收條件，決定剩餘時間如何運用。' },
+    { id: 'work-3', sec: 180, priority: 40, en: 'Finish and capture the current challenge. Mark unfinished work clearly.', zhTW: '聚焦完成目前題目並記錄，未完成請標示狀態。' }
+  );
+  return common;
+}
+class Workshop {
+  constructor(slides, state = freshState(slides), now = () => Date.now()) {
+    if (!validateState(state, slides)) throw new Error('Invalid workshop state');
+    this.slides = slides; this.state = state; this.now = now; this.effects = [];
+    this.settle();
+  }
+  get page() { return this.state.pages[this.state.activePage]; }
+  get slide() { return this.slides[this.state.activePage]; }
+  checkAlerts(p, slide, previous) {
+    const defs = alertDefinitions(slide);
+    const crossed = defs.filter(a => previous > a.sec && p.remainingSec <= a.sec && !p.handledAlertIds.includes(a.id));
+    crossed.forEach(a => p.handledAlertIds.push(a.id));
+    const old = defs.find(a => a.id === p.activeAlertId);
+    const best = [...crossed, ...(old ? [old] : [])].sort((a,b) => b.priority-a.priority)[0];
+    if (best) p.activeAlertId = best.id;
+  }
+  settle() {
+    if (!this.state.activePage) return;
+    const p = this.page;
+    if (p.timerState !== 'running') return;
+    const now = this.now();
+    const previous = p.remainingSec;
+    // A backwards system clock adjustment must not add time or double-count work.
+    const effectiveNow = Math.max(now, p.lastAccountedAtMs);
+    p.remainingSec = Math.max(0, Math.min(previous, (p.deadlineAtMs-effectiveNow)/1000));
+    p.activeElapsedSec += previous-p.remainingSec;
+    p.lastAccountedAtMs = effectiveNow;
+    this.checkAlerts(p, this.slide, previous);
+    if (p.remainingSec === 0) this.expire(p);
+  }
+  expire(p) {
+    p.remainingSec = 0; p.timerState = 'expired'; p.planState = 'completed'; p.deadlineAtMs = null; p.lastAccountedAtMs = null;
+    if (!p.expirySoundHandled) {
+      p.expirySoundHandled = true;
+      if (this.state.config.sound) this.effects.push('expiry-sound');
+    }
+  }
+  start() {
+    this.settle();
+    if (!this.state.activePage) {
+      if (this.state.workshopStartedAt !== null) { this.navigate(this.state.lastActivityPage); return; }
+      this.navigate(1);
+    }
+    const p = this.page;
+    if (p.remainingSec <= 0 || p.timerState === 'running') return;
+    if (this.state.workshopStartedAt === null) {
+      this.state.workshopStartedAt = this.now();
+      for (let i=1;i<this.state.activePage;i++) if(this.state.pages[i].planState === 'scheduled') this.state.pages[i].planState = 'deferred';
+    }
+    p.planState = 'scheduled'; p.timerState = 'running';
+    p.deadlineAtMs = this.now()+p.remainingSec*1000; p.lastAccountedAtMs = this.now();
+  }
+  pause() {
+    this.settle();
+    if (this.page.timerState === 'running') { this.page.timerState = 'paused'; this.page.deadlineAtMs = null; this.page.lastAccountedAtMs = null; }
+  }
+  toggle() { this.page.timerState === 'running' ? this.pause() : this.start(); }
+  navigate(index, andStart = false) {
+    if (!Number.isInteger(index) || index < 0 || index >= this.slides.length || index === this.state.activePage) return;
+    const from = this.state.activePage;
+    this.pause();
+    if (from > 0 && index > from) {
+      for (let i=from; i<index; i++) {
+        const p=this.state.pages[i];
+        if (p.planState === 'scheduled' && p.remainingSec > 0) p.planState='deferred';
+      }
+    }
+    this.state.activePage = index;
+    if (index) this.state.lastActivityPage = index;
+    if (andStart && index) this.start();
+  }
+  setRemaining(seconds) {
+    if (!this.state.activePage || !Number.isFinite(seconds)) return;
+    this.settle(); const p=this.page, old=p.remainingSec, was=p.timerState;
+    p.remainingSec=Math.max(0,Math.min(86400-(p.allocatedSec-old),seconds));
+    p.allocatedSec+=p.remainingSec-old;
+    if (p.remainingSec === 0) this.expire(p);
+    else if (was === 'running') { p.deadlineAtMs=this.now()+p.remainingSec*1000; p.lastAccountedAtMs=this.now(); }
+    else if (was === 'expired') { p.timerState='paused'; p.planState='scheduled'; }
+    this.checkAlerts(p,this.slide,old);
+  }
+  adjust(delta) { this.settle(); this.setRemaining(this.page.remainingSec+delta); }
+  resetPage() {
+    if (!this.state.activePage) return;
+    this.pause();
+    const elapsed=this.page.activeElapsedSec;
+    Object.assign(this.page, freshState(this.slides).pages[this.state.activePage], {activeElapsedSec:elapsed});
+  }
+  requeue(index) {
+    this.settle(); const p=this.state.pages[index];
+    if (index > 0 && p?.remainingSec > 0) p.planState='scheduled';
+  }
+  discard(index) {
+    this.settle(); const p=this.state.pages[index];
+    if (!index || p?.planState !== 'deferred') return;
+    p.allocatedSec-=p.remainingSec; p.remainingSec=0; p.timerState='expired'; p.planState='completed';
+    p.activeAlertId=null; p.expirySoundHandled=true;
+  }
+  transfer(from,to) {
+    this.settle();
+    const p=this.state.pages[from], q=this.state.pages[to];
+    if (!from || !to || from === to || p?.planState !== 'deferred' || !q || q.allocatedSec+p.remainingSec > 86400) return;
+    const amount=p.remainingSec;
+    this.discard(from);
+    q.remainingSec+=amount; q.allocatedSec+=amount; q.planState='scheduled';
+    if (q.timerState === 'expired') q.timerState='paused';
+    if (q.timerState === 'running') { q.deadlineAtMs=this.now()+q.remainingSec*1000; q.lastAccountedAtMs=this.now(); }
+  }
+  dismissAlert() {
+    const p=this.page;
+    if (p.activeAlertId) p.dismissedAlertIds.push(p.activeAlertId);
+    p.activeAlertId=null;
+  }
+  replayAlert(id) {
+    if (!alertDefinitions(this.slide).some(a=>a.id===id)) return;
+    this.page.activeAlertId=id;
+    this.page.dismissedAlertIds=this.page.dismissedAlertIds.filter(a=>a!==id);
+  }
+  get activeAlert() { return alertDefinitions(this.slide).find(a=>a.id===this.page.activeAlertId); }
+  stepRemaining() { return this.slides.reduce((sum,s,i)=>sum+(s.stepId === this.slide.stepId && this.state.pages[i].planState === 'scheduled' ? this.state.pages[i].remainingSec : 0),0); }
+  plannedRemaining() { return this.state.pages.slice(1).reduce((sum,p)=>sum+(p.planState === 'scheduled' ? p.remainingSec : 0),0); }
+  deferredRemaining() { return this.state.pages.slice(1).reduce((sum,p)=>sum+(p.planState === 'deferred' ? p.remainingSec : 0),0); }
+}
+// Resolve a wall time in an IANA time zone without assuming the host time zone.
+function targetTimestamp(config) {
+  const [y,m,d]=config.eventDate.split('-').map(Number);
+  const [h,min]=config.scheduledEnd.split(':').map(Number);
+  const utc=Date.UTC(y,m-1,d,h,min);
+  let stamp=utc;
+  const fmt=new Intl.DateTimeFormat('en-CA',{timeZone:config.timezone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+  for(let i=0;i<3;i++) {
+    const parts=Object.fromEntries(fmt.formatToParts(stamp).map(p=>[p.type,p.value]));
+    stamp+=utc-Date.UTC(+parts.year,+parts.month-1,+parts.day,+parts.hour,+parts.minute);
+  }
+  return stamp;
+}
+
+
+const slides = JSON.parse(document.getElementById('slide-data').textContent);
+const embeddedConfig = JSON.parse(document.getElementById('config-data').textContent);
+const $ = s => document.querySelector(s);
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let storageWarning = '', corruptStorage = false, panelError = '', audio = null, lastAnnouncement = '', savedAt = 0;
+const initial = freshState(slides);
+initial.config = {...initial.config,...embeddedConfig};
+let restored = initial;
+try {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) {
+    const value = JSON.parse(raw);
+    if (!validateState(value, slides)) throw new Error('incompatible');
+    restored = value;
+  }
+} catch (e) {
+  if (e instanceof SyntaxError || e.message === 'incompatible') {
+    corruptStorage = true;
+    storageWarning = '儲存資料格式不相容或毀損。目前以記憶體開始新場，舊資料尚未覆寫；請先匯出備份，再清除本場進度。';
+  } else storageWarning = '瀏覽器儲存不可用，目前僅保留記憶體進度；關閉前請匯出進度備份。';
+}
+let workshop = new Workshop(slides, restored);
+const stage = $('#slide'), panel = $('#console'), clearDialog = $('#confirm-clear');
+const toolLabels = [null,
+ ['Your experience','您的工作經驗'],['Listening','聆聽'],['Language agreement','語言約定'],
+ ['Introduction Card','個人自我介紹卡'],['Introduction Card','自我介紹卡'],['Introduction Card','自我介紹卡'],
+ ['Group notes','小組紀錄'],['Challenge Card + AC Card','挑戰卡＋驗收條件卡'],['Challenge Card + AC Card','挑戰卡＋驗收條件卡'],
+ ['Challenge Card + AC Card + DoR Card','個人挑戰卡、AC 卡；小組 DoR 卡'],['Challenge Card + AC Card + DoR Card','挑戰卡、AC 卡與 DoR 卡'],
+ ['DoD Card','共同完成標準卡'],['Challenge Card + AC Card · R / G dots','挑戰卡、AC 卡與紅綠點貼紙'],
+ ['Challenge Card + AC Card · Matrix','挑戰卡、AC 卡與矩陣海報'],['Challenge matrix + paired cards','挑戰矩陣與配對卡片'],
+ ['Selected cards + DoD Card','已選挑戰卡、AC 卡與 DoD 卡'],['Challenge + AC + DoD · Poster','挑戰卡、AC 卡、DoD 卡與成果海報'],
+ ['Posters · Phone','成果海報、手機'],['Posters · Feedback notes','成果海報、回饋便條'],['Posters · Feedback notes','成果海報、回饋便條'],
+ ['Posters · Feedback notes','成果海報、回饋便條'],['Quiet reflection','安靜反思'],['Group notes','小組紀錄'],
+ ['Sticky notes · Feedback wall','便條紙、回饋牆'],['Your next session','您的下一場活動']
+];
+const loc = (en, zhTW) => ({en,zhTW});
+const stateLabels = {idle:loc('Ready','尚未開始'),running:loc('In progress','進行中'),paused:loc('Paused','已暫停'),expired:loc('Time is up','時間到')};
+function textPair(value, className='') {
+  if (!value) return '';
+  const config=workshop.state.config;
+  const replace = t => String(t || '').replace(/4–5/g, `${config.teamSizeMin}–${config.teamSizeMax}`);
+  return `<div class="pair ${className}">${value.en ? `<div class="en" lang="en">${esc(replace(value.en))}</div>` : ''}${value.zhTW ? `<div class="zh" lang="zh-Hant">${esc(replace(value.zhTW))}</div>` : ''}</div>`;
+}
+function announce(text) {
+  if (text && text !== lastAnnouncement) { $('#announcement').textContent=text; lastAnnouncement=text; }
+}
+function save() {
+  if (corruptStorage) return;
+  try { localStorage.setItem(STORAGE_KEY,JSON.stringify(workshop.state)); }
+  catch { storageWarning='儲存失敗，目前僅保留記憶體進度；請在關閉前匯出進度備份。'; }
+}
+function logo(size='top') {
+  const c=workshop.state.config;
+  return c.logoDataUri ? `<img class="${size === 'top' ? 'top-logo' : ''}" src="${esc(c.logoDataUri)}" alt="Company logo">` : (size === 'top' ? '<span class="brand-square" aria-hidden="true"></span>' : '<div class="brand-type">AGILE<span>SPRINT</span>LAB.</div>');
+}
+function topbar(s) {
+  return `<header class="topbar"><div class="wordmark">${logo()}<span>${esc(workshop.state.config.title)}</span></div><div class="top-meta">${s.stepId ? `<span class="step-code"><span class="en">STEP ${String(s.stepId).padStart(2,'0')} / 13</span><span class="zh">步驟 ${String(s.stepId).padStart(2,'0')} / 13</span></span>${textPair(s.stepTitle)}` : `<span>${esc(workshop.state.config.eventName)}</span>`}</div></header>`;
+}
+function actionsHTML(s) {
+  return `<ol class="actions">${s.actions.map((a,i)=>`<li><span class="action-no" aria-hidden="true">${String(i+1).padStart(2,'0')}</span>${textPair(a)}</li>`).join('')}</ol>`;
+}
+function mini(en,zh,extra='') { return `<div class="mini-card ${extra}">${textPair(loc(en,zh))}</div>`; }
+function diagram(s) {
+  if (s.id === 'P04') return `<div class="diagram"><div class="mini-card"><div class="card-label">INTRODUCTION CARD</div><div class="intro-fields">${[['Name','稱呼'],['Strengths','長處'],['Working languages','可用語言'],['Preferred language','偏好語言']].map(a=>textPair(loc(...a))).join('')}</div></div></div>`;
+  if (s.id === 'P08') return `<div class="diagram"><div class="mini-card"><div class="card-label">CHALLENGE CARD</div>${textPair(loc('Situation · Challenge · Impact','情境・挑戰・影響'))}<div class="card-fields"><span>When I am…</span><span>The challenge I face is…</span><span>This affects my work by…</span></div></div><div class="mini-card ac"><div class="card-label">ACCEPTANCE CRITERIA CARD</div>${textPair(loc('A useful response would…','有用的回應應能……'))}</div></div>`;
+  if (s.id === 'P10') return `<div class="diagram">${mini('Clear context','情境、挑戰與影響清楚')}${mini('Understandable AC','驗收條件可理解')}${mini('Progress today','今天能有實質進展')}</div>`;
+  if (s.id === 'P12') return `<div class="diagram poster-check">${mini('Challenge','挑戰')}${mini('AC','驗收條件')}${mini('Solution','可以使用或嘗試的解法')}</div>`;
+  if (s.id === 'P13') return `<div class="diagram"><div class="mini-card"><div class="vote-tag"><span class="vote-icon">R</span>${textPair(loc('Experienced','經歷過'))}</div></div><div class="mini-card"><div class="vote-tag"><span class="vote-icon green">G</span>${textPair(loc('First choice','優先選擇'))}</div></div></div>`;
+  if (s.id === 'P17') return `<div class="cycle">${[['Develop a useful solution','發展有用的解法'],['Capture it on one poster','整理成一張海報'],['Check AC + DoD together','一起檢查 AC 與 DoD'],['When done, check time. Choose the next if time allows.','完成後確認時間，時間允許再選下一題']].map((a,i)=>`<div class="mini-card"><div class="cycle-index">0${i+1}</div>${textPair(loc(...a))}</div>`).join('')}</div>`;
+  if (s.id === 'P24') return `<div class="diagram two-notes">${workshop.state.config.feedbackWallLabels.map((l,i)=>`<div class="mini-card"><div class="card-label">NOTE 0${i+1}</div>${textPair(l)}</div>`).join('')}</div>`;
+  return '';
+}
+function matrixHTML() {
+  return `<div class="matrix-figure"><svg class="matrix-svg" viewBox="0 0 510 365" role="img" aria-label="挑戰矩陣：紅點共同經驗向右增加，綠點優先意願向上增加；兩軸 0 至組員人數 N。"><defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#151515"/></marker></defs>${[0,1,2,3,4].map(i=>`<line class="guide" x1="115" x2="455" y1="${260-i*44}" y2="${260-i*44}"/><line class="guide" x1="${115+i*80}" x2="${115+i*80}" y1="260" y2="66"/>`).join('')}<path class="axis" d="M115 57 V260 H475" fill="none" marker-end="url(#arrow)"/><path class="axis" d="M115 260 V42" marker-end="url(#arrow)"/>${['0','1','2','…','N'].map((n,i)=>`<text class="tick" x="${115+i*80}" y="291" text-anchor="middle">${n}</text><text class="tick" x="94" y="${267-i*44}" text-anchor="end">${n}</text>`).join('')}<text class="axis-en en" x="290" y="328" text-anchor="middle">R · Shared experience →</text><text class="axis-zh zh" x="290" y="359" text-anchor="middle">紅點：共同經驗</text><text class="axis-en en" x="20" y="24">G · First choices ↑</text><text class="axis-zh zh" x="20" y="55">綠點：優先意願</text></svg>${textPair(loc('N = people in your team','N＝實際組員數；示意，不代表票數結果'),'matrix-note')}</div>`;
+}
+function supportDefault(s) {
+  const map={P05:loc('Meet at least 3 people','至少認識三位夥伴'),P06:loc('Need a team? Ask Percy.','需要組隊協助，請找 Percy'),P09:loc('Quiet writing. One paired set per person.','安靜書寫；每人一組配對卡片'),P11:loc('Clarify first. Up to 2 minutes per person.','先釐清；每人最多兩分鐘'),P17:loc('Keep AC + DoD visible. One challenge at a time.','讓 AC 與 DoD 保持可見；一次處理一題'),P20:loc('Switch hosts now','現在換手'),P24:loc('Use a comfortable language; add short English if possible.','使用熟悉的語言，方便時補上簡短英文')};
+  if(map[s.id]) return map[s.id];
+  if (s.id==='P08'||s.id==='P04') return null; // The full example remains in facilitator notes.
+  return s.supportingText[0] || null;
+}
+function timerHTML() {
+  return `<aside class="timer-card" aria-label="Activity time and materials"><div class="timer-label">${textPair(loc('THIS ACTIVITY','本活動'))}</div><div class="timer-number" id="timer-number" aria-live="off"></div><div class="timer-state" id="timer-state"></div><div class="timer-progress" aria-hidden="true"><div class="timer-progress-fill" id="timer-progress-fill"></div></div><div class="preview-label" id="preview-label"></div><div class="tool-area"><div class="eyebrow">${textPair(loc('TOOLS','使用工具'))}</div>${textPair(loc(...toolLabels[workshop.state.activePage]))}</div><div class="step-left" id="step-left"></div></aside>`;
+}
+function footer(s) {
+  return `<footer class="footer-info">${[['WHY','原理',s.why],['OUTPUT','產出',s.output]].map(([en,zh,val])=>`<div class="info-row"><div class="info-label">${textPair(loc(en,zh))}</div>${textPair(val,'info-text')}</div>`).join('')}</footer>`;
+}
+function bottom(s) {
+  const siblings=slides.filter(v=>v.stepId===s.stepId);
+  const progress=siblings.length>1 ? `<div class="substeps">${siblings.map(v=>`<span class="${s.id===v.id?'current':''}">${textPair(v.title)}</span>`).join('')}</div>` : `<div class="step-track" aria-label="Step ${s.stepId} of 13">${Array.from({length:13},(_,i)=>`<span class="${i+1===s.stepId?'current':''}"></span>`).join('')}</div>`;
+  return `<div class="bottom-bar">${progress}<span class="page-code"><span class="en">PAGE</span><span class="zh">頁碼</span> ${s.id} / P25</span></div>`;
+}
+function renderCover() {
+  const c=workshop.state.config, started=workshop.state.workshopStartedAt!==null;
+  return `${topbar(slides[0])}<section class="cover-main"><div><div class="cover-index">${textPair(loc('A hands-on workshop','實作工作坊'))}</div><h1>${c.title==='Agile Sprint Lab'?'Agile<span>Sprint Lab.</span>':esc(c.title)}</h1><div class="cover-subtitle">${textPair(loc('Working together on our challenges in the age of AI','一起面對 AI 時代的工作挑戰'))}</div><div class="cover-host">${esc(c.facilitatorName)}<span>${textPair(loc('Agile Coach','敏捷教練'))}</span></div><div class="cover-start"><button class="primary" data-command="start">${textPair(started?loc('Return to activity','返回目前活動'):loc('Start workshop','開始工作坊'))} <span aria-hidden="true">→</span></button><small>${started?slides[workshop.state.lastActivityPage].id:textPair(loc('120 minutes · 13 steps','120 分鐘・13 步驟'))}</small></div></div><div class="cover-mark">${c.logoDataUri?logo('large'):'<div class="large-number">120<span style="color:var(--orange)">.</span></div><div class="minutes-label">Minutes of collaboration</div><div class="brand-type">THINK.<span>MAKE.</span>LEARN.</div>'}</div></section><footer class="cover-bottom"><div>${esc(c.eventName)} · ${esc(c.location)}<br><small>${esc(c.eventDate)} · ${esc(c.scheduledStart)}–${esc(c.scheduledEnd)} · ${esc(c.timezone)}</small></div><a class="email" href="mailto:${esc(c.email)}">${esc(c.email)}</a></footer>`;
+}
+function profileHTML() {
+  const c=workshop.state.config;
+  return `<div class="content-area"><div><div class="profile-name">${esc(c.facilitatorName)}</div><div class="profile-role">${textPair(loc('Agile Coach','敏捷教練'))}</div><div class="profile-intro">${textPair(loc('I share practical Agile elements that help teams work together.','分享協助團隊合作的敏捷實務。'))}</div></div><div class="profile-contact"><a class="email" href="mailto:${esc(c.email)}">${esc(c.email)}</a></div></div>`;
+}
+function uploadHTML() {
+  const url=workshop.state.config.uploadUrl;
+  if (!validUploadUrl(url)) return '';
+  try {
+    qrcode.stringToBytes=qrcode.stringToBytesFuncs['UTF-8'];
+    const qr=qrcode(0,'M'); qr.addData(new URL(url).href,'Byte'); qr.make();
+    return `<div class="upload-box">${qr.createSvgTag({cellSize:3,margin:4,scalable:true})}<div>${textPair(loc('Upload photos if available','可連線時上傳照片'))}<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(url)}</a></div></div>`;
+  } catch { return ''; }
+}
+function renderStage() {
+  const s=workshop.slide,c=workshop.state.config;
+  stage.className=`canvas page-${s.id} lang-${c.languageMode} ${s.id==='P00'?'cover':''} ${s.id==='P25'?'closing':''} ${c.showTimer?'':'timer-hidden'}`;
+  document.documentElement.lang=c.languageMode==='zh'?'zh-Hant':'en';
+  if(!s.stepId) stage.innerHTML=renderCover();
+  else {
+    let left=s.id==='P02'?profileHTML():`<div class="content-area ${['P08','P24'].includes(s.id)?'dense':''}"><div class="eyebrow">${textPair(loc('DO NOW','現在請做'))}</div>${s.id==='P14'?`<div class="matrix-layout">${matrixHTML()}${actionsHTML(s)}</div>`:s.id==='P17'?'':actionsHTML(s)}${diagram(s)}${s.id==='P18'?uploadHTML():''}${s.id==='P25'?`<div class="closing-thanks">${textPair(loc('Thank you for your ideas, participation, and support.','謝謝各位的想法、參與與彼此支持。'))}</div><div class="profile-contact"><a class="email" href="mailto:${esc(c.email)}">${esc(c.email)}</a></div>`:'<div class="support-band" id="support-band"></div>'}</div>`;
+    stage.innerHTML=`${topbar(s)}<div class="title-block"><div class="step-number" aria-hidden="true">${String(s.stepId).padStart(2,'0')}</div><h1>${textPair(s.title)}</h1></div><section class="main-grid">${left}${timerHTML()}</section>${footer(s)}${bottom(s)}`;
+  }
+  updateDynamic(true);
+}
+function updateDynamic(force=false) {
+  const p=workshop.page,s=workshop.slide,c=workshop.state.config;
+  if(s.stepId) {
+    $('#timer-number').textContent=clockText(p.remainingSec);
+    $('#timer-state').innerHTML=`<span class="state-dot" aria-hidden="true"></span>${textPair(stateLabels[p.timerState])}`;
+    $('#timer-progress-fill').style.width=`${Math.min(100,p.remainingSec/Math.max(1,p.allocatedSec)*100)}%`;
+    $('#preview-label').innerHTML=p.planState==='deferred'?textPair(loc('Preview · not scheduled','回看・尚未重新排入')):'';
+    $('#step-left').innerHTML=`${textPair(loc('Step remaining','步驟剩餘'))}<strong>${clockText(workshop.stepRemaining())}</strong>`;
+    stage.classList.toggle('running',p.timerState==='running');
+    stage.classList.toggle('near-time',p.remainingSec<=s.durationSec*.2);
+    const band=$('#support-band');
+    if(band) {
+      const alert=workshop.activeAlert;
+      const key=alert?.id || 'default';
+      if(force||band.dataset.alert!==key) { band.innerHTML=textPair(alert || supportDefault(s)); band.dataset.alert=key; }
+    }
+    const a=workshop.activeAlert;
+    const stateAnnounce=`${s.id} ${stateLabels[p.timerState].zhTW}${a?`。${a.zhTW}`:''}`;
+    announce(stateAnnounce);
+  }
+  while(workshop.effects.length) { const e=workshop.effects.shift(); if(e==='expiry-sound') beep(); }
+  if(panel.open) updateMetrics();
+}
+function fmtTime(ms) { return new Intl.DateTimeFormat('en-GB',{timeZone:workshop.state.config.timezone,hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(ms); }
+function updateMetrics() {
+  const now=Date.now(),state=workshop.state,planned=workshop.plannedRemaining();
+  const elapsed=state.workshopStartedAt===null?'尚未開始':clockText((now-state.workshopStartedAt)/1000);
+  $('#metric-elapsed').textContent=elapsed;
+  $('#metric-eta').textContent=planned>0?fmtTime(now+planned*1000):'已排入活動結束';
+  $('#eta-caption').textContent=planned>0?(state.workshopStartedAt===null?'若現在開始，後續連續執行':'假設後續連續執行、不再暫停'):'可另查看待處理配額';
+  const diff=(now+planned*1000-targetTimestamp(state.config))/60000;
+  $('#metric-diff').textContent=planned>0?`${diff>=0?'超時':'提早'} ${Math.ceil(Math.abs(diff))} 分`:'—';
+  $('#metric-deferred').textContent=clockText(workshop.deferredRemaining());
+  $('#panel-current').textContent=`${workshop.slide.id} · ${clockText(workshop.page.remainingSec)} · ${stateLabels[workshop.page.timerState].zhTW}`;
+}
+function field(name,label,type='text',extra='') {
+  return `<label>${label}<input name="${name}" type="${type}" value="${esc(workshop.state.config[name])}" ${extra}></label>`;
+}
+function renderPanel() {
+  const c=workshop.state.config,p=workshop.page;
+  const deferred=workshop.state.pages.map((p,i)=>({p,i})).filter(({p,i})=>i&&p.planState==='deferred');
+  panel.innerHTML=`<div class="console-head"><div><h2 id="console-title">引導者控制台</h2><div id="panel-current" class="hint"></div></div><button data-command="panel-close" aria-label="關閉控制台 (Esc)">關閉 ×</button></div><p class="console-warning">此控制台會出現在投影。開啟面板不會暫停活動；僅開啟一個操作分頁。</p>${storageWarning?`<p class="storage-warning" role="alert">${esc(storageWarning)}</p>`:''}<div class="console-grid"><div><section class="console-section"><h3>活動與倒數</h3><div class="button-row"><button data-command="prev" ${workshop.state.activePage===0?'disabled':''}>← 上一頁</button><button data-command="next" ${workshop.state.activePage===25?'disabled':''}>下一頁 →</button></div><div class="button-row"><button class="primary" data-command="toggle">${p.timerState==='running'?'暫停':'開始／繼續'} <kbd>Space</kbd></button><button class="dark" data-command="next-start" ${workshop.state.activePage===25?'disabled':''}>下一頁並開始</button></div><div class="button-row"><button data-command="minus" ${!workshop.state.activePage?'disabled':''}>− 1 分鐘</button><button data-command="plus" ${!workshop.state.activePage?'disabled':''}>＋ 1 分鐘</button><button data-command="reset" ${!workshop.state.activePage?'disabled':''}>重設本頁</button></div><form id="remaining-form" class="time-edit"><label for="remaining-input">指定剩餘</label><input id="remaining-input" name="remaining" inputmode="numeric" pattern="[0-9]{1,4}:[0-5][0-9]" value="${clockText(p.remainingSec)}" aria-label="指定剩餘時間，格式 MM:SS" ${!workshop.state.activePage?'disabled':''}><button ${!workshop.state.activePage?'disabled':''}>套用</button></form><div class="button-row"><button data-command="fullscreen">全螢幕 <kbd>F</kbd></button><button data-command="timer">${c.showTimer?'隱藏':'顯示'}倒數 <kbd>T</kbd></button></div><label><input type="checkbox" id="sound-toggle" ${c.sound?'checked':''}>到時音效（每頁一次）</label><div class="button-row"><button data-command="dismiss">關閉提醒</button>${alertDefinitions(workshop.slide).filter(a=>a.id.startsWith('work-')).map(a=>`<button data-replay="${a.id}">重播 ${a.sec/60} 分提醒</button>`).join('')}</div><p id="panel-error" class="console-error" role="alert">${esc(panelError)}</p></section><section class="console-section" style="margin-top:18px"><h3>場次時間 · ${esc(c.timezone)}</h3><div class="metrics"><div class="metric">全場實際經過<b id="metric-elapsed"></b></div><div class="metric">預估完成<b id="metric-eta"></b><small id="eta-caption"></small></div><div class="metric">與目標結束時間相比<b id="metric-diff"></b><small>目標 ${esc(c.eventDate)} ${esc(c.scheduledEnd)}</small></div><div class="metric">已略過、待處理配額<b id="metric-deferred"></b></div></div><details><summary>待處理配額（${deferred.length} 頁）</summary><div class="deferred-list">${deferred.length?deferred.map(({p,i})=>`<div class="deferred-item"><b>${slides[i].id} · ${esc(slides[i].title.zhTW)} · ${clockText(p.remainingSec)}</b><div class="button-row"><button data-requeue="${i}">重新排入</button><button data-discard="${i}">捨棄剩餘</button></div><div class="time-edit"><select aria-label="${slides[i].id} 配額轉移目標" id="transfer-${i}">${slides.slice(1).filter(s=>s.id!==slides[i].id).map(s=>`<option value="${slides.indexOf(s)}" ${slides.indexOf(s)===workshop.state.activePage?'selected':''}>${s.id} ${esc(s.title.zhTW)}</option>`).join('')}</select><button data-transfer="${i}">轉移全部</button></div></div>`).join(''):'<p>沒有待處理配額。</p>'}</div></details><details><summary>巡組提問與本頁備註（會被投影）</summary>${['What does the challenge owner need? / 挑戰提出者需要什麼？','Which acceptance criterion are you addressing? / 目前在回應哪一項驗收條件？','What would make this usable? / 怎樣才能讓它可用？','Let us hear from someone who has not spoken yet. / 聽聽還沒發言的夥伴。','Could you give us a specific example? / 可以給一個具體例子嗎？','What still needs to be completed? / 還有什麼需要完成？','What would you need to check before trying this in your own work? / 在工作中嘗試前，需要先確認什麼？',...workshop.slide.supportingText.map(l=>l.en+' / '+l.zhTW),...workshop.slide.facilitatorNotes].map(v=>`<p>${esc(v)}</p>`).join('')}<p>Logo 原圖與卡片、海報照片待補；未核實的個人資格不投影。</p><p>若落後，優先縮短 P02 簡介、P11 延伸討論，或減少 P17 開啟下一題；保留全員分享、驗收檢查、成果回應與回顧。</p></details></section></div><div><section class="console-section"><h3>頁面索引 · 26 頁 / 120 分鐘</h3><div class="page-index">${slides.map((s,i)=>`<button data-page="${i}" class="${i===workshop.state.activePage?'current':''}" aria-label="跳至 ${s.id} ${esc(s.title.zhTW)}">${s.id} · ${esc(s.title.zhTW||'會前待機')}<small>${i?`${s.durationSec/60} min · ${workshop.state.pages[i].planState}`:'待機，不計時'}</small></button>`).join('')}</div></section><section class="console-section" style="margin-top:18px"><details id="settings-details"><summary>場次、語言、素材設定</summary><form id="settings-form"><div class="settings-grid">${field('title','工作坊標題','text','required maxlength="80"')}${field('facilitatorName','引導者','text','required maxlength="80"')}${field('email','聯絡信箱','email','required')}${field('eventName','活動名稱','text','maxlength="100"')}${field('location','地點','text','maxlength="80"')}${field('eventDate','場次日期','date','required')}${field('scheduledStart','預定開始','time','required')}${field('scheduledEnd','目標結束','time','required')}${field('timezone','場次時區','text','required')}<label>語言<select name="languageMode"><option value="both" ${c.languageMode==='both'?'selected':''}>雙語 / Bilingual</option><option value="en" ${c.languageMode==='en'?'selected':''}>English only</option><option value="zh" ${c.languageMode==='zh'?'selected':''}>中文</option></select></label>${field('teamSizeMin','每組最少人數','number','min="1" max="20" required')}${field('teamSizeMax','每組最多人數','number','min="1" max="20" required')}<div class="wide">${field('uploadUrl','照片上傳網址（選填；空白則隱藏）','url','maxlength="1500"')}</div>${c.feedbackWallLabels.map((l,i)=>`<label>回饋牆 ${i+1} 英文<input name="wall${i}en" value="${esc(l.en)}" maxlength="80" required></label><label>回饋牆 ${i+1} 中文<input name="wall${i}zh" value="${esc(l.zhTW)}" maxlength="80" required></label>`).join('')}</div><div class="button-row"><button class="primary">儲存設定</button></div></form><label>載入原始 Logo（JPEG／PNG／WebP，5 MB 以下）<input id="logo-file" type="file" accept="image/jpeg,image/png,image/webp"></label><p class="hint">圖像保留原貌與比例，不裁切。匯出單檔會嵌入目前 Logo。</p></details><details><summary>匯出與進度管理</summary><div class="button-row"><button data-command="export-html">匯出離線單檔</button><button data-command="backup">匯出進度備份</button></div><label>還原進度（將替換本分頁進度）<input id="restore-file" type="file" accept="application/json,.json"></label><p class="hint">離線單檔包含目前設定與 Logo，不攜帶本場進度。進度備份供跨瀏覽器還原；file:// 儲存不受支援時仍可使用。</p><button class="danger" data-command="clear">清除本場進度</button></details><details><summary>快捷鍵與操作說明</summary><p>←／→、PageUp／PageDown：換頁後等待開始<br>Shift＋→：下一頁並開始<br>Space：開始／暫停<br>＋／−：加減一分鐘<br>F：全螢幕　T：隱藏倒數　P：控制台<br>輸入欄位操作期間停用全域快捷鍵。</p><p>全場經過時間包含暫停與轉場。提早往後換頁，未用時間列為待處理；回看不會自動重新排入。重新整理可恢復進度，但請勿同時開啟多個操作分頁。</p></details></section></div></div>`;
+  updateMetrics();
+}
+function openPanel() { renderPanel(); panel.showModal(); $('#console-entry').setAttribute('aria-expanded','true'); }
+function closePanel() { panel.close(); $('#console-entry').setAttribute('aria-expanded','false'); }
+async function unlockAudio() {
+  try { const Audio=window.AudioContext||window.webkitAudioContext; if(!Audio) throw new Error(); audio ||= new Audio(); await audio.resume(); }
+  catch { panelError='此瀏覽器無法啟用音效；計時仍可正常使用。'; }
+}
+function beep() {
+  if(!audio||audio.state!=='running') return;
+  const oscillator=audio.createOscillator(), gain=audio.createGain();
+  oscillator.frequency.value=660; oscillator.connect(gain); gain.connect(audio.destination);
+  gain.gain.setValueAtTime(.1,audio.currentTime); gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.3);
+  oscillator.start(); oscillator.stop(audio.currentTime+.3);
+}
+function download(blob,name) {
+  const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function exportHTML() {
+  const clone=document.documentElement.cloneNode(true);
+  clone.querySelector('#config-data').textContent=JSON.stringify(workshop.state.config).replaceAll('<','\\u003c');
+  ['#slide','#console','#announcement'].forEach(s=>clone.querySelector(s).innerHTML='');
+  clone.querySelectorAll('dialog').forEach(d=>d.removeAttribute('open'));
+  clone.querySelector('#console-entry').classList.remove('visible');
+  clone.querySelector('#console-entry').setAttribute('aria-expanded','false');
+  download(new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html'}),'Agile-Sprint-Lab-Projection.html');
+}
+async function fullscreen() {
+  try { if(document.fullscreenElement) await document.exitFullscreen(); else if(document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen(); else throw new Error(); }
+  catch { panelError='無法進入全螢幕；可使用瀏覽器的全螢幕命令或一般視窗。'; if(!panel.open) openPanel(); }
+}
+function commit() {
+  save(); renderStage();
+  if(panel.open) {
+    const focused=document.activeElement;
+    const selector=focused?.dataset?.command?`[data-command="${focused.dataset.command}"]`:null;
+    renderPanel(); if(selector) panel.querySelector(selector)?.focus({preventScroll:true});
+  }
+}
+function command(name) {
+  panelError='';
+  switch(name) {
+    case 'start': workshop.start();break;
+    case 'toggle': workshop.toggle();break;
+    case 'prev':workshop.navigate(workshop.state.activePage-1);break;
+    case 'next':workshop.navigate(workshop.state.activePage+1);break;
+    case 'next-start':workshop.navigate(workshop.state.activePage+1,true);break;
+    case 'plus':workshop.adjust(60);break;
+    case 'minus':workshop.adjust(-60);break;
+    case 'reset':workshop.resetPage();break;
+    case 'timer':workshop.state.config.showTimer=!workshop.state.config.showTimer;break;
+    case 'dismiss':workshop.dismissAlert();break;
+    case 'fullscreen':fullscreen();return;
+    case 'panel-close':closePanel();return;
+    case 'clear':clearDialog.showModal();return;
+    case 'export-html':exportHTML();return;
+    case 'backup': {
+      workshop.settle();
+      if(corruptStorage) { try { download(new Blob([localStorage.getItem(STORAGE_KEY)||'null'],{type:'application/json'}),'Agile-Sprint-Lab-Recovery.json'); } catch {} }
+      else download(new Blob([JSON.stringify(workshop.state,null,2)],{type:'application/json'}),'Agile-Sprint-Lab-Progress.json');
+      return;
+    }
+  }
+  commit();
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b||b.disabled)return;
+  if(b.dataset.command) command(b.dataset.command);
+  else if(b.dataset.page!==undefined) {workshop.navigate(+b.dataset.page);commit();}
+  else if(b.dataset.requeue) {workshop.requeue(+b.dataset.requeue);commit();}
+  else if(b.dataset.discard) {workshop.discard(+b.dataset.discard);commit();}
+  else if(b.dataset.transfer) {workshop.transfer(+b.dataset.transfer,+$(`#transfer-${b.dataset.transfer}`).value);commit();}
+  else if(b.dataset.replay) {workshop.replayAlert(b.dataset.replay);commit();}
+});
+$('#console-entry').addEventListener('click',openPanel);
+panel.addEventListener('close',()=>$('#console-entry').setAttribute('aria-expanded','false'));
+$('#cancel-clear').onclick=()=>clearDialog.close();
+$('#do-clear').onclick=()=>{
+  const config=structuredClone(workshop.state.config), s=freshState(slides);s.config=config;
+  workshop=new Workshop(slides,s);corruptStorage=false;storageWarning='';clearDialog.close();commit();announce('本場進度已清除');
+};
+document.addEventListener('keydown',e=>{
+  if(e.repeat||e.altKey||e.ctrlKey||e.metaKey)return;
+  if(e.key==='Escape')return; // Native dialog and fullscreen behavior takes priority.
+  if(e.target.closest('input,select,textarea,[contenteditable="true"]') || clearDialog.open) return;
+  const key=e.key.toLowerCase();
+  if(panel.open) {if(key==='p'){e.preventDefault();closePanel();}return;}
+  if(e.target.closest('button,summary') && key !== 'p') return;
+  const map={'arrowright':e.shiftKey?'next-start':'next','pagedown':e.shiftKey?'next-start':'next','arrowleft':'prev','pageup':'prev',' ':'toggle','+':'plus','=':'plus','-':'minus','f':'fullscreen','t':'timer'};
+  if(key==='p') {e.preventDefault();openPanel();return;}
+  if(map[key]) {e.preventDefault();command(map[key]);}
+});
+document.addEventListener('submit',e=>{
+  if(e.target.id==='remaining-form') {
+    e.preventDefault();const value=$('#remaining-input').value;
+    if(!/^\d{1,4}:[0-5]\d$/.test(value))return;
+    const [m,s]=value.split(':').map(Number);workshop.setRemaining(m*60+s);commit();
+  }
+  if(e.target.id==='settings-form') {
+    e.preventDefault();const data=new FormData(e.target),config={...workshop.state.config};
+    for(const key of ['title','facilitatorName','email','eventName','location','eventDate','timezone','scheduledStart','scheduledEnd','uploadUrl','languageMode']) config[key]=String(data.get(key)).trim();
+    for(const key of ['teamSizeMin','teamSizeMax'])config[key]=Number(data.get(key));
+    config.feedbackWallLabels=[0,1].map(i=>loc(String(data.get(`wall${i}en`)).trim(),String(data.get(`wall${i}zh`)).trim()));
+    const candidate=structuredClone(workshop.state);candidate.config=config;
+    if(!validateState(candidate,slides)||config.uploadUrl&&!validUploadUrl(config.uploadUrl)) {
+      panelError='請確認組隊人數、日期、時區與網址格式。';$('#panel-error').textContent=panelError;return;
+    }
+    workshop.state.config=config;commit();announce('場次設定已儲存');
+  }
+});
+document.addEventListener('change',async e=>{
+  if(e.target.id==='sound-toggle') {workshop.state.config.sound=e.target.checked;if(e.target.checked)await unlockAudio();save();$('#panel-error').textContent=panelError;}
+  if(e.target.id==='logo-file') {
+    const file=e.target.files[0];if(!file)return;
+    if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>5*1024*1024){$('#panel-error').textContent='請使用 5 MB 以下的 JPEG、PNG 或 WebP 原圖。';return;}
+    const reader=new FileReader();reader.onload=async()=>{
+      try {const img=new Image();img.src=reader.result;await img.decode();workshop.state.config.logoDataUri=reader.result;commit();}
+      catch {$('#panel-error').textContent='無法讀取此圖檔。';}
+    };reader.readAsDataURL(file);
+  }
+  if(e.target.id==='restore-file') {
+    const file=e.target.files[0];if(!file)return;
+    try {
+      if(file.size>10*1024*1024)throw Error();
+      const value=JSON.parse(await file.text());if(!validateState(value,slides))throw Error();
+      if(!window.confirm('還原將替換本分頁的活動進度與設定，是否繼續？'))return;
+      workshop=new Workshop(slides,value);corruptStorage=false;storageWarning='';commit();announce('進度已還原');
+    }catch {$('#panel-error').textContent='備份格式不相容或無效，原進度未變更。';}
+  }
+});
+let entryTimeout;
+function showEntry() {$('#console-entry').classList.add('visible');clearTimeout(entryTimeout);entryTimeout=setTimeout(()=>$('#console-entry').classList.remove('visible'),2200);}
+document.addEventListener('pointermove',showEntry,{passive:true});
+document.addEventListener('focusin',e=>{if(e.target===$('#console-entry'))showEntry();});
+function resize(){document.documentElement.style.setProperty('--scale',Math.min(innerWidth/1920,innerHeight/1080));}
+window.addEventListener('resize',resize);
+document.addEventListener('visibilitychange',()=>{workshop.settle();save();updateDynamic();});
+window.addEventListener('pagehide',()=>{workshop.settle();save();});
+resize();renderStage();save();
+setInterval(()=>{
+  workshop.settle();updateDynamic();
+  if(Date.now()-savedAt>=1000){save();savedAt=Date.now();}
+},200);
+</script>
+</body></html>

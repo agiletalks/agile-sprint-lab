@@ -1,5 +1,19 @@
 # Agile Sprint Lab
 
+## 新版投影工具（規格 v1.1）
+
+本機啟動：`npm ci` → `npm run dev`，開啟 http://127.0.0.1:4173 。
+
+可直接下載並離線開啟 [新版單檔投影](projection/Agile-Sprint-Lab-Projection.html)。
+
+26 頁、13 步驟、120 分鐘；雙語投影、活動與步驟倒數、單視窗引導者控制台、恢復進度與離線單檔。執行 `npm run build` 產生 `projection/dist/Agile-Sprint-Lab-Projection.html`。
+
+操作與開發細節見 [新版投影工具說明](projection/README.md)，開發依據見 [HTML 規格 v1.1](Agile_Sprint_Lab_HTML_Spec_v1.md)。目前 Logo 原圖待補，投影暫用文字標題。
+
+以下為保留的舊版工具說明。
+
+## 舊版離線主持工具與網站
+
 用於 IAF 工作坊的 120 分鐘引導工具，包含離線主持介面、英文逐字稿、計時器、獨立投影與本機海報成果牆。
 
 ## 直接離線使用

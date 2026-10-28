@@ -27,3 +27,6 @@ Agile-Sprint-Lab-Backup*.json
 Agile-Sprint-Lab-Gallery*.html
 **/outputs/
 **/work/
+
+# Generated projection QA captures
+projection/screenshots/

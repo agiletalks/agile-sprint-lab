@@ -1,0 +1,22 @@
+{
+  "name": "agile-sprint-lab-projection",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node projection/scripts/serve.mjs",
+    "build": "node projection/scripts/build.mjs",
+    "test": "node --test projection/test/*.test.mjs",
+    "test:browser": "node projection/test/browser.mjs",
+    "check": "npm test && npm run build"
+  },
+  "dependencies": {
+    "qrcode-generator": "2.0.4"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
