@@ -10,7 +10,7 @@ const [template,css,data,engine,app,qr]=await Promise.all([
 const slides=JSON.parse(data);
 if(slides.length!==26||slides.reduce((n,s)=>n+s.durationSec,0)!==7200)throw Error('Invalid workshop content');
 let config={};
-try {const b=await readFile(path.join(root,'projection/assets/IMG_5971.jpeg'));config.logoDataUri=`data:image/jpeg;base64,${b.toString('base64')}`;}catch(e){if(e.code!=='ENOENT')throw e;}
+try {const b=await readFile(path.join(root,'projection/assets/agility-logo.jpg'));config.logoDataUri=`data:image/jpeg;base64,${b.toString('base64')}`;}catch(e){if(e.code!=='ENOENT')throw e;}
 const script=engine.replace(/^export /gm,'')+'\n'+app.replace(/^import .*?;\n/,'');
 const html=template.replace('/* INLINE_CSS */',()=>css).replace('/* INLINE_DATA */',()=>JSON.stringify(slides).replaceAll('<','\\u003c'))
  .replace('/* INLINE_CONFIG */',()=>JSON.stringify(config)).replace('/* INLINE_QR */',()=>qr.replaceAll('</script','<\\/script')).replace('/* INLINE_APP */',()=>script.replaceAll('</script','<\\/script'));

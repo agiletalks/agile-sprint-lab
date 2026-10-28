@@ -8,7 +8,7 @@
 
 26 頁、13 步驟、120 分鐘；雙語投影、活動與步驟倒數、單視窗引導者控制台、恢復進度與離線單檔。執行 `npm run build` 產生 `projection/dist/Agile-Sprint-Lab-Projection.html`。
 
-操作與開發細節見 [新版投影工具說明](projection/README.md)，開發依據見 [HTML 規格 v1.1](Agile_Sprint_Lab_HTML_Spec_v1.md)。目前 Logo 原圖待補，投影暫用文字標題。
+操作與開發細節見 [新版投影工具說明](projection/README.md)，開發依據見 [HTML 規格 v1.1](Agile_Sprint_Lab_HTML_Spec_v1.md)。公司 Logo 原圖已內嵌於投影與離線單檔，保留原比例與白底。
 
 本機端到端測試：`npm run test:e2e` 會自動啟動測試服務、執行完整流程並產生報告。操作步驟見 [本機測試指引](projection/LOCAL-TEST.md)。macOS 也可雙擊 `Start-Projection.command` 或 `Test-Projection.command`。
 

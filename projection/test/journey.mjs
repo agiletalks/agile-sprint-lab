@@ -3,10 +3,12 @@ import {readFile,mkdir,writeFile} from 'node:fs/promises';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import path from 'node:path';
 import {launchBrowser} from './browser-helper.mjs';
-import {STORAGE_KEY,validateState,clockText} from '../src/engine.js';
+import {STORAGE_KEY,validateState,clockText,freshState} from '../src/engine.js';
 const root=fileURLToPath(new URL('../../',import.meta.url));
 const base=process.env.TEST_URL||'http://127.0.0.1:4173';
 const slides=JSON.parse(await readFile(path.join(root,'projection/src/slides.json'),'utf8'));
+const originalLogo=await readFile(path.join(root,'projection/assets/agility-logo.jpg'));
+const expectedLogo=`data:image/jpeg;base64,${originalLogo.toString('base64')}`;
 const browser=await launchBrowser(),cases=[],errors=[];
 const reports=path.join(root,'projection/reports'),shots=path.join(root,'projection/screenshots');
 await mkdir(reports,{recursive:true});await mkdir(shots,{recursive:true});
@@ -115,7 +117,7 @@ try {
   await page.locator('[name="languageMode"]').selectOption('zh');await page.locator('[name="uploadUrl"]').fill('https://example.com/成果');
   await page.locator('#settings-form button').click();
   const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl6H0sAAAAASUVORK5CYII=','base64');
-  await page.locator('#logo-file').setInputFiles({name:'fixture.png',mimeType:'image/png',buffer:png});await page.locator('img.top-logo').waitFor();
+  await page.locator('#logo-file').setInputFiles({name:'fixture.png',mimeType:'image/png',buffer:png});await page.waitForFunction(expected=>document.querySelector('img.top-logo')?.getAttribute('src')===expected,`data:image/png;base64,${png.toString('base64')}`);
   const config=(await snapshot(page)).config;assert.equal(config.logoDataUri,`data:image/png;base64,${png.toString('base64')}`);
   const html=await download(page,'export-html'),exportPath=path.join(reports,'rehearsal-export.html');await writeFile(exportPath,html);
   const offline=await newPage({offline:true});
@@ -127,6 +129,21 @@ try {
   await open(offline.page);await offline.page.locator('[data-page="18"]').click();await close(offline.page);assert.equal(await offline.page.locator('.upload-box svg').count(),1);
   assert.ok(requests.every(u=>u.startsWith('file:')||u.startsWith('data:')),'Export never fetches remote assets');
   await offline.context.close();await context.close();
+ });
+ await record('公司 Logo 離線內嵌原圖、舊進度升級保留倒數',async()=>{
+  const {page,context}=await newPage();
+  const old=freshState(slides);old.activePage=5;old.lastActivityPage=5;old.workshopStartedAt=1793493000000;
+  old.pages[5].timerState='paused';old.pages[5].remainingSec=123;
+  await page.addInitScript(({key,old})=>localStorage.setItem(key,JSON.stringify(old)),{key:STORAGE_KEY,old});
+  await page.goto(base);await page.locator('img.top-logo').waitFor();
+  assert.equal(await page.locator('img.top-logo').getAttribute('src'),expectedLogo);
+  assert.equal(await page.locator('#timer-number').innerText(),'02:03');assert.equal((await snapshot(page)).activePage,5);
+  await context.close();
+  const offline=await newPage({offline:true});await offline.page.goto(pathToFileURL(path.join(root,'projection/Agile-Sprint-Lab-Projection.html')).href);
+  const image=offline.page.locator('.cover-mark img');await image.waitFor();
+  assert.equal(await image.getAttribute('src'),expectedLogo);
+  assert.deepEqual(await image.evaluate(async img=>{await img.decode();return [img.naturalWidth,img.naturalHeight,getComputedStyle(img).objectFit];}),[1231,1277,'contain']);
+  await offline.context.close();
  });
  assert.deepEqual(errors,[],'No browser errors across all end-to-end journeys');
 }finally{
