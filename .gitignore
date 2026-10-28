@@ -30,3 +30,6 @@ Agile-Sprint-Lab-Gallery*.html
 
 # Generated projection QA captures
 projection/screenshots/
+
+# Local end-to-end reports
+projection/reports/

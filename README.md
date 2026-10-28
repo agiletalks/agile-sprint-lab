@@ -10,6 +10,8 @@
 
 操作與開發細節見 [新版投影工具說明](projection/README.md)，開發依據見 [HTML 規格 v1.1](Agile_Sprint_Lab_HTML_Spec_v1.md)。目前 Logo 原圖待補，投影暫用文字標題。
 
+本機端到端測試：`npm run test:e2e` 會自動啟動測試服務、執行完整流程並產生報告。操作步驟見 [本機測試指引](projection/LOCAL-TEST.md)。macOS 也可雙擊 `Start-Projection.command` 或 `Test-Projection.command`。
+
 以下為保留的舊版工具說明。
 
 ## 舊版離線主持工具與網站

@@ -1,13 +1,11 @@
 import assert from 'node:assert/strict';
-import {createRequire} from 'node:module';
+import {launchBrowser} from './browser-helper.mjs';
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import path from 'node:path';
-const require=createRequire(import.meta.url);
-const playwright=require('playwright');
 const root=fileURLToPath(new URL('../../',import.meta.url));
 const base=process.env.TEST_URL||'http://127.0.0.1:4173';
-const browser=await playwright.chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||playwright.chromium.executablePath()});
+const browser=await launchBrowser();
 const context=await browser.newContext({viewport:{width:1920,height:1080}});
 const page=await context.newPage();
 const errors=[],requests=[],layout=[];
@@ -54,7 +52,7 @@ try {
      return result;
     });
     if(issues.length)layout.push({size,language,page:`P${String(i).padStart(2,'0')}`,issues});
-    if(size.width===1920&&language==='both'&&[1,2,4,5,8,13,14,17,24,25].includes(i))await page.screenshot({path:path.join(shots,`P${String(i).padStart(2,'0')}.png`)});
+    if(size.width===1920&&language==='both')await page.screenshot({path:path.join(shots,`P${String(i).padStart(2,'0')}.png`)});
    }
   }
  }

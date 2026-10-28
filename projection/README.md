@@ -13,13 +13,17 @@ npm run dev
 
 開啟 http://127.0.0.1:4173 。此服務只監聽本機。修改原始碼後執行 `npm run build`，再重新整理瀏覽器；本版沒有自動熱更新。
 
+完整自動測試只需一個指令，不必先啟動服務：
+
 ```sh
-npm run check
-npx playwright install chromium
-npm run test:browser
+npm run test:e2e
 ```
 
-瀏覽器測試須先啟動本機服務，涵蓋 26 頁、1920×1080／1280×720、雙語／英文／中文、直接離線開檔、重新整理與 UI 操作。可用 `CHROME_PATH` 指定已安裝的 Chrome 執行檔。測試截圖與逐頁版面報告產生在 `projection/screenshots/`，不將這些大型產出加入 Git；CI 另保存為 artifact。
+測試會自動啟動獨立本機服務，完成核心、156 組版面、完整 120 分鐘虛擬流程、備份還原與離線匯出檢查，再關閉測試服務。若已安裝 Chrome，可直接使用；沒有可用瀏覽器時才需執行 `npx playwright install chromium`。可用 `CHROME_PATH` 指定瀏覽器執行檔。
+
+結果在 `projection/reports/latest.html`；正常本機服務啟動後，也可開啟 http://127.0.0.1:4173/test-results 。macOS 可雙擊根目錄的 `Start-Projection.command` 啟動投影，或 `Test-Projection.command` 執行整套測試。逐步人工試用見 [本機測試指引](LOCAL-TEST.md)。
+
+截圖、JSON 與 HTML 報告不加入 Git；CI 保存為 artifact。若只想跑個別測試，`npm test` 檢查核心，`npm run test:browser` 與 `npm run test:journey` 則需先啟動本機服務。
 
 ## 離線使用
 
@@ -62,7 +66,7 @@ npm run build
 
 ## GitHub 與部署
 
-在功能分支開發，透過 Pull Request 檢查後合併。GitHub Actions 驗證狀態核心、建置、瀏覽器版面與離線檔案，並保存下載用 HTML。
+在功能分支開發，透過 Pull Request 檢查後合併。GitHub Actions 使用同一套 `test:e2e` 驗證狀態核心、建置、瀏覽器版面、完整流程與離線檔案，並保存下載用 HTML。
 
 目前本機與離線檔已能完成投影用途，不需雲端。`projection/Dockerfile` 提供後續容器部署入口，使用平台提供的 PORT；若要部署 Google Cloud Run，下一步再指定 GCP 專案、區域與存取範圍。此版本沒有部署雲端，也不包含雲端照片儲存功能。
 

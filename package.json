@@ -11,7 +11,10 @@
     "build": "node projection/scripts/build.mjs",
     "test": "node --test projection/test/*.test.mjs",
     "test:browser": "node projection/test/browser.mjs",
-    "check": "npm test && npm run build"
+    "check": "npm test && npm run build",
+    "start": "node projection/scripts/serve.mjs",
+    "test:journey": "node projection/test/journey.mjs",
+    "test:e2e": "node projection/scripts/test-local.mjs"
   },
   "dependencies": {
     "qrcode-generator": "2.0.4"
