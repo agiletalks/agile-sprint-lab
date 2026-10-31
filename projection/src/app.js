@@ -1,322 +1,387 @@
-import { Workshop, freshState, validateState, STORAGE_KEY, DEFAULT_CONFIG, clockText, alertDefinitions, validUploadUrl, targetTimestamp } from './engine.js';
-
+/* Agile Sprint Lab · Projection
+   The projected view is the presenter's view: slides, a global floating timer, and page numbers.
+   No separate facilitator console. State (page, language, timer) persists in localStorage. */
 const slides = JSON.parse(document.getElementById('slide-data').textContent);
-const embeddedConfig = JSON.parse(document.getElementById('config-data').textContent);
+const assets = JSON.parse(document.getElementById('config-data').textContent);
+const CONFIG = {
+  title:'Agile Sprint Lab', facilitatorName:'Percy Hsu', email:'agiletalks@gmail.com',
+  eventName:'IAF Asia 2026', location:'Hangzhou', eventDate:'2026-11-01', timezone:'Asia/Shanghai',
+  scheduledStart:'08:30', scheduledEnd:'10:30', teamSizeMin:4, teamSizeMax:5,
+  feedbackWallLabels:[{en:'Feedback for Percy',zhTW:'给 Percy 的反馈'},{en:'My next experiment',zhTW:'我的下一次尝试'}]
+};
+const ROLE = {en:'Enterprise Agile Coach & Facilitator', zhTW:'企业敏捷教练与引导师'};
+const STORAGE_KEY = 'agile-sprint-lab-projection-v2';
+const LANGS = ['both','en','zh'];
+const MAX_TIMER_SEC = 180*60;
+const LAST = slides.length - 1;
 const $ = s => document.querySelector(s);
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let storageWarning = '', corruptStorage = false, panelError = '', audio = null, lastAnnouncement = '', savedAt = 0;
-const initial = freshState(slides);
-initial.config = {...initial.config,...embeddedConfig};
-let restored = initial;
-try {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (raw) {
-    const value = JSON.parse(raw);
-    if (!validateState(value, slides)) throw new Error('incompatible');
-    restored = value;
-  }
-} catch (e) {
-  if (e instanceof SyntaxError || e.message === 'incompatible') {
-    corruptStorage = true;
-    storageWarning = '儲存資料格式不相容或毀損。目前以記憶體開始新場，舊資料尚未覆寫；請先匯出備份，再清除本場進度。';
-  } else storageWarning = '瀏覽器儲存不可用，目前僅保留記憶體進度；關閉前請匯出進度備份。';
+const loc = (en, zhTW) => ({en, zhTW});
+const clockText = sec => { const n=Math.max(0,Math.ceil(sec)); return `${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`; };
+
+/* ---------- State ---------- */
+const maxSteps = s => s && s.actions ? s.actions.length : 0;
+function defaults() {
+  return {page:0, reveal:0, lang:'both', timerOpen:false, timer:{durationSec:300, remainingSec:300, running:false, endsAt:null}};
 }
-// Adopt newly supplied branding without resetting any saved workshop progress.
-if (!restored.config.logoDataUri && embeddedConfig.logoDataUri) restored.config.logoDataUri=embeddedConfig.logoDataUri;
-let workshop = new Workshop(slides, restored);
-const stage = $('#slide'), panel = $('#console'), clearDialog = $('#confirm-clear');
-const toolLabels = [null,
- ['Your experience','您的工作經驗'],['Listening','聆聽'],['Language agreement','語言約定'],
- ['Introduction Card','個人自我介紹卡'],['Introduction Card','自我介紹卡'],['Introduction Card','自我介紹卡'],
- ['Group notes','小組紀錄'],['Challenge Card + AC Card','挑戰卡＋驗收條件卡'],['Challenge Card + AC Card','挑戰卡＋驗收條件卡'],
- ['Challenge Card + AC Card + DoR Card','個人挑戰卡、AC 卡；小組 DoR 卡'],['Challenge Card + AC Card + DoR Card','挑戰卡、AC 卡與 DoR 卡'],
- ['DoD Card','共同完成標準卡'],['Challenge Card + AC Card · R / G dots','挑戰卡、AC 卡與紅綠點貼紙'],
- ['Challenge Card + AC Card · Matrix','挑戰卡、AC 卡與矩陣海報'],['Challenge matrix + paired cards','挑戰矩陣與配對卡片'],
- ['Selected cards + DoD Card','已選挑戰卡、AC 卡與 DoD 卡'],['Challenge + AC + DoD · Poster','挑戰卡、AC 卡、DoD 卡與成果海報'],
- ['Posters · Phone','成果海報、手機'],['Posters · Feedback notes','成果海報、回饋便條'],['Posters · Feedback notes','成果海報、回饋便條'],
- ['Posters · Feedback notes','成果海報、回饋便條'],['Quiet reflection','安靜反思'],['Group notes','小組紀錄'],
- ['Sticky notes · Feedback wall','便條紙、回饋牆'],['Your next session','您的下一場活動']
-];
-const loc = (en, zhTW) => ({en,zhTW});
-const stateLabels = {idle:loc('Ready','尚未開始'),running:loc('In progress','進行中'),paused:loc('Paused','已暫停'),expired:loc('Time is up','時間到')};
+function validState(v) {
+  const t=v?.timer, num=n=>Number.isFinite(n)&&n>=0;
+  return !!v && Number.isInteger(v.page) && v.page>=0 && v.page<=LAST
+    && (v.reveal===undefined || (Number.isInteger(v.reveal) && v.reveal>=0 && v.reveal<=10))
+    && LANGS.includes(v.lang) && typeof v.timerOpen==='boolean'
+    && !!t && num(t.durationSec) && t.durationSec<=MAX_TIMER_SEC && num(t.remainingSec) && t.remainingSec<=MAX_TIMER_SEC
+    && typeof t.running==='boolean' && (t.running ? num(t.endsAt) : t.endsAt===null);
+}
+let state = (() => { try { const v=JSON.parse(localStorage.getItem(STORAGE_KEY)); if (validState(v)) { if (v.reveal===undefined) v.reveal=0; return v; } } catch {} return defaults(); })();
+let storageOk = true;
+function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); storageOk=true; } catch { storageOk=false; } }
+
+/* ---------- Timer model (one global countdown, independent of pages) ---------- */
+const T = {
+  remaining() { const t=state.timer; return t.running ? Math.max(0,(t.endsAt-Date.now())/1000) : t.remainingSec; },
+  status() { const t=state.timer, r=T.remaining(); return t.running ? 'running' : r<=0 && t.durationSec>0 ? 'expired' : r>=t.durationSec ? 'ready' : 'paused'; },
+  start() { const t=state.timer; if (t.running) return; if (t.remainingSec<=0) t.remainingSec=t.durationSec; if (t.remainingSec<=0) return; t.endsAt=Date.now()+t.remainingSec*1000; t.running=true; },
+  pause() { const t=state.timer; if (!t.running) return; t.remainingSec=T.remaining(); t.running=false; t.endsAt=null; },
+  toggle() { state.timer.running ? T.pause() : T.start(); },
+  stop() { const t=state.timer; t.running=false; t.endsAt=null; t.remainingSec=t.durationSec; },
+  restart() { T.stop(); T.start(); },
+  set(sec) { const t=state.timer; sec=Math.min(MAX_TIMER_SEC,Math.max(0,Math.round(sec))); t.durationSec=sec; t.remainingSec=sec; t.running=false; t.endsAt=null; },
+  adjust(delta) {
+    const t=state.timer, next=Math.min(MAX_TIMER_SEC,Math.max(0,T.remaining()+delta));
+    if (t.running) { if (next<=0) { t.running=false; t.endsAt=null; t.remainingSec=0; } else t.endsAt=Date.now()+next*1000; }
+    else t.remainingSec=next;
+    if (next>t.durationSec) t.durationSec=next; // keep the progress bar meaningful
+  },
+  settle() { const t=state.timer; if (t.running && Date.now()>=t.endsAt) { t.running=false; t.endsAt=null; t.remainingSec=0; return true; } return false; }
+};
+function parseTime(value) {
+  const v=String(value).trim();
+  let m;
+  if ((m=v.match(/^(\d{1,3})$/))) return +m[1]*60;                 // "5" = 5 minutes
+  if ((m=v.match(/^(\d{1,3}):([0-5]?\d)$/))) return +m[1]*60 + +m[2]; // "5:30" / "05:30"
+  return null;
+}
+
+/* ---------- Shared building blocks ---------- */
 function textPair(value, className='') {
   if (!value) return '';
-  const config=workshop.state.config;
-  const replace = t => String(t || '').replace(/4–5/g, `${config.teamSizeMin}–${config.teamSizeMax}`);
-  return `<div class="pair ${className}">${value.en ? `<div class="en" lang="en">${esc(replace(value.en))}</div>` : ''}${value.zhTW ? `<div class="zh" lang="zh-Hant">${esc(replace(value.zhTW))}</div>` : ''}</div>`;
+  const replace = t => String(t || '').replace(/4–5/g, `${CONFIG.teamSizeMin}–${CONFIG.teamSizeMax}`);
+  return `<div class="pair ${className}">${value.en ? `<div class="en" lang="en">${esc(replace(value.en))}</div>` : ''}${value.zhTW ? `<div class="zh" lang="zh-Hans">${esc(replace(value.zhTW))}</div>` : ''}</div>`;
 }
-function announce(text) {
-  if (text && text !== lastAnnouncement) { $('#announcement').textContent=text; lastAnnouncement=text; }
+const LABELS = {why:loc('WHY','为什么'),what:loc('WHAT','要完成什么'),how:loc('HOW','怎么做'),about:loc('ABOUT','讲师简介')};
+function label(value, className='') {
+  return `<div class="section-label ${className}"><span class="en" lang="en">${esc(value.en)}</span><span class="zh" lang="zh-Hans">${esc(value.zhTW)}</span></div>`;
 }
-function save() {
-  if (corruptStorage) return;
-  try { localStorage.setItem(STORAGE_KEY,JSON.stringify(workshop.state)); }
-  catch { storageWarning='儲存失敗，目前僅保留記憶體進度；請在關閉前匯出進度備份。'; }
-}
+function inline(value) { return `<span class="en" lang="en">${esc(value.en)}</span><span class="zh" lang="zh-Hans">${esc(value.zhTW)}</span>`; }
 function logo(size='top') {
-  const c=workshop.state.config;
-  return c.logoDataUri ? `<img class="${size === 'top' ? 'top-logo' : ''}" src="${esc(c.logoDataUri)}" alt="Company logo">` : (size === 'top' ? '<span class="brand-square" aria-hidden="true"></span>' : '<div class="brand-type">AGILE<span>SPRINT</span>LAB.</div>');
+  return assets.logoDataUri ? `<img class="${size==='top'?'top-logo':''}" src="${esc(assets.logoDataUri)}" alt="Company logo">` : (size==='top' ? '<span class="brand-square" aria-hidden="true"></span>' : '<div class="brand-type">THINK.<span>MAKE.</span>LEARN.</div>');
 }
-function featureLogo() {
-  return workshop.state.config.logoDataUri ? `<figure class="brand-feature">${logo('large')}</figure>` : '';
+function topbar() { return `<header class="topbar brand-bar"><div class="wordmark">${logo()}<span>${esc(CONFIG.title)}</span></div></header>`; }
+function howHeader(s) {
+  const n = maxSteps(s);
+  const dots = n ? `<span class="how-dots" role="group" aria-label="HOW steps">${Array.from({length:n},(_,i)=>`<button type="button" class="how-dot" data-reveal="${i+1}" aria-label="Step ${i+1}"></button>`).join('')}</span>` : '';
+  return `<div class="how-head">${label(LABELS.how,'how-label')}${dots}</div>`;
 }
-function topbar(s) {
-  return `<header class="topbar"><div class="wordmark">${logo()}<span>${esc(workshop.state.config.title)}</span></div><div class="top-meta">${s.stepId ? `<span class="step-code"><span class="en">STEP ${String(s.stepId).padStart(2,'0')} / 13</span><span class="zh">步驟 ${String(s.stepId).padStart(2,'0')} / 13</span></span>${textPair(s.stepTitle)}` : `<span>${esc(workshop.state.config.eventName)}</span>`}</div></header>`;
+function actionsHTML(s, variant='list') {
+  return `<ol class="actions actions-${variant} count-${s.actions.length}">${s.actions.map((a,i)=>`<li data-step="${i+1}"><span class="action-no" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><div class="action-body">${textPair(a,'action-text')}${a.note?textPair(a.note,'action-note'):''}</div></li>`).join('')}</ol>`;
 }
-function actionsHTML(s) {
-  return `<ol class="actions">${s.actions.map((a,i)=>`<li><span class="action-no" aria-hidden="true">${String(i+1).padStart(2,'0')}</span>${textPair(a)}</li>`).join('')}</ol>`;
-}
-function mini(en,zh,extra='') { return `<div class="mini-card ${extra}">${textPair(loc(en,zh))}</div>`; }
+const card = (title, body, className='') => `<div class="card ${className}">${title?label(title,'card-title'):''}${body}</div>`;
+const figure = (title, body, className='') => `<figure class="diagram ${className}">${title?label(title,'figure-label'):''}${body}</figure>`;
+
+/* ---------- Visual examples (right column of split pages) ---------- */
 function diagram(s) {
-  if (s.id === 'P01') return featureLogo();
-  if (s.id === 'P04') return `<div class="diagram"><div class="mini-card"><div class="card-label">INTRODUCTION CARD</div><div class="intro-fields">${[['Name','稱呼'],['Strengths','長處'],['Working languages','可用語言'],['Preferred language','偏好語言']].map(a=>textPair(loc(...a))).join('')}</div></div></div>`;
-  if (s.id === 'P08') return `<div class="diagram"><div class="mini-card"><div class="card-label">CHALLENGE CARD</div>${textPair(loc('Situation · Challenge · Impact','情境・挑戰・影響'))}<div class="card-fields"><span>When I am…</span><span>The challenge I face is…</span><span>This affects my work by…</span></div></div><div class="mini-card ac"><div class="card-label">ACCEPTANCE CRITERIA CARD</div>${textPair(loc('A useful response would…','有用的回應應能……'))}</div></div>`;
-  if (s.id === 'P10') return `<div class="diagram">${mini('Clear context','情境、挑戰與影響清楚')}${mini('Understandable AC','驗收條件可理解')}${mini('Progress today','今天能有實質進展')}</div>`;
-  if (s.id === 'P12') return `<div class="diagram poster-check">${mini('Challenge','挑戰')}${mini('AC','驗收條件')}${mini('Solution','可以使用或嘗試的解法')}</div>`;
-  if (s.id === 'P13') return `<div class="diagram"><div class="mini-card"><div class="vote-tag"><span class="vote-icon">R</span>${textPair(loc('Experienced','經歷過'))}</div></div><div class="mini-card"><div class="vote-tag"><span class="vote-icon green">G</span>${textPair(loc('First choice','優先選擇'))}</div></div></div>`;
-  if (s.id === 'P17') return `<div class="cycle">${[['Develop a useful solution','發展有用的解法'],['Capture it on one poster','整理成一張海報'],['Check AC + DoD together','一起檢查 AC 與 DoD'],['When done, check time. Choose the next if time allows.','完成後確認時間，時間允許再選下一題']].map((a,i)=>`<div class="mini-card"><div class="cycle-index">0${i+1}</div>${textPair(loc(...a))}</div>`).join('')}</div>`;
-  if (s.id === 'P24') return `<div class="diagram two-notes">${workshop.state.config.feedbackWallLabels.map((l,i)=>`<div class="mini-card"><div class="card-label">NOTE 0${i+1}</div>${textPair(l)}</div>`).join('')}</div>`;
+  switch (s.id) {
+    case 'P01': {
+      const facts=[['120',loc('minutes','分钟')],['13',loc('steps','个步骤')],[`${CONFIG.teamSizeMin}–${CONFIG.teamSizeMax}`,loc('people per team','人一组')]];
+      return figure(loc('At a glance','工作坊概览'),`<dl class="facts">${facts.map(([n,l])=>`<div class="fact"><dt>${esc(n)}</dt><dd>${textPair(l)}</dd></div>`).join('')}</dl>`,'fig-facts');
+    }
+    case 'P04': {
+      const src=assets.cards?.intro||'';
+      return figure(null,`<div class="card-viewer" data-popup="intro" role="button" tabindex="0" aria-label="Click to view Introduction Card full screen"><img class="card-img" src="${esc(src)}" alt="Introduction Card example"><span class="zoom-hint">${inline(loc('Click to view full screen','点击全屏放大'))}</span></div>`,'fig-card-img');
+    }
+    case 'P08': {
+      const ch=assets.cards?.challenge||'', ac=assets.cards?.ac||'';
+      return figure(null,`<div class="card-tabs" role="tablist" aria-label="Card examples"><button type="button" class="card-tab is-on" data-card="challenge">${inline(loc('Challenge Card','挑战卡'))}</button><button type="button" class="card-tab" data-card="ac">${inline(loc('Acceptance Criteria','验收条件卡'))}</button></div><div class="card-viewer" id="p08-cards" data-active="challenge" data-popup="p08" role="button" tabindex="0" aria-label="Click to view card full screen"><img class="card-img card-challenge" src="${esc(ch)}" alt="Challenge Card example"><img class="card-img card-ac" src="${esc(ac)}" alt="Acceptance Criteria Card example"><span class="zoom-hint">${inline(loc('Click to view full screen','点击全屏放大'))}</span></div>`,'fig-card-img fig-dual-cards');
+    }
+    case 'P10': {
+      const src=assets.cards?.dor||'';
+      return figure(null,`<div class="card-viewer" data-popup="dor" role="button" tabindex="0" aria-label="Click to view DoR Card full screen"><img class="card-img" src="${esc(src)}" alt="Definition of Ready (DoR) Card example"><span class="zoom-hint">${inline(loc('Click to view full screen','点击全屏放大'))}</span></div>`,'fig-card-img');
+    }
+    case 'P12': {
+      const src=assets.cards?.dod||'';
+      return figure(null,`<div class="card-viewer" data-popup="dod" role="button" tabindex="0" aria-label="Click to view DoD Card full screen"><img class="card-img" src="${esc(src)}" alt="Definition of Done (DoD) Card example"><span class="zoom-hint">${inline(loc('Click to view full screen','点击全屏放大'))}</span></div>`,'fig-card-img');
+    }
+    case 'P13':
+      return figure(loc('Dot stickers','圆点贴纸'),`<div class="votes"><div class="vote"><span class="vote-icon red" aria-hidden="true">R</span><div>${textPair(loc('Experienced','经历过'),'vote-name')}${textPair(loc('One on each challenge you have experienced','每个经历过的挑战各贴一点'),'vote-rule')}</div></div><div class="vote"><span class="vote-icon green" aria-hidden="true">G</span><div>${textPair(loc('First choice','优先选择'),'vote-name')}${textPair(loc('One per person','每人只有一点'),'vote-rule')}</div></div></div>`,'fig-votes');
+    case 'P14': return matrixHTML();
+    case 'P24':
+      return figure(loc('Feedback wall','反馈墙'),`<div class="notes">${CONFIG.feedbackWallLabels.map((l,i)=>`<div class="note"><span class="note-no">${String(i+1).padStart(2,'0')}</span>${textPair(l)}</div>`).join('')}</div>`,'fig-notes');
+  }
   return '';
 }
 function matrixHTML() {
-  return `<div class="matrix-figure"><svg class="matrix-svg" viewBox="0 0 510 365" role="img" aria-label="挑戰矩陣：紅點共同經驗向右增加，綠點優先意願向上增加；兩軸 0 至組員人數 N。"><defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#151515"/></marker></defs>${[0,1,2,3,4].map(i=>`<line class="guide" x1="115" x2="455" y1="${260-i*44}" y2="${260-i*44}"/><line class="guide" x1="${115+i*80}" x2="${115+i*80}" y1="260" y2="66"/>`).join('')}<path class="axis" d="M115 57 V260 H475" fill="none" marker-end="url(#arrow)"/><path class="axis" d="M115 260 V42" marker-end="url(#arrow)"/>${['0','1','2','…','N'].map((n,i)=>`<text class="tick" x="${115+i*80}" y="291" text-anchor="middle">${n}</text><text class="tick" x="94" y="${267-i*44}" text-anchor="end">${n}</text>`).join('')}<text class="axis-en en" x="290" y="328" text-anchor="middle">R · Shared experience →</text><text class="axis-zh zh" x="290" y="359" text-anchor="middle">紅點：共同經驗</text><text class="axis-en en" x="20" y="24">G · First choices ↑</text><text class="axis-zh zh" x="20" y="55">綠點：優先意願</text></svg>${textPair(loc('N = people in your team','N＝實際組員數；示意，不代表票數結果'),'matrix-note')}</div>`;
+  const ticks=['0','1','2','…','N'];
+  const svg=`<svg class="matrix-svg" viewBox="0 0 640 500" role="img" aria-label="挑战矩阵：红点共同经验向右增加，绿点优先意愿向上增加；两轴 0 至组员人数 N。"><defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L9,4 z" fill="#151515"/></marker></defs>
+${ticks.map((n,i)=>`<line class="guide" x1="120" x2="580" y1="${390-i*70}" y2="${390-i*70}"/><line class="guide" x1="${120+i*110}" x2="${120+i*110}" y1="390" y2="110"/>`).join('')}
+<path class="axis" d="M120 390 H610" marker-end="url(#arrow)"/><path class="axis" d="M120 390 V92" marker-end="url(#arrow)"/>
+${ticks.map((n,i)=>`<text class="tick" x="${120+i*110}" y="426" text-anchor="middle">${n}</text><text class="tick" x="100" y="${398-i*70}" text-anchor="end">${n}</text>`).join('')}
+<text class="axis-en en" x="0" y="29"><tspan class="t-green">Green</tspan> · First choices ↑</text><text class="axis-zh zh" x="0" y="62"><tspan class="t-green">绿点</tspan>：优先意愿</text>
+<text class="axis-en en" x="610" y="464" text-anchor="end"><tspan class="t-red">Red</tspan> · Shared experience →</text><text class="axis-zh zh" x="610" y="496" text-anchor="end"><tspan class="t-red">红点</tspan>：共同经验</text></svg>`;
+  return figure(loc('Challenge matrix','挑战矩阵'),`${svg}${textPair(loc('N = people in your team','N＝实际组员数；仅为示意'),'matrix-note')}`,'fig-matrix');
 }
-function supportDefault(s) {
-  const map={P05:loc('Meet at least 3 people','至少認識三位夥伴'),P06:loc('Need a team? Ask Percy.','需要組隊協助，請找 Percy'),P09:loc('Quiet writing. One paired set per person.','安靜書寫；每人一組配對卡片'),P11:loc('Clarify first. Up to 2 minutes per person.','先釐清；每人最多兩分鐘'),P17:loc('Keep AC + DoD visible. One challenge at a time.','讓 AC 與 DoD 保持可見；一次處理一題'),P20:loc('Switch hosts now','現在換手'),P24:loc('Use a comfortable language; add short English if possible.','使用熟悉的語言，方便時補上簡短英文')};
-  if(map[s.id]) return map[s.id];
-  if (s.id==='P08'||s.id==='P04') return null; // The full example remains in facilitator notes.
+function cycleHTML() {
+  const steps=[['Develop a useful solution','发展有用的解法'],['Capture it on one poster','整理成一张海报'],['Check AC + DoD together','一起检查 AC 与 DoD'],['Check the time','确认剩余时间']];
+  return `<div class="cycle-wrap"><ol class="cycle">${steps.map((a,i)=>`<li data-step="${i+1}"><span class="cycle-no" aria-hidden="true">${String(i+1).padStart(2,'0')}</span>${textPair(loc(...a))}</li>`).join('')}</ol><div class="cycle-return" data-step="4">${textPair(loc('Time left? Choose the next challenge and repeat','还有时间？选下一题，再循环一次'),'cycle-return-label')}</div></div>`;
+}
+function supportText(s) {
+  const map={P06:loc('Need a team? Ask Percy.','需要组队协助，请找 Percy'),P09:loc('Quiet writing. One paired set per person.','安静书写；每人一组配对卡片'),P11:loc('Clarify first. Up to 2 minutes per person.','先厘清；每人最多两分钟'),P17:loc('Keep AC + DoD visible. One challenge at a time.','让 AC 与 DoD 保持可见；一次处理一题'),P20:loc('Switch hosts now','现在换手'),P24:loc('Use a comfortable language; add short English if possible.','使用熟悉的语言，方便时补上简短英文')};
+  if (map[s.id]) return map[s.id];
+  if (s.id==='P08'||s.id==='P04') return null;
   return s.supportingText[0] || null;
 }
-function timerHTML() {
-  return `<aside class="timer-card" aria-label="Activity time and materials"><div class="timer-label">${textPair(loc('THIS ACTIVITY','本活動'))}</div><div class="timer-number" id="timer-number" aria-live="off"></div><div class="timer-state" id="timer-state"></div><div class="timer-progress" aria-hidden="true"><div class="timer-progress-fill" id="timer-progress-fill"></div></div><div class="preview-label" id="preview-label"></div><div class="tool-area"><div class="eyebrow">${textPair(loc('TOOLS','使用工具'))}</div>${textPair(loc(...toolLabels[workshop.state.activePage]))}</div><div class="step-left" id="step-left"></div></aside>`;
-}
-function footer(s) {
-  return `<footer class="footer-info">${[['WHY','原理',s.why],['OUTPUT','產出',s.output]].map(([en,zh,val])=>`<div class="info-row"><div class="info-label">${textPair(loc(en,zh))}</div>${textPair(val,'info-text')}</div>`).join('')}</footer>`;
-}
-function bottom(s) {
-  const siblings=slides.filter(v=>v.stepId===s.stepId);
-  const progress=siblings.length>1 ? `<div class="substeps">${siblings.map(v=>`<span class="${s.id===v.id?'current':''}">${textPair(v.title)}</span>`).join('')}</div>` : `<div class="step-track" aria-label="Step ${s.stepId} of 13">${Array.from({length:13},(_,i)=>`<span class="${i+1===s.stepId?'current':''}"></span>`).join('')}</div>`;
-  return `<div class="bottom-bar">${progress}<span class="page-code"><span class="en">PAGE</span><span class="zh">頁碼</span> ${s.id} / P25</span></div>`;
-}
+const supportHTML = s => { const t=supportText(s); return t ? `<div class="support-band" data-step="${maxSteps(s)}">${textPair(t)}</div>` : ''; };
+
+/* ---------- Pages ---------- */
 function renderCover() {
-  const c=workshop.state.config, started=workshop.state.workshopStartedAt!==null;
-  return `${topbar(slides[0])}<section class="cover-main"><div><div class="cover-index">${textPair(loc('A hands-on workshop','實作工作坊'))}</div><h1>${c.title==='Agile Sprint Lab'?'Agile<span>Sprint Lab.</span>':esc(c.title)}</h1><div class="cover-subtitle">${textPair(loc('Working together on our challenges in the age of AI','一起面對 AI 時代的工作挑戰'))}</div><div class="cover-host">${esc(c.facilitatorName)}<span>${textPair(loc('Agile Coach','敏捷教練'))}</span></div><div class="cover-start"><button class="primary" data-command="start">${textPair(started?loc('Return to activity','返回目前活動'):loc('Start workshop','開始工作坊'))} <span aria-hidden="true">→</span></button><small>${started?slides[workshop.state.lastActivityPage].id:textPair(loc('120 minutes · 13 steps','120 分鐘・13 步驟'))}</small></div></div><div class="cover-mark">${c.logoDataUri?logo('large'):'<div class="large-number">120<span style="color:var(--orange)">.</span></div><div class="minutes-label">Minutes of collaboration</div><div class="brand-type">THINK.<span>MAKE.</span>LEARN.</div>'}</div></section><footer class="cover-bottom"><div>${esc(c.eventName)} · ${esc(c.location)}<br><small>${esc(c.eventDate)} · ${esc(c.scheduledStart)}–${esc(c.scheduledEnd)} · ${esc(c.timezone)}</small></div><a class="email" href="mailto:${esc(c.email)}">${esc(c.email)}</a></footer>`;
+  return `${topbar()}<section class="cover-main"><div class="cover-copy">${label(loc('A hands-on workshop','实践工作坊'),'cover-index')}<h1>Agile<span>Sprint Lab.</span></h1><div class="cover-subtitle">${textPair(loc('Working together on our challenges in the age of AI','一起面对 AI 时代的工作挑战'))}</div><div class="cover-host"><strong>${esc(CONFIG.facilitatorName)}</strong><span class="zh" lang="zh-Hans">徐柏峰</span><span class="cover-role">${textPair(ROLE)}</span></div><div class="cover-start"><button class="primary" data-cmd="next">${textPair(loc('Start workshop','开始工作坊'))} <span aria-hidden="true">→</span></button><small>${textPair(loc('120 minutes · 13 steps','120 分钟・13 个步骤'))}</small></div></div><div class="cover-mark">${logo('large')}</div></section><footer class="cover-bottom"><div>${esc(CONFIG.eventName)} · ${esc(CONFIG.location)}<br><small>${esc(CONFIG.eventDate)} · ${esc(CONFIG.scheduledStart)}–${esc(CONFIG.scheduledEnd)} · ${esc(CONFIG.timezone)}</small></div><a class="email" href="mailto:${esc(CONFIG.email)}">${esc(CONFIG.email)}</a></footer>`;
 }
 function profileHTML() {
-  const c=workshop.state.config;
-  return `<div class="content-area"><div class="profile-layout"><div><div class="profile-name">${esc(c.facilitatorName)}</div><div class="profile-role">${textPair(loc('Agile Coach','敏捷教練'))}</div><div class="profile-intro">${textPair(loc('I share practical Agile elements that help teams work together.','分享協助團隊合作的敏捷實務。'))}</div></div>${featureLogo()}</div><div class="profile-contact"><a class="email" href="mailto:${esc(c.email)}">${esc(c.email)}</a></div></div>`;
+  const credentials=[
+    loc('Agile and digital transformation','敏捷转型与数字化转型'),
+    loc('2025 distinguished lecturer, Taiwan Academy of Banking and Finance · five consecutive years','2025 年台湾金融研训院菁英讲座 · 连续五年'),
+    loc('Founding chair, Agile Experts Association','敏捷专家学会创会理事长'),
+    loc('Applying Agile since 2009 · coached over 45 organizations across industries','2009 年起应用敏捷 · 辅导跨行业 45 家以上组织')
+  ];
+  return `${assets.profileImageDataUri?`<figure class="profile-portrait"><img src="${esc(assets.profileImageDataUri)}" alt="Percy 徐柏峰的卡通肖像"></figure>`:''}<div class="profile-copy"><div class="profile-name"><span class="profile-en">${esc(CONFIG.facilitatorName)}</span><span class="zh" lang="zh-Hans">徐柏峰</span></div>${textPair(ROLE,'profile-role')}<ul class="profile-credentials">${credentials.map(v=>`<li>${textPair(v)}</li>`).join('')}</ul></div>`;
 }
-function uploadHTML() {
-  const url=workshop.state.config.uploadUrl;
-  if (!validUploadUrl(url)) return '';
-  try {
-    qrcode.stringToBytes=qrcode.stringToBytesFuncs['UTF-8'];
-    const qr=qrcode(0,'M'); qr.addData(new URL(url).href,'Byte'); qr.make();
-    return `<div class="upload-box">${qr.createSvgTag({cellSize:3,margin:4,scalable:true})}<div>${textPair(loc('Upload photos if available','可連線時上傳照片'))}<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(url)}</a></div></div>`;
-  } catch { return ''; }
+function contactHTML() {
+  const qr=assets.contactQr||{};
+  const codes=[['wechat',loc('WeChat','微信')],['linkedin',loc('LinkedIn','领英')]].filter(([k])=>qr[k]);
+  return `<aside class="contact-card" aria-label="Contact">${label(loc("Let's stay connected",'保持联系'),'contact-label')}<div class="contact-name"><strong>${esc(CONFIG.facilitatorName)}</strong><span class="zh" lang="zh-Hans">徐柏峰</span></div>${textPair(ROLE,'contact-role')}${codes.length?`<div class="qr-row">${codes.map(([k,l])=>`<figure><img src="${esc(qr[k])}" alt="${esc(l.en)} QR code"><figcaption>${textPair(l)}</figcaption></figure>`).join('')}</div>`:''}<a class="email" href="mailto:${esc(CONFIG.email)}">${esc(CONFIG.email)}</a></aside>`;
 }
-function renderStage() {
-  const s=workshop.slide,c=workshop.state.config;
-  stage.className=`canvas page-${s.id} lang-${c.languageMode} ${s.id==='P00'?'cover':''} ${s.id==='P25'?'closing':''} ${c.showTimer?'':'timer-hidden'}`;
-  document.documentElement.lang=c.languageMode==='zh'?'zh-Hant':'en';
-  if(!s.stepId) stage.innerHTML=renderCover();
-  else {
-    let left=s.id==='P02'?profileHTML():`<div class="content-area ${['P08','P24'].includes(s.id)?'dense':''}"><div class="eyebrow">${textPair(loc('DO NOW','現在請做'))}</div>${s.id==='P14'?`<div class="matrix-layout">${matrixHTML()}${actionsHTML(s)}</div>`:s.id==='P17'?'':actionsHTML(s)}${diagram(s)}${s.id==='P18'?uploadHTML():''}${s.id==='P25'?`<div class="closing-summary"><div class="closing-thanks">${textPair(loc('Thank you for your ideas, participation, and support.','謝謝各位的想法、參與與彼此支持。'))}</div>${featureLogo()}</div><div class="profile-contact"><a class="email" href="mailto:${esc(c.email)}">${esc(c.email)}</a></div>`:'<div class="support-band" id="support-band"></div>'}</div>`;
-    stage.innerHTML=`${topbar(s)}<div class="title-block"><div class="step-number" aria-hidden="true">${String(s.stepId).padStart(2,'0')}</div><h1>${textPair(s.title)}</h1></div><section class="main-grid">${left}${timerHTML()}</section>${footer(s)}${bottom(s)}`;
+const SPLIT_PAGES=new Set(['P01','P04','P08','P10','P12','P13','P14','P24']);
+function layoutOf(s) {
+  if (s.id==='P02') return 'profile';
+  if (s.id==='P25') return 'closing';
+  if (s.id==='P17') return 'cycle';
+  return SPLIT_PAGES.has(s.id) ? 'split' : 'columns';
+}
+function mainHTML(s) {
+  const layout=layoutOf(s);
+  let body;
+  if (layout==='profile') body=`${label(LABELS.about,'how-label')}<div class="how-body">${profileHTML()}</div>`;
+  else if (layout==='closing') body=`<div class="how-body"><div class="how-main">${howHeader(s)}${actionsHTML(s)}<div class="closing-thanks" data-step="${maxSteps(s)}">${textPair(loc('Thank you for your ideas, participation, and support.','谢谢各位的想法、参与与彼此支持。'))}</div></div>${contactHTML()}</div>`;
+  else if (layout==='cycle') body=`${howHeader(s)}<div class="how-body">${cycleHTML()}${supportHTML(s)}</div>`;
+  else if (layout==='split') body=`${howHeader(s)}<div class="how-body"><div class="how-main">${actionsHTML(s)}${supportHTML(s)}</div>${diagram(s)}</div>`;
+  else body=`${howHeader(s)}<div class="how-body">${actionsHTML(s,'columns')}${supportHTML(s)}</div>`;
+  return `<section class="main-grid" aria-label="HOW"><div class="content-area layout-${layout}">${body}</div></section>`;
+}
+function setCardTab(which) {
+  const viewer=$('#p08-cards');
+  if (viewer) viewer.dataset.active=which;
+  document.querySelectorAll('.card-tab').forEach(btn => {
+    btn.classList.toggle('is-on', btn.dataset.card===which);
+  });
+  const modalImg=$('#card-modal-img');
+  if (modalImg && (which==='challenge'||which==='ac')) {
+    modalImg.src = assets.cards?.[which] || '';
+    modalImg.alt = which==='ac' ? 'Acceptance Criteria Card example' : 'Challenge Card example';
   }
-  updateDynamic(true);
 }
-function updateDynamic(force=false) {
-  const p=workshop.page,s=workshop.slide,c=workshop.state.config;
-  if(s.stepId) {
-    $('#timer-number').textContent=clockText(p.remainingSec);
-    $('#timer-state').innerHTML=`<span class="state-dot" aria-hidden="true"></span>${textPair(stateLabels[p.timerState])}`;
-    $('#timer-progress-fill').style.width=`${Math.min(100,p.remainingSec/Math.max(1,p.allocatedSec)*100)}%`;
-    $('#preview-label').innerHTML=p.planState==='deferred'?textPair(loc('Preview · not scheduled','回看・尚未重新排入')):'';
-    $('#step-left').innerHTML=`${textPair(loc('Step remaining','步驟剩餘'))}<strong>${clockText(workshop.stepRemaining())}</strong>`;
-    stage.classList.toggle('running',p.timerState==='running');
-    stage.classList.toggle('near-time',p.remainingSec<=s.durationSec*.2);
-    const band=$('#support-band');
-    if(band) {
-      const alert=workshop.activeAlert;
-      const key=alert?.id || 'default';
-      if(force||band.dataset.alert!==key) { band.innerHTML=textPair(alert || supportDefault(s)); band.dataset.alert=key; }
-    }
-    const a=workshop.activeAlert;
-    const stateAnnounce=`${s.id} ${stateLabels[p.timerState].zhTW}${a?`。${a.zhTW}`:''}`;
-    announce(stateAnnounce);
-  }
-  while(workshop.effects.length) { const e=workshop.effects.shift(); if(e==='expiry-sound') beep(); }
-  if(panel.open) updateMetrics();
+function openCardModal(kind) {
+  const modal=$('#card-modal'); if (!modal) return;
+  const isDual = kind==='p08' || kind==='challenge' || kind==='ac';
+  const active = kind==='p08' ? ($('#p08-cards')?.dataset.active || 'challenge') : kind;
+  const src = assets.cards?.[active] || '';
+  const tabs = isDual ? `<div class="card-tabs modal-tabs" role="tablist"><button type="button" class="card-tab ${active==='challenge'?'is-on':''}" data-card="challenge">${inline(loc('Challenge Card','挑战卡'))}</button><button type="button" class="card-tab ${active==='ac'?'is-on':''}" data-card="ac">${inline(loc('Acceptance Criteria','验收条件卡'))}</button></div>` : '<div></div>';
+  modal.innerHTML = `<div class="card-modal-bar">${tabs}<button type="button" class="card-modal-close" data-cmd="close-modal">${inline(loc('Close','关闭'))} ✕</button></div><div class="card-modal-body"><img id="card-modal-img" class="card-modal-img" src="${esc(src)}" alt="Card full screen view"></div>`;
+  modal.hidden = false;
 }
-function fmtTime(ms) { return new Intl.DateTimeFormat('en-GB',{timeZone:workshop.state.config.timezone,hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(ms); }
-function updateMetrics() {
-  const now=Date.now(),state=workshop.state,planned=workshop.plannedRemaining();
-  const elapsed=state.workshopStartedAt===null?'尚未開始':clockText((now-state.workshopStartedAt)/1000);
-  $('#metric-elapsed').textContent=elapsed;
-  $('#metric-eta').textContent=planned>0?fmtTime(now+planned*1000):'已排入活動結束';
-  $('#eta-caption').textContent=planned>0?(state.workshopStartedAt===null?'若現在開始，後續連續執行':'假設後續連續執行、不再暫停'):'可另查看待處理配額';
-  const diff=(now+planned*1000-targetTimestamp(state.config))/60000;
-  $('#metric-diff').textContent=planned>0?`${diff>=0?'超時':'提早'} ${Math.ceil(Math.abs(diff))} 分`:'—';
-  $('#metric-deferred').textContent=clockText(workshop.deferredRemaining());
-  $('#panel-current').textContent=`${workshop.slide.id} · ${clockText(workshop.page.remainingSec)} · ${stateLabels[workshop.page.timerState].zhTW}`;
+function closeCardModal() {
+  const modal=$('#card-modal');
+  if (modal && !modal.hidden) { modal.hidden=true; modal.innerHTML=''; return true; }
+  return false;
 }
-function field(name,label,type='text',extra='') {
-  return `<label>${label}<input name="${name}" type="${type}" value="${esc(workshop.state.config[name])}" ${extra}></label>`;
+function updateReveal() {
+  const s = slides[state.page], max = maxSteps(s);
+  const rev = Math.min(max, Math.max(0, state.reveal ?? 0));
+  state.reveal = rev;
+  document.querySelectorAll('#slide [data-step]').forEach(el => {
+    el.classList.toggle('is-hidden', +el.dataset.step > rev);
+  });
+  document.querySelectorAll('#slide .how-dot').forEach(btn => {
+    const on = +btn.dataset.reveal <= rev;
+    btn.classList.toggle('is-on', on);
+    btn.setAttribute('aria-pressed', String(on));
+  });
+  if (s.id === 'P08') setCardTab(rev === 2 ? 'ac' : 'challenge');
+  const grid = $('#slide .main-grid');
+  if (grid) grid.classList.toggle('can-reveal', rev < max);
 }
-function renderPanel() {
-  const c=workshop.state.config,p=workshop.page;
-  const deferred=workshop.state.pages.map((p,i)=>({p,i})).filter(({p,i})=>i&&p.planState==='deferred');
-  panel.innerHTML=`<div class="console-head"><div><h2 id="console-title">引導者控制台</h2><div id="panel-current" class="hint"></div></div><button data-command="panel-close" aria-label="關閉控制台 (Esc)">關閉 ×</button></div><p class="console-warning">此控制台會出現在投影。開啟面板不會暫停活動；僅開啟一個操作分頁。</p>${storageWarning?`<p class="storage-warning" role="alert">${esc(storageWarning)}</p>`:''}<div class="console-grid"><div><section class="console-section"><h3>活動與倒數</h3><div class="button-row"><button data-command="prev" ${workshop.state.activePage===0?'disabled':''}>← 上一頁</button><button data-command="next" ${workshop.state.activePage===25?'disabled':''}>下一頁 →</button></div><div class="button-row"><button class="primary" data-command="toggle">${p.timerState==='running'?'暫停':'開始／繼續'} <kbd>Space</kbd></button><button class="dark" data-command="next-start" ${workshop.state.activePage===25?'disabled':''}>下一頁並開始</button></div><div class="button-row"><button data-command="minus" ${!workshop.state.activePage?'disabled':''}>− 1 分鐘</button><button data-command="plus" ${!workshop.state.activePage?'disabled':''}>＋ 1 分鐘</button><button data-command="reset" ${!workshop.state.activePage?'disabled':''}>重設本頁</button></div><form id="remaining-form" class="time-edit"><label for="remaining-input">指定剩餘</label><input id="remaining-input" name="remaining" inputmode="numeric" pattern="[0-9]{1,4}:[0-5][0-9]" value="${clockText(p.remainingSec)}" aria-label="指定剩餘時間，格式 MM:SS" ${!workshop.state.activePage?'disabled':''}><button ${!workshop.state.activePage?'disabled':''}>套用</button></form><div class="button-row"><button data-command="fullscreen">全螢幕 <kbd>F</kbd></button><button data-command="timer">${c.showTimer?'隱藏':'顯示'}倒數 <kbd>T</kbd></button></div><label><input type="checkbox" id="sound-toggle" ${c.sound?'checked':''}>到時音效（每頁一次）</label><div class="button-row"><button data-command="dismiss">關閉提醒</button>${alertDefinitions(workshop.slide).filter(a=>a.id.startsWith('work-')).map(a=>`<button data-replay="${a.id}">重播 ${a.sec/60} 分提醒</button>`).join('')}</div><p id="panel-error" class="console-error" role="alert">${esc(panelError)}</p></section><section class="console-section" style="margin-top:18px"><h3>場次時間 · ${esc(c.timezone)}</h3><div class="metrics"><div class="metric">全場實際經過<b id="metric-elapsed"></b></div><div class="metric">預估完成<b id="metric-eta"></b><small id="eta-caption"></small></div><div class="metric">與目標結束時間相比<b id="metric-diff"></b><small>目標 ${esc(c.eventDate)} ${esc(c.scheduledEnd)}</small></div><div class="metric">已略過、待處理配額<b id="metric-deferred"></b></div></div><details id="deferred-details"><summary>待處理配額（${deferred.length} 頁）</summary><div class="deferred-list">${deferred.length?deferred.map(({p,i})=>`<div class="deferred-item"><b>${slides[i].id} · ${esc(slides[i].title.zhTW)} · ${clockText(p.remainingSec)}</b><div class="button-row"><button data-requeue="${i}">重新排入</button><button data-discard="${i}">捨棄剩餘</button></div><div class="time-edit"><select aria-label="${slides[i].id} 配額轉移目標" id="transfer-${i}">${slides.slice(1).filter(s=>s.id!==slides[i].id).map(s=>`<option value="${slides.indexOf(s)}" ${slides.indexOf(s)===workshop.state.activePage?'selected':''}>${s.id} ${esc(s.title.zhTW)}</option>`).join('')}</select><button data-transfer="${i}">轉移全部</button></div></div>`).join(''):'<p>沒有待處理配額。</p>'}</div></details><details id="notes-details"><summary>巡組提問與本頁備註（會被投影）</summary>${['What does the challenge owner need? / 挑戰提出者需要什麼？','Which acceptance criterion are you addressing? / 目前在回應哪一項驗收條件？','What would make this usable? / 怎樣才能讓它可用？','Let us hear from someone who has not spoken yet. / 聽聽還沒發言的夥伴。','Could you give us a specific example? / 可以給一個具體例子嗎？','What still needs to be completed? / 還有什麼需要完成？','What would you need to check before trying this in your own work? / 在工作中嘗試前，需要先確認什麼？',...workshop.slide.supportingText.map(l=>l.en+' / '+l.zhTW),...workshop.slide.facilitatorNotes].map(v=>`<p>${esc(v)}</p>`).join('')}<p>${c.logoDataUri?'Logo 已載入；卡片與海報照片待補。':'Logo、卡片與海報照片待補。'}未核實的個人資格不投影。</p><p>若落後，優先縮短 P02 簡介、P11 延伸討論，或減少 P17 開啟下一題；保留全員分享、驗收檢查、成果回應與回顧。</p></details></section></div><div><section class="console-section"><h3>頁面索引 · 26 頁 / 120 分鐘</h3><div class="page-index">${slides.map((s,i)=>`<button data-page="${i}" class="${i===workshop.state.activePage?'current':''}" aria-label="跳至 ${s.id} ${esc(s.title.zhTW)}">${s.id} · ${esc(s.title.zhTW||'會前待機')}<small>${i?`${s.durationSec/60} min · ${workshop.state.pages[i].planState}`:'待機，不計時'}</small></button>`).join('')}</div></section><section class="console-section" style="margin-top:18px"><details id="settings-details"><summary>場次、語言、素材設定</summary><form id="settings-form"><div class="settings-grid">${field('title','工作坊標題','text','required maxlength="80"')}${field('facilitatorName','引導者','text','required maxlength="80"')}${field('email','聯絡信箱','email','required')}${field('eventName','活動名稱','text','maxlength="100"')}${field('location','地點','text','maxlength="80"')}${field('eventDate','場次日期','date','required')}${field('scheduledStart','預定開始','time','required')}${field('scheduledEnd','目標結束','time','required')}${field('timezone','場次時區','text','required')}<label>語言<select name="languageMode"><option value="both" ${c.languageMode==='both'?'selected':''}>雙語 / Bilingual</option><option value="en" ${c.languageMode==='en'?'selected':''}>English only</option><option value="zh" ${c.languageMode==='zh'?'selected':''}>中文</option></select></label>${field('teamSizeMin','每組最少人數','number','min="1" max="20" required')}${field('teamSizeMax','每組最多人數','number','min="1" max="20" required')}<div class="wide">${field('uploadUrl','照片上傳網址（選填；空白則隱藏）','url','maxlength="1500"')}</div>${c.feedbackWallLabels.map((l,i)=>`<label>回饋牆 ${i+1} 英文<input name="wall${i}en" value="${esc(l.en)}" maxlength="80" required></label><label>回饋牆 ${i+1} 中文<input name="wall${i}zh" value="${esc(l.zhTW)}" maxlength="80" required></label>`).join('')}</div><div class="button-row"><button class="primary">儲存設定</button></div></form><label>載入原始 Logo（JPEG／PNG／WebP，5 MB 以下）<input id="logo-file" type="file" accept="image/jpeg,image/png,image/webp"></label><p class="hint">圖像保留原貌與比例，不裁切。匯出單檔會嵌入目前 Logo。</p></details><details id="management-details"><summary>匯出與進度管理</summary><div class="button-row"><button data-command="export-html">匯出離線單檔</button><button data-command="backup">匯出進度備份</button></div><label>還原進度（將替換本分頁進度）<input id="restore-file" type="file" accept="application/json,.json"></label><p class="hint">離線單檔包含目前設定與 Logo，不攜帶本場進度。進度備份供跨瀏覽器還原；file:// 儲存不受支援時仍可使用。</p><button class="danger" data-command="clear">清除本場進度</button></details><details id="shortcuts-details"><summary>快捷鍵與操作說明</summary><p>←／→、PageUp／PageDown：換頁後等待開始<br>Shift＋→：下一頁並開始<br>Space：開始／暫停<br>＋／−：加減一分鐘<br>F：全螢幕　T：隱藏倒數　P：控制台<br>輸入欄位操作期間停用全域快捷鍵。</p><p>全場經過時間包含暫停與轉場。提早往後換頁，未用時間列為待處理；回看不會自動重新排入。重新整理可恢復進度，但請勿同時開啟多個操作分頁。</p></details></section></div></div>`;
-  updateMetrics();
+function renderSlide() {
+  closeCardModal();
+  const s=slides[state.page];
+  const kind=!s.stepId?'cover':s.id==='P25'?'activity closing':'activity';
+  const stage=$('#slide');
+  stage.className=`canvas page-${s.id} ${kind}`;
+  stage.innerHTML = !s.stepId ? renderCover()
+    : `${s.id==='P25'?topbar():''}<header class="activity-heading"><h1>${textPair(s.title)}</h1></header><section class="activity-overview" aria-label="WHY and WHAT"><div class="brief-item brief-why">${label(LABELS.why)}${textPair(s.why,'overview-text')}</div><div class="brief-item brief-what">${label(LABELS.what)}${textPair(s.output,'overview-text')}</div></section>${mainHTML(s)}`;
+  $('#frame').className=`frame lang-${state.lang}${state.page===0?' on-cover':''}`;
+  document.documentElement.lang = state.lang==='zh' ? 'zh-Hans' : 'en';
+  $('#page-number').innerHTML=`<strong>${String(state.page).padStart(2,'0')}</strong><span>/ ${String(LAST).padStart(2,'0')}</span>`;
+  $('[data-cmd="prev-page"].pager-btn').disabled = state.page===0;
+  $('[data-cmd="next-page"].pager-btn').disabled = state.page===LAST;
+  updateReveal();
+  renderTimer();
+  announce(`${String(state.page).padStart(2,'0')} / ${LAST} ${s.title.en||''}`);
 }
-function openPanel() { renderPanel(); panel.showModal(); $('#console-entry').setAttribute('aria-expanded','true'); }
-function closePanel() { panel.close(); $('#console-entry').setAttribute('aria-expanded','false'); }
-async function unlockAudio() {
-  try { const Audio=window.AudioContext||window.webkitAudioContext; if(!Audio) throw new Error(); audio ||= new Audio(); await audio.resume(); }
-  catch { panelError='此瀏覽器無法啟用音效；計時仍可正常使用。'; }
+
+/* ---------- Floating timer ---------- */
+const ICON = {
+  play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>',
+  pause:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h4.2v15H6zM13.8 4.5H18v15h-4.2z"/></svg>',
+  stop:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h12v12H6z"/></svg>',
+  restart:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5a7 7 0 1 1-6.6 4.7l2.1.7A4.8 4.8 0 1 0 12 7.2V10L7.5 6.1 12 2.2z"/></svg>',
+  open:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8.5l7 7 7-7-1.6-1.6L12 12.3 6.6 6.9z"/></svg>',
+  close:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15.5l7-7 7 7-1.6 1.6L12 11.7l-5.4 5.4z"/></svg>'
+};
+const STATUS = {ready:loc('Ready','待开始'),running:loc('Running','计时中'),paused:loc('Paused','已暂停'),expired:loc("Time's up",'时间到')};
+function renderTimer() {
+  const open=state.timerOpen, page=slides[state.page], pageSec=page.durationSec;
+  const presets=[[180,'3:00'],[300,'5:00'],[600,'10:00'],[900,'15:00']];
+  $('#timer').innerHTML=`<div class="timer-pill"><span class="state-dot" aria-hidden="true"></span><span class="timer-compact" id="timer-compact" aria-live="off"></span><button class="icon-btn" data-cmd="toggle" id="pill-toggle"></button><button class="icon-btn" data-cmd="panel" aria-expanded="${open}" aria-controls="timer-panel" aria-label="${open?'Collapse':'Expand'} timer">${open?ICON.close:ICON.open}</button></div>
+  <div class="timer-panel" id="timer-panel" ${open?'':'hidden'}>
+    <div class="timer-number" id="timer-number" aria-live="off"></div>
+    <div class="timer-progress" aria-hidden="true"><div class="timer-progress-fill" id="timer-progress-fill"></div></div>
+    <div class="timer-state" id="timer-state"></div>
+    <div class="btn-row main-controls"><button class="btn btn-primary" data-cmd="toggle" id="panel-toggle"></button><button class="btn" data-cmd="stop">${ICON.stop}<span>${inline(loc('Stop','停止'))}</span></button><button class="btn" data-cmd="restart">${ICON.restart}<span>${inline(loc('Restart','重来'))}</span></button></div>
+    <div class="btn-row adjust-controls">${[[-60,'−1:00'],[-10,'−0:10'],[10,'+0:10'],[60,'+1:00']].map(([d,t])=>`<button class="btn btn-quiet" data-adjust="${d}">${t}</button>`).join('')}</div>
+    <div class="panel-section">${label(loc('Set time','设定时间'),'panel-label')}
+      <form class="set-row" id="timer-form"><input id="timer-input" inputmode="numeric" autocomplete="off" placeholder="MM:SS" aria-label="Set time, MM:SS or minutes" value="${clockText(state.timer.durationSec)}"><button class="btn">${inline(loc('Set','设定'))}</button></form>
+      <div class="btn-row presets">${pageSec?`<button class="btn btn-quiet preset-page" data-preset="${pageSec}">${inline(loc('This page','本页'))} ${clockText(pageSec)}</button>`:''}${presets.map(([s,t])=>`<button class="btn btn-quiet" data-preset="${s}">${t}</button>`).join('')}</div>
+      <p class="timer-error" id="timer-error" role="alert"></p>
+    </div>
+    <div class="panel-foot"><div class="lang-switch" role="group" aria-label="Display language">${[['both','双语 EN'],['en','EN'],['zh','中文']].map(([k,t])=>`<button class="seg ${state.lang===k?'is-on':''}" data-lang="${k}" aria-pressed="${state.lang===k}">${t}</button>`).join('')}</div><button class="btn btn-quiet" data-cmd="fullscreen">${inline(loc('Fullscreen','全屏'))}</button></div>
+    <p class="key-hint">Space ${inline(loc('start/pause','开始/暂停'))} · R ${inline(loc('restart','重来'))} · S ${inline(loc('stop','停止'))} · +/− ${inline(loc('1 min','1 分钟'))} · T ${inline(loc('panel','面板'))} · L ${inline(loc('language','语言'))}</p>
+  </div>`;
+  updateTimer();
 }
-function beep() {
-  if(!audio||audio.state!=='running') return;
-  const oscillator=audio.createOscillator(), gain=audio.createGain();
-  oscillator.frequency.value=660; oscillator.connect(gain); gain.connect(audio.destination);
-  gain.gain.setValueAtTime(.1,audio.currentTime); gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.3);
-  oscillator.start(); oscillator.stop(audio.currentTime+.3);
+// Only touch the DOM when content changes, so buttons are never replaced mid-click.
+function put(el, html) { if (el && el.dataset.html!==html) { el.innerHTML=html; el.dataset.html=html; } }
+function updateTimer() {
+  if (T.settle()) save();
+  const r=T.remaining(), status=T.status(), t=state.timer;
+  const el=$('#timer');
+  const cls=`timer is-${status} ${state.timerOpen?'is-open':'is-closed'} ${status!=='expired'&&t.durationSec>0&&r<=t.durationSec*.2?'near-time':''}`;
+  if (el.className!==cls) el.className=cls;
+  put($('#timer-compact'),clockText(r));
+  put($('#timer-number'),clockText(r));
+  $('#timer-progress-fill').style.width=`${t.durationSec?Math.min(100,r/t.durationSec*100):0}%`;
+  put($('#timer-state'),`${inline(STATUS[status])}<span class="timer-of">${inline(loc('of','共'))} ${clockText(t.durationSec)}</span>`);
+  const running=t.running;
+  const pill=$('#pill-toggle'); put(pill,running?ICON.pause:ICON.play); pill.setAttribute('aria-label',running?'Pause timer':'Start timer');
+  put($('#panel-toggle'),`${running?ICON.pause:ICON.play}<span>${inline(running?loc('Pause','暂停'):status==='paused'?loc('Resume','继续'):loc('Start','开始'))}</span>`);
 }
-function download(blob,name) {
-  const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
-}
-function exportHTML() {
-  const clone=document.documentElement.cloneNode(true);
-  clone.querySelector('#config-data').textContent=JSON.stringify(workshop.state.config).replaceAll('<','\\u003c');
-  ['#slide','#console','#announcement'].forEach(s=>clone.querySelector(s).innerHTML='');
-  clone.querySelectorAll('dialog').forEach(d=>d.removeAttribute('open'));
-  clone.querySelector('#console-entry').classList.remove('visible');
-  clone.querySelector('#console-entry').setAttribute('aria-expanded','false');
-  download(new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html'}),'Agile-Sprint-Lab-Projection.html');
+
+/* ---------- Commands ---------- */
+let lastAnnouncement='';
+function announce(text) { if (text && text!==lastAnnouncement) { $('#announcement').textContent=text; lastAnnouncement=text; } }
+function go(page, revealMode=0) {
+  const p=Math.min(LAST,Math.max(0,page));
+  const max=maxSteps(slides[p]);
+  const nextReveal = revealMode==='all' ? max : Math.min(max,Math.max(0,+revealMode||0));
+  if (p===state.page && nextReveal===state.reveal) return;
+  state.page=p; state.reveal=nextReveal; save(); renderSlide();
 }
 async function fullscreen() {
-  try { if(document.fullscreenElement) await document.exitFullscreen(); else if(document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen(); else throw new Error(); }
-  catch { panelError='無法進入全螢幕；可使用瀏覽器的全螢幕命令或一般視窗。'; if(!panel.open) openPanel(); }
-}
-function commit() {
-  save(); renderStage();
-  if(panel.open) {
-    const expanded=[...panel.querySelectorAll('details[open]')].map(d=>d.id);
-    const scrollTop=panel.scrollTop;
-    const focused=document.activeElement;
-    const selector=focused?.dataset?.command?`[data-command="${focused.dataset.command}"]`:null;
-    renderPanel();
-    expanded.forEach(id=>{const detail=document.getElementById(id);if(detail)detail.open=true;});
-    panel.scrollTop=scrollTop;
-    if(selector) panel.querySelector(selector)?.focus({preventScroll:true});
-  }
+  try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch {}
 }
 function command(name) {
-  panelError='';
-  switch(name) {
-    case 'start': workshop.start();break;
-    case 'toggle': workshop.toggle();break;
-    case 'prev':workshop.navigate(workshop.state.activePage-1);break;
-    case 'next':workshop.navigate(workshop.state.activePage+1);break;
-    case 'next-start':workshop.navigate(workshop.state.activePage+1,true);break;
-    case 'plus':workshop.adjust(60);break;
-    case 'minus':workshop.adjust(-60);break;
-    case 'reset':workshop.resetPage();break;
-    case 'timer':workshop.state.config.showTimer=!workshop.state.config.showTimer;break;
-    case 'dismiss':workshop.dismissAlert();break;
-    case 'fullscreen':fullscreen();return;
-    case 'panel-close':closePanel();return;
-    case 'clear':clearDialog.showModal();return;
-    case 'export-html':exportHTML();return;
-    case 'backup': {
-      workshop.settle();
-      if(corruptStorage) { try { download(new Blob([localStorage.getItem(STORAGE_KEY)||'null'],{type:'application/json'}),'Agile-Sprint-Lab-Recovery.json'); } catch {} }
-      else download(new Blob([JSON.stringify(workshop.state,null,2)],{type:'application/json'}),'Agile-Sprint-Lab-Progress.json');
-      return;
+  switch (name) {
+    case 'next': {
+      const max=maxSteps(slides[state.page]);
+      if (state.page>0 && state.reveal<max) { state.reveal++; save(); updateReveal(); return; }
+      return go(state.page+1, 0);
     }
+    case 'prev': {
+      if (state.page>0 && state.reveal>0) { state.reveal--; save(); updateReveal(); return; }
+      return go(state.page-1, 'all');
+    }
+    case 'next-page': return go(state.page+1, 0);
+    case 'prev-page': return go(state.page-1, 'all');
+    case 'first': return go(0, 0);
+    case 'last': return go(LAST, 0);
+    case 'toggle': T.toggle(); break;
+    case 'stop': T.stop(); break;
+    case 'restart': T.restart(); break;
+    case 'panel': state.timerOpen=!state.timerOpen; save(); renderTimer(); return;
+    case 'close-panel': if (closeCardModal()) return; if (!state.timerOpen) return; state.timerOpen=false; save(); renderTimer(); return;
+    case 'close-modal': closeCardModal(); return;
+    case 'lang': state.lang=LANGS[(LANGS.indexOf(state.lang)+1)%LANGS.length]; save(); renderSlide(); return;
+    case 'fullscreen': fullscreen(); return;
+    default: return;
   }
-  commit();
+  save(); updateTimer();
 }
-document.addEventListener('click',e=>{
-  const b=e.target.closest('button');if(!b||b.disabled)return;
-  if(b.dataset.command) command(b.dataset.command);
-  else if(b.dataset.page!==undefined) {workshop.navigate(+b.dataset.page);commit();}
-  else if(b.dataset.requeue) {workshop.requeue(+b.dataset.requeue);commit();}
-  else if(b.dataset.discard) {workshop.discard(+b.dataset.discard);commit();}
-  else if(b.dataset.transfer) {workshop.transfer(+b.dataset.transfer,+$(`#transfer-${b.dataset.transfer}`).value);commit();}
-  else if(b.dataset.replay) {workshop.replayAlert(b.dataset.replay);commit();}
-});
-$('#console-entry').addEventListener('click',openPanel);
-panel.addEventListener('close',()=>$('#console-entry').setAttribute('aria-expanded','false'));
-$('#cancel-clear').onclick=()=>clearDialog.close();
-$('#do-clear').onclick=()=>{
-  const config=structuredClone(workshop.state.config), s=freshState(slides);s.config=config;
-  workshop=new Workshop(slides,s);corruptStorage=false;storageWarning='';clearDialog.close();commit();announce('本場進度已清除');
-};
-document.addEventListener('keydown',e=>{
-  if(e.repeat||e.altKey||e.ctrlKey||e.metaKey)return;
-  if(e.key==='Escape')return; // Native dialog and fullscreen behavior takes priority.
-  if(e.target.closest('input,select,textarea,[contenteditable="true"]') || clearDialog.open) return;
-  const key=e.key.toLowerCase();
-  if(panel.open) {if(key==='p'){e.preventDefault();closePanel();}return;}
-  if(e.target.closest('button,summary') && key === ' ') return;
-  const map={'arrowright':e.shiftKey?'next-start':'next','pagedown':e.shiftKey?'next-start':'next','arrowleft':'prev','pageup':'prev',' ':'toggle','+':'plus','=':'plus','-':'minus','f':'fullscreen','t':'timer'};
-  if(key==='p') {e.preventDefault();openPanel();return;}
-  if(map[key]) {
-    e.preventDefault();
-    if(e.target.closest('button,summary')) {stage.tabIndex=-1;stage.focus({preventScroll:true});}
-    command(map[key]);
-  }
-});
-document.addEventListener('submit',e=>{
-  if(e.target.id==='remaining-form') {
-    e.preventDefault();const value=$('#remaining-input').value;
-    if(!/^\d{1,4}:[0-5]\d$/.test(value))return;
-    const [m,s]=value.split(':').map(Number);workshop.setRemaining(m*60+s);commit();
-  }
-  if(e.target.id==='settings-form') {
-    e.preventDefault();const data=new FormData(e.target),config={...workshop.state.config};
-    for(const key of ['title','facilitatorName','email','eventName','location','eventDate','timezone','scheduledStart','scheduledEnd','uploadUrl','languageMode']) config[key]=String(data.get(key)).trim();
-    for(const key of ['teamSizeMin','teamSizeMax'])config[key]=Number(data.get(key));
-    config.feedbackWallLabels=[0,1].map(i=>loc(String(data.get(`wall${i}en`)).trim(),String(data.get(`wall${i}zh`)).trim()));
-    const candidate=structuredClone(workshop.state);candidate.config=config;
-    if(!validateState(candidate,slides)||config.uploadUrl&&!validUploadUrl(config.uploadUrl)) {
-      panelError='請確認組隊人數、日期、時區與網址格式。';$('#panel-error').textContent=panelError;return;
+document.addEventListener('click', e => {
+  const b=e.target.closest('button');
+  if (b) {
+    if (b.disabled) return;
+    if (b.closest('form') && b.type!=='button') return; // handled by submit
+    if (b.dataset.cmd) command(b.dataset.cmd);
+    else if (b.dataset.adjust) { T.adjust(+b.dataset.adjust); save(); updateTimer(); }
+    else if (b.dataset.preset) { T.set(+b.dataset.preset); save(); renderTimer(); }
+    else if (b.dataset.lang) { state.lang=b.dataset.lang; save(); renderSlide(); }
+    else if (b.dataset.card) { setCardTab(b.dataset.card); }
+    else if (b.dataset.reveal) {
+      const target=+b.dataset.reveal;
+      state.reveal = state.reveal===target ? target-1 : target;
+      save(); updateReveal();
     }
-    workshop.state.config=config;commit();announce('場次設定已儲存');
+    b.blur(); // keep keyboard shortcuts global after a mouse click
+    return;
+  }
+  // Clicking inside the full-screen card modal (outside tabs) closes it
+  if (e.target.closest('#card-modal')) {
+    if (!e.target.closest('.modal-tabs')) closeCardModal();
+    return;
+  }
+  // Clicking any example card opens the full-screen popup
+  const viewer = e.target.closest('.card-viewer[data-popup]');
+  if (viewer) {
+    openCardModal(viewer.dataset.popup);
+    return;
+  }
+  // Clicking on the HOW area (or activity slide body outside links/contact-card) reveals the next HOW item one by one.
+  if (e.target.closest('a,input,select,textarea,#timer,.pager,.contact-card')) return;
+  if (e.target.closest('#slide .main-grid') || e.target.closest('#slide.activity')) {
+    const max=maxSteps(slides[state.page]);
+    if (state.reveal<max) { state.reveal++; save(); updateReveal(); }
   }
 });
-document.addEventListener('change',async e=>{
-  if(e.target.id==='sound-toggle') {workshop.state.config.sound=e.target.checked;if(e.target.checked)await unlockAudio();save();$('#panel-error').textContent=panelError;}
-  if(e.target.id==='logo-file') {
-    const file=e.target.files[0];if(!file)return;
-    if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>5*1024*1024){$('#panel-error').textContent='請使用 5 MB 以下的 JPEG、PNG 或 WebP 原圖。';return;}
-    const reader=new FileReader();reader.onload=async()=>{
-      try {const img=new Image();img.src=reader.result;await img.decode();workshop.state.config.logoDataUri=reader.result;commit();}
-      catch {$('#panel-error').textContent='無法讀取此圖檔。';}
-    };reader.readAsDataURL(file);
-  }
-  if(e.target.id==='restore-file') {
-    const file=e.target.files[0];e.target.value='';if(!file)return;
-    try {
-      if(file.size>10*1024*1024)throw Error();
-      const value=JSON.parse(await file.text());if(!validateState(value,slides))throw Error();
-      if(!window.confirm('還原將替換本分頁的活動進度與設定，是否繼續？')){announce('已取消還原，原進度保留');return;}
-      workshop=new Workshop(slides,value);corruptStorage=false;storageWarning='';commit();announce('進度已還原');
-    }catch {$('#panel-error').textContent='備份格式不相容或無效，原進度未變更。';}
-  }
+document.addEventListener('submit', e => {
+  if (e.target.id!=='timer-form') return;
+  e.preventDefault();
+  const sec=parseTime($('#timer-input').value);
+  if (sec===null || sec<=0 || sec>MAX_TIMER_SEC) { $('#timer-error').textContent='请输入 MM:SS 或分钟数（最多 180 分钟） · Use MM:SS or minutes'; return; }
+  T.set(sec); save(); renderTimer();
 });
-let entryTimeout;
-function showEntry() {$('#console-entry').classList.add('visible');clearTimeout(entryTimeout);entryTimeout=setTimeout(()=>$('#console-entry').classList.remove('visible'),2200);}
-document.addEventListener('pointermove',showEntry,{passive:true});
-document.addEventListener('focusin',e=>{if(e.target===$('#console-entry'))showEntry();});
-function resize(){document.documentElement.style.setProperty('--scale',Math.min(innerWidth/1920,innerHeight/1080));}
-window.addEventListener('resize',resize);
-document.addEventListener('visibilitychange',()=>{workshop.settle();save();updateDynamic();});
-window.addEventListener('pagehide',()=>{workshop.settle();save();});
-resize();renderStage();save();
-setInterval(()=>{
-  workshop.settle();updateDynamic();
-  if(Date.now()-savedAt>=1000){save();savedAt=Date.now();}
-},200);
+document.addEventListener('keydown', e => {
+  if (e.altKey || e.ctrlKey || e.metaKey) return;
+  if (e.target.closest('input,select,textarea,[contenteditable="true"]')) { if (e.key==='Escape') e.target.blur(); return; }
+  const key=e.key.length===1 ? e.key.toLowerCase() : e.key;
+  const map={ArrowRight:'next',PageDown:'next',ArrowDown:'next',ArrowLeft:'prev',PageUp:'prev',ArrowUp:'prev',Home:'first',End:'last',' ':'toggle',r:'restart',s:'stop',t:'panel',l:'lang',f:'fullscreen',Escape:'close-panel'};
+  if (key==='+'||key==='=') { e.preventDefault(); T.adjust(60); save(); updateTimer(); return; }
+  if (key==='-'||key==='_') { e.preventDefault(); T.adjust(-60); save(); updateTimer(); return; }
+  if (e.shiftKey && (key==='ArrowRight'||key==='PageDown')) { e.preventDefault(); command('next-page'); return; }
+  if (e.shiftKey && (key==='ArrowLeft'||key==='PageUp')) { e.preventDefault(); command('prev-page'); return; }
+  if (map[key]) { if (e.repeat && map[key]!=='next' && map[key]!=='prev') return; e.preventDefault(); command(map[key]); }
+});
+// Reveal the page arrows briefly when the mouse moves; the page number itself is always visible.
+let hideTimer;
+document.addEventListener('pointermove', () => { document.body.classList.add('show-pager'); clearTimeout(hideTimer); hideTimer=setTimeout(()=>document.body.classList.remove('show-pager'),2200); }, {passive:true});
+window.addEventListener('storage', e => { if (e.key===STORAGE_KEY) { try { const v=JSON.parse(e.newValue); if (validState(v)) { state=v; renderSlide(); } } catch {} } });
+function resize() { document.documentElement.style.setProperty('--scale', Math.min(innerWidth/1920, innerHeight/1080)); }
+window.addEventListener('resize', resize);
+resize(); renderSlide(); save();
+setInterval(updateTimer, 250);

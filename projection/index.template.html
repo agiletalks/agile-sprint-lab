@@ -3,19 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Agile Sprint Lab: offline bilingual workshop projection and facilitation timer.">
+<meta name="description" content="Agile Sprint Lab: offline bilingual workshop projection with a floating timer.">
 <meta name="color-scheme" content="light">
 <title>Agile Sprint Lab · Projection</title>
 <style>/* INLINE_CSS */</style>
 </head>
 <body>
-<main id="viewport" aria-label="Workshop projection"><article id="slide" class="canvas"></article></main>
-<button id="console-entry" class="console-entry" aria-label="開啟引導者控制台 (P)" aria-controls="console" aria-expanded="false">Controls <kbd>P</kbd></button>
-<dialog id="console" aria-labelledby="console-title"></dialog>
-<dialog id="confirm-clear" aria-labelledby="clear-title"><h2 id="clear-title">清除本場進度？</h2><p>頁面、倒數與全場開始時間將重設。場次設定與 Logo 保留。</p><div class="button-row"><button id="cancel-clear">取消</button><button id="do-clear" class="danger">確認清除進度</button></div></dialog>
+<main id="viewport" aria-label="Workshop projection">
+  <div id="frame" class="frame">
+    <article id="slide" class="canvas"></article>
+    <div id="card-modal" class="card-modal" hidden role="dialog" aria-modal="true" aria-label="Card full screen view"></div>
+    <aside id="timer" class="timer" aria-label="Timer"></aside>
+    <nav class="pager" aria-label="Pages">
+      <button class="pager-btn" data-cmd="prev-page" aria-label="Previous page">‹</button>
+      <span class="page-number" id="page-number"></span>
+      <button class="pager-btn" data-cmd="next-page" aria-label="Next page">›</button>
+    </nav>
+  </div>
+</main>
 <div id="announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 <script id="config-data" type="application/json">/* INLINE_CONFIG */</script>
 <script id="slide-data" type="application/json">/* INLINE_DATA */</script>
-<script>/* INLINE_QR */</script>
 <script type="module">/* INLINE_APP */</script>
 </body></html>
